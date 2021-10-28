@@ -1,0 +1,1 @@
+srun -p fpga -A pc2-mitarbeiter --constraint=19.2.0_max -N 3 --fpgalink=pair --pty bash

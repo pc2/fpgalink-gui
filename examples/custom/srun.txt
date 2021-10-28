@@ -1,0 +1,1 @@
+srun -A pc2-mitarbeiter --constraint=19.2.0_max -N 1 --fpgalink="n00:acl0:ch0-n00:acl1:ch0" --fpgalink="n00:acl0:ch1-n00:acl1:ch1" --fpgalink="n00:acl0:ch2-n00:acl1:ch2" --fpgalink="n00:acl0:ch3-n00:acl1:ch3" -p fpga --pty bash
