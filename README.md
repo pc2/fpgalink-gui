@@ -16,6 +16,7 @@ If you want to request more features, please file an issue. Current list of plan
   * e.g. ring; then ask for number of nodes
 * http://jsfiddle.net/gopi1410/yWs7P/ warn on close tag
 * tutorial mode
+* new feature goes here
 
 # TODOs
 * srun: found predefined topology (ring, etc.), ignoring explicitly given links
