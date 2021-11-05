@@ -17,6 +17,7 @@ If you want to request more features, please file an issue. Current list of plan
 * http://jsfiddle.net/gopi1410/yWs7P/ warn on close tag
 * tutorial mode
 * new feature goes here
+* one feature is not enough
 
 # TODOs
 * srun: found predefined topology (ring, etc.), ignoring explicitly given links
