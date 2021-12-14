@@ -1,0 +1,36 @@
+# Functionality to Test
+
+## Add
+- add nodes
+  - north, east, south, west
+  - names of nodes remain correct: n00, n01, n02, ..
+- add edges (connect nodes)
+
+## Delete
+- delete nodes (red cross)
+  - names of nodes remain correct: n00, n01, n02, ..
+- delete edges (right click)
+
+## Moving
+- move nodes around
+
+## Import/Export
+- export textfield (with button "Copy --fpgalink") is working
+- export "Copy URL" button is working
+- import of a configuration ("IMPORT" button) is working
+- import via URL ("import" parameter to index.html file). Example: https://pc2.github.io/fpgalink-gui/index.html?import=FPGALINK0=fpga-0003:acl1:ch0-fpga-0003:acl1:ch1%20%20FPGALINK1=fpga-0002:acl0:ch0-fpga-0002:acl0:ch1%20%20FPGALINK2=fpga-0002:acl0:ch2-fpga-0002:acl0:ch3%20%20FPGALINK3=fpga-0003:acl1:ch2-fpga-0003:acl1:ch3
+
+
+## Undo/Redo
+- test undo/redo for add/delete/..
+
+## Additional Features
+- change color of edges (via right click)
+- toggle grid of canvas (button left menu)
+- change router (left menu). Router changes the visualization of connections
+- export SVG image
+  - click on "Export SVG"
+  - copy content into own file ("filename.svg") and check if image is working
+
+
+

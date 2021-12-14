@@ -51,7 +51,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cecece', end
  border-bottom: 1px solid #515151;
 }
 
-   
+
 /******************************************************************
  * Einstellungen der PropertyViews im Editmodus der "Form".
  ******************************************************************/
@@ -85,7 +85,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cecece', end
  background-color: #f3f3f3;
  padding:10px;
  cursor:move;
- width:80px;
+ width:90px;
  margin: 30px auto 30px auto;
  text-align:center;
  align:center;
@@ -104,7 +104,25 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cecece', end
 
 .overlayMenu{
   position:absolute;
-  cursor:pointer;
-  font-size:30px;
-  color:red;
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 0 2px;
+  background: rgb(202,202,202);
+  background: linear-gradient(0deg, rgba(202,202,202,1) 0%, rgba(253,253,253,1) 100%);
+  border: #2c70ff 1px;
+  border-radius: 5px;
+  border-style: solid;
  }
+
+.overlayMenuItem{
+  padding:2px;
+  cursor:pointer;
+  font-size:25px;
+  color:blue;
+  margin-bottom: -4px;
+}
+
+.overlayMenuDeleteItem{
+  color:red;
+  margin-top: -5px;
+}
