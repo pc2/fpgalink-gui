@@ -1,13 +1,13 @@
 
 example.View = draw2d.Canvas.extend({
 
-	init:function(id){
-		this._super(id);
+    init: function (id) {
+        this._super(id);
 
-		this.setScrollArea("#"+id);
-		
-		this.currentDropConnection = null;
-	},
+        this.setScrollArea("#" + id);
+
+        this.currentDropConnection = null;
+    },
 
     /**
      * @method
@@ -15,35 +15,34 @@ example.View = draw2d.Canvas.extend({
      * <br>
      * Graphiti use the jQuery draggable/droppable lib. Please inspect
      * http://jqueryui.com/demos/droppable/ for further information.
-     * 
+     *
      * @param {HTMLElement} droppedDomNode The dragged DOM element.
      * @param {Number} x the x coordinate of the drag
      * @param {Number} y the y coordinate of the drag
-     * 
+     *
      * @template
      **/
-    onDrag:function(droppedDomNode, x, y )
-    {
+    onDrag: function (droppedDomNode, x, y) {
     },
 
-    getNodeNameNew : function() {
+    getNodeNameNew: function () {
         var newname = "n";
         var numnodes = this.getFigures().getSize();
 
-        if(numnodes < 10) {
+        if (numnodes < 10) {
             newname += "0";
         }
 
-        return newname+numnodes;
+        return newname + numnodes;
     },
-    
+
     /**
      * @method
      * Called if the user drop the droppedDomNode onto the canvas.<br>
      * <br>
      * Draw2D use the jQuery draggable/droppable lib. Please inspect
      * http://jqueryui.com/demos/droppable/ for further information.
-     * 
+     *
      * @param {HTMLElement} droppedDomNode The dropped DOM element.
      * @param {Number} x the x coordinate of the drop
      * @param {Number} y the y coordinate of the drop
@@ -51,16 +50,30 @@ example.View = draw2d.Canvas.extend({
      * @param {Boolean} ctrlKey true if the ctrl key has been pressed during the event
      * @private
      **/
-    onDrop : function(droppedDomNode, x, y, shiftKey, ctrlKey) {
+    onDrop: function (droppedDomNode, x, y, shiftKey, ctrlKey) {
         var orientation = $(droppedDomNode).data("shape");
         // var figure = eval("new NodeShapeVertical({orientation:\""+orientation+"\"});");
-        var node = new NodeShapeVertical();
+        // var node = new NodeShapeVertical();
+        // var node = new NodeShapeHorizontal();
+        var node;
 
-        node.setOrientation(orientation);
+        // switch(orientation){
+        //     case "north":
+        //     case "south":
+        //         node = new NodeShapeHorizontal();
+        //         break
+        //     case "west":
+        //     case "east":
+        //         node = new NodeShapeVertical();
+        // }
+
+        node = new NodeShape({ "orientation": orientation })
+
+        // node.setOrientation(orientation);
         node.setName(this.getNodeNameNew());
         node.addFPGA("acl0");
         node.addFPGA("acl1");
-        
+
         // create a command for the undo/redo support
         var command = new draw2d.command.CommandAdd(this, node, x, y);
         this.getCommandStack().execute(command);
@@ -69,4 +82,3 @@ example.View = draw2d.Canvas.extend({
 
     }
 });
-

@@ -3,7 +3,7 @@ var defaultRouter = new draw2d.layout.connection.SketchConnectionRouter();
 
 var HoverConnection = draw2d.Connection.extend({
 
-    init: function ( sourcePort, targetPort) {
+    init: function (sourcePort, targetPort) {
         var self = this;
         this._super({
             router: defaultRouter,
@@ -11,9 +11,9 @@ var HoverConnection = draw2d.Connection.extend({
             source: sourcePort,
             target: targetPort,
             stroke: 3,
-            outlineStroke:1,
-            outlineColor:"#303030",
-            color:"b9dd69"
+            outlineStroke: 1,
+            outlineColor: "#303030",
+            color: "b9dd69"
         });
 
         // this.installEditPolicy(new SelectionMenuPolicy());
@@ -45,56 +45,55 @@ var HoverConnection = draw2d.Connection.extend({
      * @param {Number} y the y-coordinate to show the menu
      * @since 1.1.0
      */
-    onContextMenu:function(x,y){
+    onContextMenu: function (x, y) {
 
         $.contextMenu({
             selector: 'body',
             events:
             {
-                hide:function(){ $.contextMenu( 'destroy' ); }
+                hide: function () { $.contextMenu('destroy'); }
             },
-            callback: function(key, options)
-            {
-            switch(key){
-            case "red":
-                var cmd = new draw2d.command.CommandAttr(this, {color: '#f3546a'});
-                this.getCanvas().getCommandStack().execute(cmd);
+            callback: function (key, options) {
+                switch (key) {
+                    case "red":
+                        var cmd = new draw2d.command.CommandAttr(this, { color: '#f3546a' });
+                        this.getCanvas().getCommandStack().execute(cmd);
 
-                break;
-            case "yellow":
-                var cmd = new draw2d.command.CommandAttr(this, {color: '#FFFF99'});
-                this.getCanvas().getCommandStack().execute(cmd);
-                break;
-            case "green":
-                var cmd = new draw2d.command.CommandAttr(this, {color: '#b9dd69'});
-                this.getCanvas().getCommandStack().execute(cmd);
-                break;
-            case "blue":
-                var cmd = new draw2d.command.CommandAttr(this, {color: '#00A8F0'});
-                this.getCanvas().getCommandStack().execute(cmd);
-                break;
-            case "delete":
-                // without undo/redo support
-            //     this.getCanvas().remove(this);
+                        break;
+                    case "yellow":
+                        var cmd = new draw2d.command.CommandAttr(this, { color: '#FFFF99' });
+                        this.getCanvas().getCommandStack().execute(cmd);
+                        break;
+                    case "green":
+                        var cmd = new draw2d.command.CommandAttr(this, { color: '#b9dd69' });
+                        this.getCanvas().getCommandStack().execute(cmd);
+                        break;
+                    case "blue":
+                        var cmd = new draw2d.command.CommandAttr(this, { color: '#00A8F0' });
+                        this.getCanvas().getCommandStack().execute(cmd);
+                        break;
+                    case "delete":
+                        // without undo/redo support
+                        //     this.getCanvas().remove(this);
 
-                // with undo/redo support
-                var cmd = new draw2d.command.CommandDelete(this);
-                this.getCanvas().getCommandStack().execute(cmd);
-            default:
-                break;
-            }
+                        // with undo/redo support
+                        var cmd = new draw2d.command.CommandDelete(this);
+                        this.getCanvas().getCommandStack().execute(cmd);
+                    default:
+                        break;
+                }
 
             }.bind(this),
-            x:x,
-            y:y,
+            x: x,
+            y: y,
             items:
             {
-                "red":    {name: "Red"},
-                "yellow":    {name: "Yellow"},
-                "green":  {name: "Green"},
-                "blue":   {name: "Blue"},
-                "sep1":   "---------",
-                "delete": {name: "Delete"}
+                "red": { name: "Red" },
+                "yellow": { name: "Yellow" },
+                "green": { name: "Green" },
+                "blue": { name: "Blue" },
+                "sep1": "---------",
+                "delete": { name: "Delete" }
             }
         });
 

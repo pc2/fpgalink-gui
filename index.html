@@ -1,141 +1,144 @@
 ﻿<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+
 <head>
-<title>FPGALink-GUI</title>
-<!-- powered by at least five blockchains! -->
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="viewport" content="width=device-width, minimum-scale=1.0" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>FPGALink-GUI</title>
+    <!-- powered by at least five blockchains! -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-   <link type="text/css" rel="stylesheet" href="./css/aristo/jquery-ui-1.8.16.custom.css" />
-   <link type="text/css" rel="stylesheet" href="./css/jquery.layout.css" />
-   <link type="text/css" rel="stylesheet" href="./css/application.css" />
+    <link type="text/css" rel="stylesheet" href="./css/aristo/jquery-ui-1.8.16.custom.css" />
+    <link type="text/css" rel="stylesheet" href="./css/jquery.layout.css" />
+    <link type="text/css" rel="stylesheet" href="./css/application.css" />
 
-   <script src="./lib/jquery.js"></script>
-   <script src="./lib/jquery-ui.js"></script>
-   <script src="./lib/jquery.browser.js"></script>
-   <script src="./lib/jquery.layout.js"></script>
+    <script src="./lib/jquery.js"></script>
+    <script src="./lib/jquery-ui.js"></script>
+    <script src="./lib/jquery.browser.js"></script>
+    <script src="./lib/jquery.layout.js"></script>
 
-   <script src="./lib/draw2d.js"></script>
+    <script src="./lib/draw2d.js"></script>
 
-   <script src="./gui/Util.js"></script>
-   <script src="./gui/Application.js"></script>
-   <script src="./gui/View.js"></script>
-   <script src="./gui/Toolbar.js"></script>
-   <script src="./gui/HoverConnection.js"></script>
-   <script src="./gui/SelectionMenuPolicy.js"></script>
-   <script src="./gui/NodeShape.js"></script>
+    <script src="./gui/Util.js"></script>
+    <script src="./gui/Application.js"></script>
+    <script src="./gui/View.js"></script>
+    <script src="./gui/Toolbar.js"></script>
+    <script src="./gui/HoverConnection.js"></script>
+    <script src="./gui/SelectionMenuPolicy.js"></script>
+    <script src="./gui/NodeShape.js"></script>
+    <!--<script src="./gui/NodeShapeHorizontal.js"></script>-->
+    <!-- <script src="./gui/NodeShapeVertical.js"></script>-->
+    <script type="text/javascript">
 
- <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
 
-document.addEventListener("DOMContentLoaded",function () {
+            var app = new example.Application();
+            app.view.installEditPolicy(new draw2d.policy.connection.DragConnectionCreatePolicy({
+                createConnection: function () {
+                    return new HoverConnection();
+                }
+            }));
 
-    var app  = new example.Application();
-    app.view.installEditPolicy(  new draw2d.policy.connection.DragConnectionCreatePolicy({
-        createConnection: function(){
-            return new HoverConnection();
-        }
-    }));
-
-    // Enable grid by default.
-    app.toolbar.installedPolicy = new draw2d.policy.canvas.SnapToGridEditPolicy();
-    app.view.installEditPolicy(app.toolbar.installedPolicy);
-
-    // // unmarshal the JSON document into the canvas (load).
-    // var jsonDocument = $("#json_input").text();
-
-    // var reader = new draw2d.io.json.Reader();
-    // reader.unmarshal(app.view, jsonDocument);
-
-    // // display the JSON document in the preview DIV
-    // //
-    // displayJSON(app.view);
-
-    // Produce export text into input fields.
-    app.view.getCommandStack().addEventListener(function(e){
-        if(e.isPostChangeEvent()){
-            // displayJSON(app.view);
-
-            var fpganodes = app.view.getFigures();
-            var srun_export = " -N "+fpganodes.getSize();
-
-            var connections = app.view.getLines();
-            var i = 0;
-            for(i = 0; i < connections.getSize(); i++) {
-                var connection = connections.get(i);
-
-                // Parent is ChannelShape.
-                var source_channel = connection.getSource().getParent();
-                var target_channel = connection.getTarget().getParent();
-
-                var source_fpga = source_channel.getParent();
-                var source_node = source_fpga.getParent();
-
-                var target_fpga = target_channel.getParent();
-                var target_node = target_fpga.getParent();
-
-                srun_export += " --fpgalink="+source_node.getName()+":"+source_fpga.getName()+":"+source_channel.getText()+"-"+target_node.getName()+":"+target_fpga.getName()+":"+target_channel.getText()+"";
-            }
-
-            // Export --fpgalink.
-            app.toolbar.srunExportInput.val(srun_export);
-
-            // Export URL.
-            var importURL = "https://pc2.github.io/fpgalink-gui/index.html?import=";
-            importURL += encodeURIComponent(srun_export);
-
-            app.toolbar.urlExportInput.val(importURL);
-        }
-    });
-
-    // Read srun command from $_GET request.
-    try {
-        var get_decoded = decodeURI(window.location.search);
-        const urlParams = new URLSearchParams(get_decoded);
-
-        if(urlParams.has('import')) {
-            const srun_cmd = urlParams.get('import');
-
-            app.toolbar.srunApply(srun_cmd);
-        }
-
-    } catch (e) { // catches a malformed URI
-        alert("error parsing srun command from GET request.");
-    }
-
-    // Navigation.
-    // Grid toggle.
-    app.toolbar.toggleGridButton = $('#toggleGridButton');
-    app.toolbar.toggleGridButton.button().click($.proxy(function () {
-        if (!app.toolbar.installedPolicy) {
+            // Enable grid by default.
             app.toolbar.installedPolicy = new draw2d.policy.canvas.SnapToGridEditPolicy();
             app.view.installEditPolicy(app.toolbar.installedPolicy);
-        } else {
-            app.view.uninstallEditPolicy(app.toolbar.installedPolicy);
-            app.toolbar.installedPolicy = null;
-        }
-    }, app.toolbar)).button("option", "enabled", true);
 
-    // Change router.
-    app.toolbar.changeRouterSelect = $("#connection_router");
-    app.toolbar.changeRouterSelect.on('change', function () {
-        var selectedRouterClassName = this.value;
-        app.setDefaultRouterClassName(selectedRouterClassName);
-        var router = eval("new " + selectedRouterClassName + "()");
+            // // unmarshal the JSON document into the canvas (load).
+            // var jsonDocument = $("#json_input").text();
 
-        app.view.getLines().each(function (i, line) {
-            line.setRouter(router);
+            // var reader = new draw2d.io.json.Reader();
+            // reader.unmarshal(app.view, jsonDocument);
+
+            // // display the JSON document in the preview DIV
+            // //
+            // displayJSON(app.view);
+
+            // Produce export text into input fields.
+            app.view.getCommandStack().addEventListener(function (e) {
+                if (e.isPostChangeEvent()) {
+                    // displayJSON(app.view);
+
+                    var fpganodes = app.view.getFigures();
+                    var srun_export = " -N " + fpganodes.getSize();
+
+                    var connections = app.view.getLines();
+                    var i = 0;
+                    for (i = 0; i < connections.getSize(); i++) {
+                        var connection = connections.get(i);
+
+                        // Parent is ChannelShape.
+                        var source_channel = connection.getSource().getParent();
+                        var target_channel = connection.getTarget().getParent();
+
+                        var source_fpga = source_channel.getFPGA();
+                        var source_node = source_fpga.getNode();
+
+                        var target_fpga = target_channel.getFPGA();
+                        var target_node = target_fpga.getNode();
+
+                        srun_export += " --fpgalink=" + source_node.getName() + ":" + source_fpga.getName() + ":" + source_channel.getText() + "-" + target_node.getName() + ":" + target_fpga.getName() + ":" + target_channel.getText() + "";
+                    }
+
+                    // Export --fpgalink.
+                    app.toolbar.srunExportInput.val(srun_export);
+
+                    // Export URL.
+                    var importURL = "https://pc2.github.io/fpgalink-gui/index.html?import=";
+                    importURL += encodeURIComponent(srun_export);
+
+                    app.toolbar.urlExportInput.val(importURL);
+                }
+            });
+
+            // Read srun command from $_GET request.
+            try {
+                var get_decoded = decodeURI(window.location.search);
+                const urlParams = new URLSearchParams(get_decoded);
+
+                if (urlParams.has('import')) {
+                    const srun_cmd = urlParams.get('import');
+
+                    app.toolbar.srunApply(srun_cmd);
+                }
+
+            } catch (e) { // catches a malformed URI
+                alert("error parsing srun command from GET request.");
+            }
+
+            // Navigation.
+            // Grid toggle.
+            app.toolbar.toggleGridButton = $('#toggleGridButton');
+            app.toolbar.toggleGridButton.button().click($.proxy(function () {
+                if (!app.toolbar.installedPolicy) {
+                    app.toolbar.installedPolicy = new draw2d.policy.canvas.SnapToGridEditPolicy();
+                    app.view.installEditPolicy(app.toolbar.installedPolicy);
+                } else {
+                    app.view.uninstallEditPolicy(app.toolbar.installedPolicy);
+                    app.toolbar.installedPolicy = null;
+                }
+            }, app.toolbar)).button("option", "enabled", true);
+
+            // Change router.
+            app.toolbar.changeRouterSelect = $("#connection_router");
+            app.toolbar.changeRouterSelect.on('change', function () {
+                var selectedRouterClassName = this.value;
+                app.setDefaultRouterClassName(selectedRouterClassName);
+                // here: insecure use of eval
+                var router = eval("new " + selectedRouterClassName + "()");
+
+                app.view.getLines().each(function (i, line) {
+                    line.setRouter(router);
+                });
+            });
         });
-    });
-});
 
-function displayJSON(canvas){
-    var writer = new draw2d.io.json.Writer();
-    writer.marshal(canvas,function(json){
-        $("#json_output").text(JSON.stringify(json, null, 2));
-    });
-}
+        function displayJSON(canvas) {
+            var writer = new draw2d.io.json.Writer();
+            writer.marshal(canvas, function (json) {
+                $("#json_output").text(JSON.stringify(json, null, 2));
+            });
+        }
 
-</script>
+    </script>
 
 </head>
 
@@ -150,10 +153,10 @@ function displayJSON(canvas){
         <p style="font-size:22px;"><strong><a href="index.html" style="color:#18b0e2;">FPGALink-GUI</a></strong></p>
 
         <p style="color:#fff;"><strong>Add Nodes by <br />Drag&Drop</strong></p>
-        <!-- <div data-shape="north"   class="palette_node_element draw2d_droppable">North</div> -->
+        <div data-shape="north" class="palette_node_element draw2d_droppable">North Node</div>
         <div data-shape="east" class="palette_node_element draw2d_droppable">East Node</div>
-        <!-- <div data-shape="south"   class="palette_node_element draw2d_droppable">South</div> -->
-        <div data-shape="west"   class="palette_node_element draw2d_droppable">West Node</div>
+        <div data-shape="south" class="palette_node_element draw2d_droppable">South Node</div>
+        <div data-shape="west" class="palette_node_element draw2d_droppable">West Node</div>
         <br />
         <p style="color:#fff;"><strong>Settings</strong></p>
         <button id="toggleGridButton">Toggle Grid</button>
@@ -168,7 +171,7 @@ function displayJSON(canvas){
             <option value="draw2d.layout.connection.MazeConnectionRouter">Maze</option>
             <option value="draw2d.layout.connection.SketchConnectionRouter" selected="selected">Sketch</option>
         </select>
-        
+
     </div>
 
     <!-- <div id="json_output_div" style="overflow:auto;position:absolute; top:50px; right:20px; width:350; height:110;background:white;border:1px solid gray">
@@ -181,10 +184,12 @@ function displayJSON(canvas){
         <textarea id="json_input" rows="4" cols="40"></textarea>
     </div> -->
 
-    <div id="svg_output_div" style="overflow:auto;position:absolute; top:270px; right:20px; width:350; height:110;background:white;border:1px solid gray;display:none;">
+    <div id="svg_output_div"
+        style="overflow:auto;position:absolute; top:270px; right:20px; width:350; height:110;background:white;border:1px solid gray;display:none;">
         SVG output
         <textarea id="svg_output" rows="4" cols="40"></textarea>
     </div>
 
 </body>
+
 </html>
