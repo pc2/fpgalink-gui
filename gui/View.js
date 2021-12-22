@@ -51,34 +51,50 @@ example.View = draw2d.Canvas.extend({
      * @private
      **/
     onDrop: function (droppedDomNode, x, y, shiftKey, ctrlKey) {
-        var orientation = $(droppedDomNode).data("shape");
-        // var figure = eval("new NodeShapeVertical({orientation:\""+orientation+"\"});");
-        // var node = new NodeShapeVertical();
-        // var node = new NodeShapeHorizontal();
-        var node;
 
-        // switch(orientation){
-        //     case "north":
-        //     case "south":
-        //         node = new NodeShapeHorizontal();
-        //         break
-        //     case "west":
-        //     case "east":
-        //         node = new NodeShapeVertical();
-        // }
+        // Switch between types that can be added.
+        //   - type "node": fpga-nodes (with orientation)
+        //   - type "label": different labels for decoration
+        
+        switch($(droppedDomNode).data("type")) {
+            case "node" :
+                var node = new NodeShape({ "orientation": $(droppedDomNode).data("shape") })
 
-        node = new NodeShape({ "orientation": orientation })
+                // node.setOrientation(orientation);
+                node.setName(this.getNodeNameNew());
+                node.addFPGA("acl0");
+                node.addFPGA("acl1");
 
-        // node.setOrientation(orientation);
-        node.setName(this.getNodeNameNew());
-        node.addFPGA("acl0");
-        node.addFPGA("acl1");
+                // create a command for the undo/redo support
+                var command = new draw2d.command.CommandAdd(this, node, x, y);
+                this.getCommandStack().execute(command);
 
-        // create a command for the undo/redo support
-        var command = new draw2d.command.CommandAdd(this, node, x, y);
-        this.getCommandStack().execute(command);
+                break;
+            case "label" :
+                // Add decoration by type.
+                switch ($(droppedDomNode).data("shape")) {
+                    case "label" :
+                        var figure = new draw2d.shape.note.PostIt({
+                            text: "label text",
+                            color: "#000000",
+                            padding: 20
+                        });
 
-        // node.toFront();
+                        figure.installEditor(new draw2d.ui.LabelInplaceEditor());
+
+                        // create a command for the undo/redo support
+                        var command = new draw2d.command.CommandAdd(this, figure, x, y);
+                        this.getCommandStack().execute(command);
+
+                        break;
+                    default :
+                        console.log("unknown shape.");
+                }
+
+                break;
+            default :
+                console.log("unknown type.");
+        }
 
     }
 });
