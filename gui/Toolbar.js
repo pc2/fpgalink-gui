@@ -739,9 +739,7 @@ example.Toolbar = Class.extend({
 
 	makeGrid: function (N, width) {
 		var grid = [];
-
-		var height = (N * 2 / width);
-
+		var height = parseInt(N * 2 / width);
 		var fpgas = [];
 
 		var i = 0;
