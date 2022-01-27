@@ -1,5 +1,5 @@
-var defaultRouterClassName = "draw2d.layout.connection.SketchConnectionRouter";
-var defaultRouter = new draw2d.layout.connection.SketchConnectionRouter();
+var defaultRouterClassName = "draw2d.layout.connection.SplineConnectionRouter";
+var defaultRouter = new draw2d.layout.connection.SplineConnectionRouter();
 
 var HoverConnection = draw2d.Connection.extend({
 

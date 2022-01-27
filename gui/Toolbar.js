@@ -88,15 +88,7 @@ example.Toolbar = Class.extend({
 		this.html.append(this.srunImportButton);
 		this.srunImportButton.button().click($.proxy(function () {
 
-			// var srun_raw = prompt("Enter srun command", "srun -A pc2-mitarbeiter --constraint=19.2.0_max -N 1 --fpgalink=\"n00:acl0:ch0-n00:acl1:ch0\" --fpgalink=\"n00:acl0:ch1-n00:acl1:ch1\" --fpgalink=\"n00:acl0:ch2-n00:acl1:ch2\" --fpgalink=\"n00:acl0:ch3-n00:acl1:ch3\" -p fpga --pty bash");
-			// var srun_raw = prompt("Enter srun command", "srun -A pc2-mitarbeiter --constraint=19.2.0_max -N 2 --fpgalink=\"n00:acl0:ch0-n01:acl1:ch0\" --fpgalink=\"n00:acl0:ch1-n01:acl1:ch1\" --fpgalink=\"n00:acl0:ch2-n01:acl1:ch2\" --fpgalink=\"n00:acl0:ch3-n01:acl1:ch3\" -p fpga --pty bash");
-			// var srun_raw = prompt("Enter srun command", "srun -p fpga -A pc2-mitarbeiter --constraint=19.2.0_max -N 1 --fpgalink=\"pair\" --pty bash");
-			// var srun_raw = prompt("Enter command, f.e. srun", "srun -p fpga -A pc2-mitarbeiter --constraint=19.2.0_max -N 2 --fpgalink=clique --pty bash");
 			var srun_raw = prompt("Enter command, f.e. srun", "FPGALINK0=fpga-0003:acl1:ch0-fpga-0003:acl1:ch1  FPGALINK1=fpga-0002:acl0:ch0-fpga-0002:acl0:ch1  FPGALINK2=fpga-0002:acl0:ch2-fpga-0002:acl0:ch3  FPGALINK3=fpga-0003:acl1:ch2-fpga-0003:acl1:ch3");
-
-			// var srun_raw = prompt("Enter srun command", "srun -p fpga -A pc2-mitarbeiter --constraint=19.2.0_max -N 1 --fpgalink=torus2 --pty bash");
-			// var srun_raw = prompt("Enter srun command", "srun -A pc2-mitarbeiter --constraint=19.2.0_max -N 2 --fpgalink=n00:acl0:ch0-n01:acl0:ch0 --fpgalink=n00:acl1:ch0-n01:acl1:ch0 --fpgalink=n00:acl0:ch1-n00:acl1:ch1 --fpgalink=n01:acl0:ch1-n01:acl1:ch1 --fpgalink=n00:acl0:ch2-n01:acl1:ch2 --fpgalink=n00:acl1:ch2-n01:acl0:ch2 --fpgalink=n00:acl0:ch3-n01:acl1:ch3 --fpgalink=n00:acl1:ch3-n01:acl0:ch3 -p fpga --pty bash");
-			// var srun_raw = prompt("Enter srun command", "srun -p fpga -A pc2-mitarbeiter --constraint=19.4.0_max -N 4 --fpgalink=n00:acl0:ch1-n01:acl0:ch0 --fpgalink=n00:acl0:ch3-n01:acl0:ch2 --fpgalink=n01:acl0:ch1-n02:acl0:ch0 --fpgalink=n01:acl0:ch3-n02:acl0:ch2 --fpgalink=n02:acl0:ch1-n03:acl0:ch0 --fpgalink=n02:acl0:ch3-n03:acl0:ch2 --fpgalink=n03:acl0:ch1-n00:acl1:ch0 --fpgalink=n03:acl0:ch3-n00:acl1:ch2 --fpgalink=n00:acl1:ch1-n01:acl1:ch0 --fpgalink=n00:acl1:ch3-n01:acl1:ch2 --fpgalink=n01:acl1:ch1-n02:acl1:ch0 --fpgalink=n01:acl1:ch3-n02:acl1:ch2 --fpgalink=n02:acl1:ch1-n03:acl1:ch0 --fpgalink=n02:acl1:ch3-n03:acl1:ch2 --fpgalink=n03:acl1:ch1-n00:acl0:ch0 --fpgalink=n03:acl1:ch3-n00:acl0:ch2 --pty bash");
 
 			this.srunApply(srun_raw);
 
@@ -336,6 +328,9 @@ example.Toolbar = Class.extend({
 						}
 					}
 
+					// Arrange nodes for better visualization.
+					this.arrangeTopology("pair", fpganodes);
+
 					break;
 				case "clique":
 					// Only clique of 2 nodes is supported.
@@ -366,6 +361,9 @@ example.Toolbar = Class.extend({
 					this.connectChannels(fpga_n00_1.getChannelFromFpgalink("ch3"), fpga_n01_0.getChannelFromFpgalink("ch3"));
 
 					this.connectChannels(fpga_n01_0.getChannelFromFpgalink("ch1"), fpga_n01_1.getChannelFromFpgalink("ch1"));
+
+					// Arrange nodes for better visualization.
+					this.arrangeTopology("clique", fpganodes);
 
 					break;
 				// Ring
@@ -823,19 +821,12 @@ example.Toolbar = Class.extend({
 		}
 	},
 
-	// printTopo : function(list, format='acl:ch', separator=' <-> ', prefix='') {
-	// 	var row = 0;
-	//   for(row = 0; row < list.length; row++) {
-	// 		console.log(prefix+separator+((list[row])))
-	// 		// console.log(list[row]);
-	//       // // is single entry
-	//       // if isinstance(row, str):
-	//       //     console.log(prefix+aclch2sp(row))
-	//       // // is list
-	//       // else:
-	//       //     console.log(prefix+separator.join(renamefn(elem) for elem in row))
-	// 	}
-	// },
+	printTopo : function(list, format='acl:ch', separator=' <-> ', prefix='') {
+		var row = 0;
+	  for(row = 0; row < list.length; row++) {
+			console.log(prefix+separator+((list[row])))
+		}
+	},
 
 	connectChannels: function (tchannel_p1, tchannel_p2) {
 		// Connect them in model.
@@ -863,5 +854,99 @@ example.Toolbar = Class.extend({
 			var command = new draw2d.command.CommandAdd(this.view, c, 0, 0);
 			this.view.getCommandStack().execute(command);
 		}
+	},
+
+	arrangeTopology: function (topology_name, fpganodes) {
+		console.log(fpganodes);
+
+		switch (topology_name) {
+			case "pair":
+			
+				// Arrange with proper positions.
+				var pos_x = 20;
+				var pos_y = 20;
+
+				// Go over all nodes
+				var i = 0;
+				for (i = 0; i < fpganodes.length; i++) {
+					var node = fpganodes[i];
+
+					node.setX(pos_x);
+					node.setY(pos_y);
+
+					console.log(node);
+
+					if (i % 2 == 0) {
+						pos_x += 300;
+					} else {
+						pos_x = 20;
+
+						pos_y += 300;
+					}
+
+				}
+
+				break;
+			case "clique":
+				
+				// // Arrange with proper colors.
+				// var node_left = fpganodes[0];
+				// var node_right = fpganodes[1];
+
+				// // FPGAs
+				// var node_left_fpgas = node_left.getFPGAs().data;
+				// var node_right_fpgas = node_right.getFPGAs().data;
+
+				// // Channels.
+				// var node_left_fpga0_channels = node_left_fpgas[0].getChannels().data;
+				// var node_left_fpga1_channels = node_left_fpgas[0].getChannels().data;
+				// var node_right_fpga0_channels = node_right_fpgas[0].getChannels().data;
+				// var node_right_fpga1_channels = node_right_fpgas[0].getChannels().data;
+
+				// // Colorize according to scheme.
+				// //   See: https://wikis.uni-paderborn.de/pc2doc/FPGA_Serial_Channels#Clique_topology
+				// node_left_fpga0_channels[0].setColor('#f3546a');
+
+				
+
+				break;
+			// Ring
+			case "ringO":
+				
+
+				break;
+			case "ringN":
+				
+
+				break;
+			case "ringZ":
+				
+				break;
+			// Torus
+			case "torus2":
+				
+
+				break;
+			case "torus3":
+				
+
+				break;
+			case "torus4":
+				
+				break;
+			case "torus5":
+				
+				break;
+			case "torus6":
+				
+				break;
+
+			default:
+
+				//
+
+				break;
+		}
+
 	}
 });
