@@ -276,9 +276,9 @@ example.Toolbar = Class.extend({
 			this.view.getCommandStack().execute(command);
 
 			if (i % 2 == 0) {
-				pos_x += 300;
+				pos_x += 600;
 			} else {
-				pos_x = 100;
+				pos_x = 20;
 
 				pos_y += 300;
 			}
@@ -443,9 +443,12 @@ example.Toolbar = Class.extend({
 						this.connectChannels(D_src, D_dst);
 
 						// // Set color for up.
-						// C_src.getConnector().setColor("#ff0000");
-						// D_src.getConnector().setColor("#ff0000");
+						// C_src.getConnector().setColor(ColorEnum.red);
+						// D_src.getConnector().setColor(ColorEnum.red);
 					}
+
+					// Arrange nodes for better visualization.
+					this.arrangeTopology("ringO", fpganodes);
 
 					break;
 				case "ringN":
@@ -528,9 +531,12 @@ example.Toolbar = Class.extend({
 						this.connectChannels(D_src, D_dst);
 
 						// Set color for up.
-						// C_src.getConnector().setColor("#ff0000");
-						// D_src.getConnector().setColor("#ff0000");
+						// C_src.getConnector().setColor(ColorEnum.red);
+						// D_src.getConnector().setColor(ColorEnum.red);
 					}
+
+					// Arrange nodes for better visualization.
+					this.arrangeTopology("ringN", fpganodes);
 
 					break;
 				case "ringZ":
@@ -603,15 +609,21 @@ example.Toolbar = Class.extend({
 						this.connectChannels(D_src, D_dst);
 
 						// Set color for up.
-						// C_src.getConnector().setColor("#ff0000");
-						// D_src.getConnector().setColor("#ff0000");
+						// C_src.getConnector().setColor(ColorEnum.red);
+						// D_src.getConnector().setColor(ColorEnum.red);
 					}
+
+					// Arrange nodes for better visualization.
+					this.arrangeTopology("ringZ", fpganodes);
 
 					break;
 				// Torus
 				case "torus2":
 					// Torus with 2 FPGAs per row.
 					this.torusTopo(srun_N, 2, fpganodes);
+
+					// Arrange nodes for better visualization.
+					this.arrangeTopology("torus2", fpganodes);
 
 					break;
 				case "torus3":
@@ -623,6 +635,9 @@ example.Toolbar = Class.extend({
 
 					this.torusTopo(srun_N, 3, fpganodes);
 
+					// Arrange nodes for better visualization.
+					this.arrangeTopology("torus3", fpganodes);
+
 					break;
 				case "torus4":
 					// At least 2 nodes are required.
@@ -632,6 +647,10 @@ example.Toolbar = Class.extend({
 					}
 
 					this.torusTopo(srun_N, 4, fpganodes);
+
+					// Arrange nodes for better visualization.
+					this.arrangeTopology("torus4", fpganodes);
+
 					break;
 				case "torus5":
 					// At least 3 nodes are required.
@@ -641,6 +660,9 @@ example.Toolbar = Class.extend({
 					}
 
 					this.torusTopo(srun_N, 5, fpganodes);
+
+					// Arrange nodes for better visualization.
+					this.arrangeTopology("torus5", fpganodes);
 					break;
 				case "torus6":
 					// At least 3 nodes are required.
@@ -650,6 +672,9 @@ example.Toolbar = Class.extend({
 					}
 
 					this.torusTopo(srun_N, 6, fpganodes);
+
+					// Arrange nodes for better visualization.
+					this.arrangeTopology("torus6", fpganodes);
 
 					break;
 
@@ -686,7 +711,7 @@ example.Toolbar = Class.extend({
 					this.connectChannels(tfpga_p1.getChannelFromFpgalink(link_p1[2]), tfpga_p2.getChannelFromFpgalink(link_p2[2]));
 
 					// if(link_p1[2] == "ch0") {
-					// 	tfpga_p1.getChannelFromFpgalink(link_p1[2]).getConnector().setColor("#ff0000");
+					// 	tfpga_p1.getChannelFromFpgalink(link_p1[2]).getConnector().setColor(ColorEnum.red);
 					// }
 
 					break;
@@ -726,7 +751,7 @@ example.Toolbar = Class.extend({
 			);
 
 			// if(link_p1[2] == "ch0") {
-			// 	tfpga_p1.getChannelFromFpgalink(link_p1[2]).getConnector().setColor("#ff0000");
+			// 	tfpga_p1.getChannelFromFpgalink(link_p1[2]).getConnector().setColor(ColorEnum.red);
 			// }
 		}
 
@@ -861,88 +886,130 @@ example.Toolbar = Class.extend({
 
 		switch (topology_name) {
 			case "pair":
-			
-				// Arrange with proper positions.
-				var pos_x = 20;
-				var pos_y = 20;
+
+				break;
+			case "clique":
+				// Arrange with proper colors.
+				var node_left = fpganodes[0];
+				var node_right = fpganodes[1];
+
+				// FPGAs
+				var node_left_fpgas = node_left.getFPGAs();
+				var node_right_fpgas = node_right.getFPGAs();
+
+				// Channels.
+				var node_left_fpga0_channels = node_left_fpgas.get(0).getChannels();
+				var node_left_fpga1_channels = node_left_fpgas.get(1).getChannels();
+				var node_right_fpga0_channels = node_right_fpgas.get(0).getChannels();
+				var node_right_fpga1_channels = node_right_fpgas.get(1).getChannels();
+
+				// Colorize according to scheme.
+				//   See: https://wikis.uni-paderborn.de/pc2doc/FPGA_Serial_Channels#Clique_topology
+				node_left_fpga0_channels.get(1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.red)
+				node_left_fpga0_channels.get(2).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.yellow)
+				node_left_fpga0_channels.get(3).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
+
+				node_left_fpga1_channels.get(2).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.yellow)
+				node_left_fpga1_channels.get(3).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
+
+				node_right_fpga0_channels.get(1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.red)
+
+				break;
+			// Ring
+			case "ringO":
+			case "ringN":
+			case "ringZ":
+				// Arrange with proper colors.
 
 				// Go over all nodes
 				var i = 0;
 				for (i = 0; i < fpganodes.length; i++) {
 					var node = fpganodes[i];
 
-					node.setX(pos_x);
-					node.setY(pos_y);
+					// FPGAs
+					var node_fpgas = node.getFPGAs();
 
-					console.log(node);
+					// Channels.
+					var node_fpga0_channels = node_fpgas.get(0).getChannels();
+					var node_fpga1_channels = node_fpgas.get(1).getChannels();
 
-					if (i % 2 == 0) {
-						pos_x += 300;
-					} else {
-						pos_x = 20;
+					// Colorize according to scheme.
+					//   See: https://wikis.uni-paderborn.de/pc2doc/FPGA_Serial_Channels#Ring_topology
+					node_fpga0_channels.get(1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
+					node_fpga0_channels.get(3).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
+				}	
 
-						pos_y += 300;
-					}
-
-				}
-
-				break;
-			case "clique":
-				
-				// // Arrange with proper colors.
-				// var node_left = fpganodes[0];
-				// var node_right = fpganodes[1];
-
-				// // FPGAs
-				// var node_left_fpgas = node_left.getFPGAs().data;
-				// var node_right_fpgas = node_right.getFPGAs().data;
-
-				// // Channels.
-				// var node_left_fpga0_channels = node_left_fpgas[0].getChannels().data;
-				// var node_left_fpga1_channels = node_left_fpgas[0].getChannels().data;
-				// var node_right_fpga0_channels = node_right_fpgas[0].getChannels().data;
-				// var node_right_fpga1_channels = node_right_fpgas[0].getChannels().data;
-
-				// // Colorize according to scheme.
-				// //   See: https://wikis.uni-paderborn.de/pc2doc/FPGA_Serial_Channels#Clique_topology
-				// node_left_fpga0_channels[0].setColor('#f3546a');
-
-				
-
-				break;
-			// Ring
-			case "ringO":
-				
-
-				break;
-			case "ringN":
-				
-
-				break;
-			case "ringZ":
-				
 				break;
 			// Torus
 			case "torus2":
-				
-
-				break;
 			case "torus3":
-				
-
-				break;
 			case "torus4":
-				
-				break;
 			case "torus5":
-				
-				break;
 			case "torus6":
-				
+				// Arrange with proper colors.
+
+				// Go over all nodes
+				var i = 0;
+				for (i = 0; i < fpganodes.length; i++) {
+					var node = fpganodes[i];
+
+					// FPGAs
+					var node_fpgas = node.getFPGAs();
+
+					if (topology_name == "torus4") {
+						var pad_end = 0;
+						if (fpganodes.length % 2 == 0) {
+							pad_end = 2;
+						} else {
+							pad_end = 1;
+						}
+						if (i > 1 && i < (fpganodes.length - pad_end)) {
+							if (i % 2 == 0) {
+								node.setX(160);
+							} else {
+								node.setX(480);
+							}
+						}
+					}
+
+					// Channels.
+					var node_fpga0_channels = node_fpgas.get(0).getChannels();
+					var node_fpga1_channels = node_fpgas.get(1).getChannels();
+
+					// Colorize according to scheme.
+					//   See: https://wikis.uni-paderborn.de/pc2doc/FPGA_Serial_Channels#Torus_topology
+					var node_fpga0_channel_0 = node_fpga0_channels.get(0).getHybridPort(0).getConnections();
+					var node_fpga0_channel_1 = node_fpga0_channels.get(1).getHybridPort(0).getConnections();
+					var node_fpga0_channel_2 = node_fpga0_channels.get(2).getHybridPort(0).getConnections();
+					var node_fpga0_channel_3 = node_fpga0_channels.get(3).getHybridPort(0).getConnections();
+
+					var node_fpga1_channel_0 = node_fpga1_channels.get(0).getHybridPort(0).getConnections();
+					var node_fpga1_channel_1 = node_fpga1_channels.get(1).getHybridPort(0).getConnections();
+					var node_fpga1_channel_2 = node_fpga1_channels.get(2).getHybridPort(0).getConnections();
+					var node_fpga1_channel_3 = node_fpga1_channels.get(3).getHybridPort(0).getConnections();
+
+					if (node_fpga0_channel_0.getSize() > 0) {
+						node_fpga0_channel_0.get(0).setColor(ColorEnum.blue)
+					}
+					if (node_fpga1_channel_0.getSize() > 0) {
+						node_fpga1_channel_0.get(0).setColor(ColorEnum.blue)
+					}
+
+					if (node_fpga0_channel_1.getSize() > 0) {
+						node_fpga0_channel_1.get(0).setColor(ColorEnum.red)
+					}
+					if (node_fpga1_channel_1.getSize() > 0) {
+						node_fpga1_channel_1.get(0).setColor(ColorEnum.red)
+					}
+
+					if (node_fpga0_channel_2.getSize() > 0) {
+						node_fpga0_channel_2.get(0).setColor(ColorEnum.yellow)
+					}
+				}
+
 				break;
 
 			default:
-
 				//
 
 				break;

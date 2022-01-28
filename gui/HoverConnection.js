@@ -56,20 +56,20 @@ var HoverConnection = draw2d.Connection.extend({
             callback: function (key, options) {
                 switch (key) {
                     case "red":
-                        var cmd = new draw2d.command.CommandAttr(this, { color: '#f3546a' });
+                        var cmd = new draw2d.command.CommandAttr(this, { color: ColorEnum.red });
                         this.getCanvas().getCommandStack().execute(cmd);
 
                         break;
                     case "yellow":
-                        var cmd = new draw2d.command.CommandAttr(this, { color: '#FFFF99' });
+                        var cmd = new draw2d.command.CommandAttr(this, { color: ColorEnum.yellow });
                         this.getCanvas().getCommandStack().execute(cmd);
                         break;
                     case "green":
-                        var cmd = new draw2d.command.CommandAttr(this, { color: '#b9dd69' });
+                        var cmd = new draw2d.command.CommandAttr(this, { color: ColorEnum.green });
                         this.getCanvas().getCommandStack().execute(cmd);
                         break;
                     case "blue":
-                        var cmd = new draw2d.command.CommandAttr(this, { color: '#00A8F0' });
+                        var cmd = new draw2d.command.CommandAttr(this, { color: ColorEnum.blue });
                         this.getCanvas().getCommandStack().execute(cmd);
                         break;
                     case "delete":
