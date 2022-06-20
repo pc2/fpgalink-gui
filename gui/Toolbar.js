@@ -88,7 +88,7 @@ example.Toolbar = Class.extend({
 		this.html.append(this.srunImportButton);
 		this.srunImportButton.button().click($.proxy(function () {
 
-			var srun_raw = prompt("Enter command, f.e. srun", "FPGALINK0=fpga-0003:acl1:ch0-fpga-0003:acl1:ch1  FPGALINK1=fpga-0002:acl0:ch0-fpga-0002:acl0:ch1  FPGALINK2=fpga-0002:acl0:ch2-fpga-0002:acl0:ch3  FPGALINK3=fpga-0003:acl1:ch2-fpga-0003:acl1:ch3");
+			var srun_raw = prompt("Enter command, f.e. srun", "FPGALINK0=n2fpga03:acl1:ch0-n2fpga03:acl1:ch1  FPGALINK1=n2fpga02:acl0:ch0-n2fpga02:acl0:ch1  FPGALINK2=n2fpga02:acl0:ch2-n2fpga02:acl0:ch3  FPGALINK3=n2fpga03:acl1:ch2-n2fpga03:acl1:ch3");
 
 			this.srunApply(srun_raw);
 
@@ -201,9 +201,9 @@ example.Toolbar = Class.extend({
 		} else {
 			// -N not available. Pre-process command:
 
-			// Pre-process command for "fpga-000.." node id to replace
+			// Pre-process command for "n2fpga.." node id to replace
 			// with "n00.." node names.
-			var regFPGA = /(fpga-\d{4}):(acl[01]{1}):(ch[0123]{1})-(fpga-\d{4}):(acl[01]{1}):(ch[0123]{1})/g;
+			var regFPGA = /(n2fpga\d{2}):(acl[01]{1}):(ch[0123]{1})-(n2fpga\d{2}):(acl[01]{1}):(ch[0123]{1})/g;
 			var resultFPGA;
 			const mapFPGA = new Map();
 
@@ -233,7 +233,6 @@ example.Toolbar = Class.extend({
 			// salloc: SPANK_FPGALINK0=n00:acl0:ch3-n00:acl1:ch3 salloc: SPANK_FPGALINK1=n00:acl0:ch2-n00:acl1:ch2 salloc: SPANK_FPGALINK2=n00:acl0:ch0-n00:acl1:ch0 salloc: SPANK_FPGALINK3=n00:acl0:ch1-n00:acl1:ch1
 
 			var reg = /(n[01]{1}\d{1}):(acl[01]{1}):(ch[0123]{1})-(n[01]{1}\d{1}):(acl[01]{1}):(ch[0123]{1})/g;
-			// var reg = /(n[01]{1}\d{1}|fpga-00\d\d):(acl[01]{1}):(ch[0123]{1})-(n[01]{1}\d{1}|fpga-00\d\d):(acl[01]{1}):(ch[0123]{1})/g;
 			var result;
 			const mapN = new Map();
 

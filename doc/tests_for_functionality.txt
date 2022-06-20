@@ -18,7 +18,7 @@
 - export textfield (with button "Copy --fpgalink") is working
 - export "Copy URL" button is working
 - import of a configuration ("IMPORT" button) is working
-- import via URL ("import" parameter to index.html file). Example: https://pc2.github.io/fpgalink-gui/index.html?import=FPGALINK0=fpga-0003:acl1:ch0-fpga-0003:acl1:ch1%20%20FPGALINK1=fpga-0002:acl0:ch0-fpga-0002:acl0:ch1%20%20FPGALINK2=fpga-0002:acl0:ch2-fpga-0002:acl0:ch3%20%20FPGALINK3=fpga-0003:acl1:ch2-fpga-0003:acl1:ch3
+- import via URL ("import" parameter to index.html file). Example: https://pc2.github.io/fpgalink-gui/index.html?import=FPGALINK0=n2fpga03:acl1:ch0-n2fpga03:acl1:ch1%20%20FPGALINK1=n2fpga02:acl0:ch0-n2fpga02:acl0:ch1%20%20FPGALINK2=n2fpga02:acl0:ch2-n2fpga02:acl0:ch3%20%20FPGALINK3=n2fpga03:acl1:ch2-n2fpga03:acl1:ch3
 
 
 ## Undo/Redo

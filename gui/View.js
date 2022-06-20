@@ -53,7 +53,7 @@ example.View = draw2d.Canvas.extend({
     onDrop: function (droppedDomNode, x, y, shiftKey, ctrlKey) {
 
         // Switch between types that can be added.
-        //   - type "node": fpga-nodes (with orientation)
+        //   - type "node": n2fpga nodes (with orientation)
         //   - type "label": different labels for decoration
         
         switch($(droppedDomNode).data("type")) {
