@@ -21,7 +21,10 @@ const OrientationEnum = Object.freeze({
     }
 });
 
-
+const NodeTypeEnum = Object.freeze({
+    "intel": "intel",
+    "xilinx": "xilinx"
+});
 
 
 //Gray rectangel
@@ -348,13 +351,13 @@ NodeShape = draw2d.shape.layout.FlexGridLayout.extend({
         this.orientation = orientation;
     },
 
-    addFPGA: function (string_acl) {
+    addFPGA: function (string_acl, channelsCount) {
         orientation = this.getOrientation();
         let prop = this.ORIENTATION_PROPERTIES[orientation];
         let fpga = new FPGAShape({
             "orientation": this.orientation,
             "name": string_acl,
-            "channelsCount": 4
+            "channelsCount": channelsCount
         });
 
         if (this.getFPGAs().getSize() > 0) {
@@ -415,6 +418,8 @@ NodeShape = draw2d.shape.layout.FlexGridLayout.extend({
             return this.getChildren().get(1).getChildren().get(0);
         } else if (string_acl == "acl1") {
             return this.getChildren().get(1).getChildren().get(1);
+        } else if (string_acl == "acl2") {
+            return this.getChildren().get(1).getChildren().get(2);
         } else {
             alert("getFPGAFromFpgalink fails with input \"" + string_acl + "\"");
             return;
