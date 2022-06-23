@@ -90,19 +90,56 @@
             });
 
             // Read srun command from $_GET request.
+            var srun_cmd = "";
             try {
                 var get_decoded = decodeURI(window.location.search);
                 const urlParams = new URLSearchParams(get_decoded);
 
                 if (urlParams.has('import')) {
-                    const srun_cmd = urlParams.get('import');
+                    srun_cmd = urlParams.get('import');
 
-                    app.toolbar.srunApply(srun_cmd);
+                    var get_node_type = "";
+
+                    if (urlParams.has('node-type') && 
+                       (urlParams.get('node-type') == NodeTypeEnum.intel ||
+                        urlParams.get('node-type') == NodeTypeEnum.xilinx)) {
+                        get_node_type = urlParams.get('node-type'); 
+                    } else {
+                        // Apply minor heuristic if command is for Xilinx or Intel.
+                        // Idea: If command has
+                        //   * acl2, it has to be Xilinx
+                        //   * chX, where X >= 2, it has to be Intel
+                        if (srun_cmd.indexOf("acl2") > -1) {
+                            get_node_type = NodeTypeEnum.xilinx;
+                        }
+                        if (srun_cmd.indexOf("ch2") > -1 || srun_cmd.indexOf("ch3") > -1 ) {
+                            get_node_type = NodeTypeEnum.intel;
+                        }
+
+                        // If heuristic does not catch, ask user.
+                        if(get_node_type == "") {
+                            document.getElementById("prompt-node-type").showModal();
+                        }
+                    }
+
+                    if(get_node_type != "") {
+                        app.toolbar.srunApply(srun_cmd, get_node_type);
+                    }
                 }
 
             } catch (e) { // catches a malformed URI
                 alert("error parsing srun command from GET request.");
             }
+
+            // Read srun command from $_GET request, if node type unclear.
+            $("#prompt-node-type-intel").click(function () {
+                document.getElementById("prompt-node-type").close();
+                app.toolbar.srunApply(srun_cmd, NodeTypeEnum.intel);
+            });
+            $("#prompt-node-type-xilinx").click(function () {
+                document.getElementById("prompt-node-type").close();
+                app.toolbar.srunApply(srun_cmd, NodeTypeEnum.xilinx);
+            });
 
             // Navigation.
             // Grid toggle.
@@ -150,13 +187,12 @@
     </div>
 
     <div id="navigation" class="">
+
         <p style="font-size:22px;"><strong><a href="index.html" style="color:#18b0e2;">FPGALink-GUI</a></strong></p>
 
         <p style="color:#fff;"><strong>Add Nodes by <br />Drag&Drop</strong></p>
-        <div data-type="node" data-shape="north" class="palette_node_element draw2d_droppable">North Node</div>
-        <div data-type="node" data-shape="east" class="palette_node_element draw2d_droppable">East Node</div>
-        <div data-type="node" data-shape="south" class="palette_node_element draw2d_droppable">South Node</div>
-        <div data-type="node" data-shape="west" class="palette_node_element draw2d_droppable">West Node</div>
+        <div data-type="node-intel" data-shape="east" class="palette_node_element draw2d_droppable">Intel Stratix 10 Node</div>
+        <div data-type="node-xilinx" data-shape="east" class="palette_node_element draw2d_droppable">Xilinx Alveo U280 Nodes</div>
         <br />
         <p style="color:#fff;"><strong>Add Annotations</strong></p>
         <div data-type="label" data-shape="label" class="palette_node_element draw2d_droppable">Label</div>
@@ -192,6 +228,14 @@
         SVG output
         <textarea id="svg_output" rows="4" cols="40"></textarea>
     </div>
+
+    <dialog id="prompt-node-type" role="dialog" aria-labelledby="prompt-dialog-heading">
+        Node type (intel or xilinx) unclear. Select<br />
+        <p>
+            <button id="prompt-node-type-intel" name="intel">intel</button>
+            <button id="prompt-node-type-xilinx" name="xilinx">xilinx</button>
+        </p>
+    </dialog>
 
 </body>
 

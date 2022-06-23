@@ -57,13 +57,27 @@ example.View = draw2d.Canvas.extend({
         //   - type "label": different labels for decoration
         
         switch($(droppedDomNode).data("type")) {
-            case "node" :
+            case "node-intel" :
                 var node = new NodeShape({ "orientation": $(droppedDomNode).data("shape") })
 
                 // node.setOrientation(orientation);
                 node.setName(this.getNodeNameNew());
-                node.addFPGA("acl0");
-                node.addFPGA("acl1");
+                node.addFPGA("acl0", 4);
+                node.addFPGA("acl1", 4);
+
+                // create a command for the undo/redo support
+                var command = new draw2d.command.CommandAdd(this, node, x, y);
+                this.getCommandStack().execute(command);
+
+                break;
+            case "node-xilinx":
+                var node = new NodeShape({ "orientation": $(droppedDomNode).data("shape") })
+
+                // node.setOrientation(orientation);
+                node.setName(this.getNodeNameNew());
+                node.addFPGA("acl0", 2);
+                node.addFPGA("acl1", 2);
+                node.addFPGA("acl2", 2);
 
                 // create a command for the undo/redo support
                 var command = new draw2d.command.CommandAdd(this, node, x, y);

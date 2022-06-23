@@ -84,15 +84,24 @@ example.Toolbar = Class.extend({
 
 		// Inject the SRUN Button
 		//
-		this.srunImportButton = $("<button>IMPORT</button>");
-		this.html.append(this.srunImportButton);
-		this.srunImportButton.button().click($.proxy(function () {
-
+		this.srunImportIntelButton = $("<button>IMPORT INTEL</button>");
+		this.html.append(this.srunImportIntelButton);
+		this.srunImportIntelButton.button().click($.proxy(function () {
 			var srun_raw = prompt("Enter command, f.e. srun", "FPGALINK0=n2fpga03:acl1:ch0-n2fpga03:acl1:ch1  FPGALINK1=n2fpga02:acl0:ch0-n2fpga02:acl0:ch1  FPGALINK2=n2fpga02:acl0:ch2-n2fpga02:acl0:ch3  FPGALINK3=n2fpga03:acl1:ch2-n2fpga03:acl1:ch3");
 
-			this.srunApply(srun_raw);
+			this.srunApply(srun_raw, NodeTypeEnum.intel);
 
 		}, this)).button("option", "enabled", true);
+
+		this.srunImportXilinxButton = $("<button>IMPORT XILINX</button>");
+		this.html.append(this.srunImportXilinxButton);
+		this.srunImportXilinxButton.button().click($.proxy(function () {
+			var srun_raw = prompt("Enter command, f.e. srun", " -N 2 --fpgalink=n01:acl1:ch1-n00:acl2:ch1 --fpgalink=n01:acl2:ch0-n01:acl2:ch1 --fpgalink=n00:acl1:ch0-n00:acl1:ch1 --fpgalink=n01:acl0:ch0-n01:acl0:ch1 --fpgalink=n00:acl0:ch0-n01:acl1:ch0 --fpgalink=n00:acl0:ch1-n00:acl2:ch0");
+
+			this.srunApply(srun_raw, NodeTypeEnum.xilinx);
+
+		}, this)).button("option", "enabled", true);
+
 
 		this.delimiter = $("<span class='toolbar_delimiter'>&nbsp;</span>");
 		this.html.append(this.delimiter);
@@ -186,7 +195,7 @@ example.Toolbar = Class.extend({
 		this.redoButton.button("option", "disabled", !event.getStack().canRedo());
 	},
 
-	srunApply: function (srun_raw) {
+	srunApply: function (srun_raw, node_type) {
 		// Get number of fpganodes: -N 1
 		var srun_N_needle = "-N ";
 		var srun_N = -1;
@@ -262,9 +271,13 @@ example.Toolbar = Class.extend({
 
 			// node.setOrientation(orientation);
 			node.setName(this.view.getNodeNameNew());
-			node.addFPGA("acl0");
-			node.addFPGA("acl1");
 
+			let num_fpgas = node_type == NodeTypeEnum.intel ? 2 : 3;
+			let num_channels = node_type == NodeTypeEnum.intel ? 4 : 2;
+
+			for(var f = 0; f < num_fpgas; f++) {
+				node.addFPGA("acl"+f, num_channels);
+			}
 
 			fpganodes.push(node);
 
