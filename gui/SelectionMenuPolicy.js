@@ -98,6 +98,11 @@ var SelectionMenuPolicy = draw2d.policy.figure.SelectionPolicy.extend({
 					var num_to_delete = parseInt(figure.getName().substring(1));
 					for (i = 0; i < fpganodes.getSize(); i++) {
 						var node = fpganodes.get(i);
+
+						if (node.NAME != "NodeShape") {
+							continue;
+						}
+
 						var nodeLabel = node.getLabel();
 						var nodeNum = parseInt(nodeLabel.getText().substring(1));
 						// Update all nodes that have greater num than the node to delete.

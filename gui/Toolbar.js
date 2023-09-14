@@ -200,6 +200,7 @@ example.Toolbar = Class.extend({
 		var srun_N_needle = "-N ";
 		var srun_N = -1;
 		var fpgalinks = [];
+		let with_ethernet = false;
 
 		// Look for -N argument.
 		var i = 0;
@@ -210,17 +211,23 @@ example.Toolbar = Class.extend({
 		} else {
 			// -N not available. Pre-process command:
 
-			// Pre-process command for "n2fpga.." node id to replace
-			// with "n00.." node names.
-			var regFPGA = /(n2fpga\d{2}):(acl[012]{1}):(ch[0123]{1})-(n2fpga\d{2}):(acl[012]{1}):(ch[0123]{1})/g;
+			// Pre-process command for "n2fpga.." node id to replace with "n.." node names.
+			var regFPGA = /((n2fpga\d{2}):(acl[012]{1}):(ch[0123]{1})|eth)-((n2fpga\d{2}):(acl[012]{1}):(ch[0123]{1})|eth)/g;
 			var resultFPGA;
 			const mapFPGA = new Map();
 
 			while ((resultFPGA = regFPGA.exec(srun_raw)) !== null) {
 				// fpgalinks.push(result);
-
-				mapFPGA.set(resultFPGA[1], 1);
-				mapFPGA.set(resultFPGA[4], 1);
+				if (resultFPGA[1] != "eth") {
+					mapFPGA.set(resultFPGA[2], 1);
+				} else {
+					with_ethernet = true;
+				}
+				if (resultFPGA[5] != "eth") {
+					mapFPGA.set(resultFPGA[6], 1);
+				} else {
+					with_ethernet = true;
+				}
 				// console.log(resultFPGA);
 			}
 
@@ -236,25 +243,45 @@ example.Toolbar = Class.extend({
 
 			// console.log(srun_raw);
 
-
-			// return ;
-
 			// salloc: SPANK_FPGALINK0=n00:acl0:ch3-n00:acl1:ch3 salloc: SPANK_FPGALINK1=n00:acl0:ch2-n00:acl1:ch2 salloc: SPANK_FPGALINK2=n00:acl0:ch0-n00:acl1:ch0 salloc: SPANK_FPGALINK3=n00:acl0:ch1-n00:acl1:ch1
 
-			var reg = /(n[01]{1}\d{1}):(acl[012]{1}):(ch[0123]{1})-(n[01]{1}\d{1}):(acl[012]{1}):(ch[0123]{1})/g;
+			var reg = /((n[01]{1}\d{1}):(acl[012]{1}):(ch[0123]{1})|eth)-((n[01]{1}\d{1}):(acl[012]{1}):(ch[0123]{1})|eth)/g;
 			var result;
 			const mapN = new Map();
 
+			// result: Array(9) [ "n00:acl0:ch1-n00:acl2:ch0", "n00:acl0:ch1", "n00", "acl0", "ch1", "n00:acl2:ch0", "n00", "acl2", "ch0" ]
 			while ((result = reg.exec(srun_raw)) !== null) {
 				fpgalinks.push(result);
 
-				mapN.set(result[1], 1);
-				mapN.set(result[4], 1);
+				if (result[1] != "eth") {
+					mapN.set(result[2], 1);
+				} else {
+					with_ethernet = true;
+				}
+				if (result[5] != "eth") {
+					mapN.set(result[6], 1);
+				} else {
+					with_ethernet = true;
+				}
+				
 				// console.log(result);
 			}
 
 			// console.log(mapN.size);
 			srun_N = mapN.size;
+		}
+
+		// Create Ethernet switch if required.
+		var eth_switch = null;
+		if (with_ethernet) {
+			var pos_y = 20;
+			var pos_x = 200;
+
+			eth_switch = new SwitchShape({ "orientation": OrientationEnum.north })
+
+			// create a command for the undo/redo support
+			var command = new draw2d.command.CommandAdd(this.view, eth_switch, pos_x, pos_y);
+			this.view.getCommandStack().execute(command);
 		}
 
 		// Create fpganodes.
@@ -697,30 +724,47 @@ example.Toolbar = Class.extend({
 					var links = full_match.split("-");
 
 					// Point 1 (think of source).
-					// value: n00:acl0:ch0
+					// value: n00:acl0:ch0 or eth (for Ethernet switch).
 					var link_p1 = links[0].split(":");
-					// 0: n00
-					// 1: acl0
-					// 2: ch0
-					// Set the link.
-					// Get node.
-					var tnode_p1 = fpganodes[this.getNodeIdFpgalink(link_p1[0])];
-					// Get FPGA.
-					var tfpga_p1 = tnode_p1.getFPGAFromFpgalink(link_p1[1]);
-
 					// Point 2 (think of destination).
+					// value: n00:acl0:ch0 or eth (for Ethernet switch).
 					var link_p2 = links[1].split(":");
-					// 0: n00
-					// 1: acl0
-					// 2: ch0
-					// Set the link.
-					// Get node.
-					var tnode_p2 = fpganodes[this.getNodeIdFpgalink(link_p2[0])];
-					// Get FPGA.
-					var tfpga_p2 = tnode_p2.getFPGAFromFpgalink(link_p2[1]);
+
+					// Channels to connect. Logic is required to differentiate if
+					//   the channel is between FPGAs or to/from Ethernet switch.
+					let chan0;
+					let chan1;
+
+					if (link_p1.length == 3) {
+						// Channel is from FPGA node.
+						// Get node.
+						var tnode_p1 = fpganodes[this.getNodeIdFpgalink(link_p1[0])];
+						// Get FPGA.
+						var tfpga_p1 = tnode_p1.getFPGAFromFpgalink(link_p1[1]);
+
+						// Get channel.
+						chan0 = tfpga_p1.getChannelFromFpgalink(link_p1[2]);
+					} else {
+						// Channel is to ethernet switch.
+						chan0 = eth_switch;
+					}
+
+					if (link_p2.length == 3) {
+						// Channel is to FPGA node.
+
+						// Get node.
+						var tnode_p2 = fpganodes[this.getNodeIdFpgalink(link_p2[0])];
+						// Get FPGA.
+						var tfpga_p2 = tnode_p2.getFPGAFromFpgalink(link_p2[1]);
+
+						chan1 = tfpga_p2.getChannelFromFpgalink(link_p2[2]);
+					} else {
+						// Channel is to ethernet switch.
+						chan1 = eth_switch;
+					}
 
 					// Get channels, connect and draw them.
-					this.connectChannels(tfpga_p1.getChannelFromFpgalink(link_p1[2]), tfpga_p2.getChannelFromFpgalink(link_p2[2]));
+					this.connectChannels(chan0, chan1);
 
 					// if(link_p1[2] == "ch0") {
 					// 	tfpga_p1.getChannelFromFpgalink(link_p1[2]).getConnector().setColor(ColorEnum.red);
@@ -733,43 +777,62 @@ example.Toolbar = Class.extend({
 			srun_raw_copy = srun_raw_copy.substring(next_space);
 		}
 
+		
 		// Parse and add fpga links: n00:acl0:ch0-n00:acl1:ch0
-		//
-		// Array(7) [ "n00:acl1:ch0-n00:acl1:ch1", "00", "1", "0", "00", "1", "1" ]
-		for (var i = 0; i < fpgalinks.length; i++) {
-			// Point 1 (think of source).
-			// 0: n00
-			// 1: acl0
-			// 2: ch0
-			// Set the link.
-			// Get node.
-			var tnode_p1 = fpganodes[this.getNodeIdFpgalink(fpgalinks[i][1])];
-			// Get FPGA.
-			var tfpga_p1 = tnode_p1.getFPGAFromFpgalink(fpgalinks[i][2]);
-			// Point 2 (think of destination).
-			// 0: n00
-			// 1: acl0
-			// 2: ch0
-			// Set the link.
-			// Get node.
-			var tnode_p2 = fpganodes[this.getNodeIdFpgalink(fpgalinks[i][4])];
-			// Get FPGA.
-			var tfpga_p2 = tnode_p2.getFPGAFromFpgalink(fpgalinks[i][5]);
+		if (srun_raw.indexOf(srun_fpgalinks_needle) == -1) {
+			// Array(7) [ "n00:acl1:ch0-n00:acl1:ch1", "00", "1", "0", "00", "1", "1" ]
+			// Array(9)["n00:acl0:ch1-eth", "n00:acl0:ch1", "n00", "acl0", "ch1", "eth", undefined, undefined, undefined]
+			for (var i = 0; i < fpgalinks.length; i++) {
+				// Parse and add fpga links: n00:acl0:ch0-n00:acl1:ch0
+				var links = fpgalinks[i][0].split("-");
 
-			// Get channels, connect and draw them.
-			this.connectChannels(
-				tfpga_p1.getChannelFromFpgalink(fpgalinks[i][3]),
-				tfpga_p2.getChannelFromFpgalink(fpgalinks[i][6])
-			);
+				// Point 1 (think of source).
+				// value: n00:acl0:ch0 or eth (for Ethernet switch).
+				var link_p1 = links[0].split(":");
+				// Point 2 (think of destination).
+				// value: n00:acl0:ch0 or eth (for Ethernet switch).
+				var link_p2 = links[1].split(":");
 
-			// if(link_p1[2] == "ch0") {
-			// 	tfpga_p1.getChannelFromFpgalink(link_p1[2]).getConnector().setColor(ColorEnum.red);
-			// }
+				// Channels to connect. Logic is required to differentiate if
+				//   the channel is between FPGAs or to/from Ethernet switch.
+				let chan0;
+				let chan1;
+
+				if (link_p1.length == 3) {
+					// Channel is from FPGA node.
+					// Get node.
+					var tnode_p1 = fpganodes[this.getNodeIdFpgalink(link_p1[0])];
+					// Get FPGA.
+					var tfpga_p1 = tnode_p1.getFPGAFromFpgalink(link_p1[1]);
+
+					// Get channel.
+					chan0 = tfpga_p1.getChannelFromFpgalink(link_p1[2]);
+				} else {
+					// Channel is to ethernet switch.
+					chan0 = eth_switch;
+				}
+
+				if (link_p2.length == 3) {
+					// Channel is to FPGA node.
+
+					// Get node.
+					var tnode_p2 = fpganodes[this.getNodeIdFpgalink(link_p2[0])];
+					// Get FPGA.
+					var tfpga_p2 = tnode_p2.getFPGAFromFpgalink(link_p2[1]);
+
+					chan1 = tfpga_p2.getChannelFromFpgalink(link_p2[2]);
+				} else {
+					// Channel is to ethernet switch.
+					chan1 = eth_switch;
+				}
+
+				// Get channels, connect and draw them.
+				this.connectChannels(chan0, chan1);
+			}
 		}
 
-
-
-
+		
+		
 	},
 
 	makeGrid: function (N, width) {
@@ -873,7 +936,7 @@ example.Toolbar = Class.extend({
 		// Draw them in View.
 		//
 		// Draw connection only ones.
-		if (!tchannel_p1.getIsDrawn()) {
+		// if (!tchannel_p1.getIsDrawn()) {
 			var c = new HoverConnection();
 
 			c.setSource(tchannel_p1.getHybridPort(0));
@@ -883,14 +946,14 @@ example.Toolbar = Class.extend({
 			tchannel_p1.setConnector(c);
 			tchannel_p2.setConnector(c);
 
-			// Flag both connectors as drawn.
-			tchannel_p1.setIsDrawn(true);
-			tchannel_p2.setIsDrawn(true);
+			// // Flag both connectors as drawn.
+			// tchannel_p1.setIsDrawn(true);
+			// tchannel_p2.setIsDrawn(true);
 
 			// create a command for the undo/redo support
 			var command = new draw2d.command.CommandAdd(this.view, c, 0, 0);
 			this.view.getCommandStack().execute(command);
-		}
+		// }
 	},
 
 	arrangeTopology: function (topology_name, fpganodes) {

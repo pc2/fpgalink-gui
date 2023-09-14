@@ -10,3 +10,33 @@ function pad_node_name(num) {
   var s = "0" + num;
   return "n" + s.substr(s.length - 2);
 }
+
+function generate_fpgalink_output(channel) {
+  let fpgalink = "";
+  // channel is either of type ChannelShape (if connected to FPGA node)
+  //   or "Ethernet Switch" (if connected to the switch)
+  if(channel.getText() == "Ethernet Switch") {
+    fpgalink = "eth";
+  } else {
+    var parent_fpga = channel.getFPGA();
+    var parent_node = parent_fpga.getNode();
+
+    fpgalink = parent_node.getName() + ":" + parent_fpga.getName() + ":" + channel.getText();
+  }
+
+  return fpgalink;
+}
+
+function get_number_of_fpga_nodes(figures) {
+  let number_of_fpga_nodes = 0;
+
+  let figure = figures.data;
+
+  for(let i = 0; i < figure.length; i++) {
+    if (figure.at(i).NAME == "NodeShape") {
+      number_of_fpga_nodes++
+    }
+  }
+
+  return number_of_fpga_nodes;
+}
