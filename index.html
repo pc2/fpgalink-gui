@@ -25,6 +25,7 @@
     <script src="./gui/HoverConnection.js"></script>
     <script src="./gui/SelectionMenuPolicy.js"></script>
     <script src="./gui/NodeShape.js"></script>
+    <script src="./gui/SwitchShape.js"></script>
     <!--<script src="./gui/NodeShapeHorizontal.js"></script>-->
     <!-- <script src="./gui/NodeShapeVertical.js"></script>-->
     <script type="text/javascript">
@@ -57,25 +58,22 @@
                 if (e.isPostChangeEvent()) {
                     // displayJSON(app.view);
 
-                    var fpganodes = app.view.getFigures();
-                    var srun_export = " -N " + fpganodes.getSize();
+                    // var fpganodes = app.view.getFigures();
+                    // var srun_export = " -N " + fpganodes.getSize();
+                    var srun_export = "";
 
                     var connections = app.view.getLines();
-                    var i = 0;
-                    for (i = 0; i < connections.getSize(); i++) {
+                    for (let i = 0; i < connections.getSize(); i++) {
                         var connection = connections.get(i);
 
                         // Parent is ChannelShape.
-                        var source_channel = connection.getSource().getParent();
-                        var target_channel = connection.getTarget().getParent();
+                        let source_channel = connection.getSource().getParent();
+                        let target_channel = connection.getTarget().getParent();
 
-                        var source_fpga = source_channel.getFPGA();
-                        var source_node = source_fpga.getNode();
+                        let source_fpgalink_text = generate_fpgalink_output(source_channel);
+                        let target_fpgalink_text = generate_fpgalink_output(target_channel);
 
-                        var target_fpga = target_channel.getFPGA();
-                        var target_node = target_fpga.getNode();
-
-                        srun_export += " --fpgalink=" + source_node.getName() + ":" + source_fpga.getName() + ":" + source_channel.getText() + "-" + target_node.getName() + ":" + target_fpga.getName() + ":" + target_channel.getText() + "";
+                        srun_export += " --fpgalink=" + source_fpgalink_text + "-" + target_fpgalink_text + "";
                     }
 
                     // Export --fpgalink.
@@ -190,13 +188,13 @@
 
         <p style="font-size:22px;"><strong><a href="index.html" style="color:#18b0e2;">FPGALink-GUI</a></strong></p>
 
-        <p style="color:#fff;"><strong>Add Nodes by <br />Drag&Drop</strong></p>
+        <p style="color:#fff;"><strong>Add FPGA Nodes by <br />Drag&Drop</strong></p>
         <div data-type="node-intel" data-shape="east" class="palette_node_element draw2d_droppable">Intel Stratix 10 Node</div>
         <div data-type="node-xilinx" data-shape="east" class="palette_node_element draw2d_droppable">Xilinx Alveo U280 Nodes</div>
-        <br />
+        <p style="color:#fff;"><strong>Add Ethernet Switch by <br />Drag&Drop</strong></p>
+        <div data-type="node-ethernet-switch" data-shape="north" class="palette_node_element draw2d_droppable">Ethernet Switch</div>
         <p style="color:#fff;"><strong>Add Annotations</strong></p>
         <div data-type="label" data-shape="label" class="palette_node_element draw2d_droppable">Label</div>
-        <br />
         <p style="color:#fff;"><strong>Settings</strong></p>
         <button id="toggleGridButton">Toggle Grid</button>
         <p style="color:#fff;">Change Router</p>

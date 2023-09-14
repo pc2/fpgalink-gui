@@ -27,7 +27,8 @@ example.View = draw2d.Canvas.extend({
 
     getNodeNameNew: function () {
         var newname = "n";
-        var numnodes = this.getFigures().getSize();
+        // var numnodes = this.getFigures().getSize();
+        var numnodes = get_number_of_fpga_nodes(this.getFigures());
 
         if (numnodes < 10) {
             newname += "0";
@@ -106,8 +107,16 @@ example.View = draw2d.Canvas.extend({
                 }
 
                 break;
+            case "node-ethernet-switch":
+                var eth_switch = new SwitchShape({ "orientation": $(droppedDomNode).data("shape") })
+
+                // create a command for the undo/redo support
+                var command = new draw2d.command.CommandAdd(this, eth_switch, x, y);
+                this.getCommandStack().execute(command);
+
+                break;
             default :
-                console.log("unknown type.");
+                console.log("unknown type: \"" + $(droppedDomNode).data("type") + "\".");
         }
 
     }
