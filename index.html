@@ -29,10 +29,10 @@
     <!--<script src="./gui/NodeShapeHorizontal.js"></script>-->
     <!-- <script src="./gui/NodeShapeVertical.js"></script>-->
     <script type="text/javascript">
-
+        var app;
         document.addEventListener("DOMContentLoaded", function () {
 
-            var app = new example.Application();
+            app = new example.Application();
             app.view.installEditPolicy(new draw2d.policy.connection.DragConnectionCreatePolicy({
                 createConnection: function () {
                     return new HoverConnection();

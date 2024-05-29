@@ -26,35 +26,36 @@ const NodeTypeEnum = Object.freeze({
     "xilinx": "xilinx"
 });
 
-
 //Gray rectangel
 ChannelShape = draw2d.shape.basic.Label.extend({
     NAME: "ChannelShape",
-
-    ORIENTATION_PROPERTIES: Object.freeze({
-        [OrientationEnum.north]: {
-            "rotationAngle": -90,
-            "padding": { left: 5, top: 25, right: 5, bottom: 25 },
-            "locator": new draw2d.layout.locator.BottomLocator(),
-        },
-        [OrientationEnum.east]: {
-            "rotationAngle": 0,
-            "padding": { left: 25, top: 5, right: 25, bottom: 5 },
-            "locator": new draw2d.layout.locator.RightLocator(),
-        },
-        [OrientationEnum.south]: {
-            "rotationAngle": -90,
-            "padding": { left: 5, top: 25, right: 5, bottom: 25 },
-            "locator": new draw2d.layout.locator.TopLocator(),
-        },
-        [OrientationEnum.west]: {
-            "rotationAngle": 0,
-            "padding": { left: 25, top: 5, right: 25, bottom: 5 },
-            "locator": new draw2d.layout.locator.LeftLocator(),
-        },
-    }),
+    ORIENTATION_PROPERTIES: function (isSibling) {
+        return {
+            [OrientationEnum.north]: {
+                "rotationAngle": -90,
+                "padding": isSibling ? { left: 5, top: 25, right: 5, bottom: 25 } : { left: 20, top: 25, right: 5, bottom: 25 },
+                "locator": new draw2d.layout.locator.BottomLocator(),
+            },
+            [OrientationEnum.east]: {
+                "rotationAngle": 0,
+                "padding": isSibling ? { left: 25, top: 5, right: 25, bottom: 5 } : { left: 25, top: 20, right: 25, bottom: 5 },
+                "locator": new draw2d.layout.locator.RightLocator(),
+            },
+            [OrientationEnum.south]: {
+                "rotationAngle": -90,
+                "padding": isSibling ? { left: 5, top: 25, right: 5, bottom: 25 } : { left: 20, top: 25, right: 5, bottom: 25 },
+                "locator": new draw2d.layout.locator.TopLocator(),
+            },
+            [OrientationEnum.west]: {
+                "rotationAngle": 0,
+                "padding": isSibling ? { left: 25, top: 5, right: 25, bottom: 5 } : { left: 25, top: 20, right: 25, bottom: 5 },
+                "locator": new draw2d.layout.locator.LeftLocator(),
+            },
+        }
+    },
 
     init: function (attr) {
+        let self = this
         this._super($.extend({}, attr));
         this.parentFPGA = attr.parentFPGA;
 
@@ -64,14 +65,53 @@ ChannelShape = draw2d.shape.basic.Label.extend({
         // Shape for view.
         this.connector;
         this.isDrawn = false;
+
+        let siblingChannel = attr.siblingChannel
+        this.siblingChannel = siblingChannel
+
         let port = this.createPort("hybrid");
         port.setName("inout_" + this.id);
         port.setMaxFanOut(1);
+        if (siblingChannel) port.siblingChannel = siblingChannel
+
         port.on("connect", function () {
             this.setVisible(false);
-        }, port);
+            if (siblingChannel) siblingChannel.setVisible(false)
+        }, port)
         port.on("disconnect", function () {
             this.setVisible(true);
+            let portClass = this
+            if (siblingChannel) {
+                siblingChannel.setVisible(false)
+                if (portClass.siblingChannel.getHybridPort(0).connections.data.length) {
+                    setTimeout(() => {
+                        if (portClass.connections.data?.[0]?.sourcePort != portClass) {
+                            let chnl1 = portClass.parent
+                            let chnl2 = portClass.siblingChannel.getHybridPort(0).connections.data[0]?.sourcePort.parent
+
+                            let connection = portClass.siblingChannel.getHybridPort(0).connections.data[0]
+
+                            if (connection) {
+                                var cmd = new draw2d.command.CommandDelete(connection);
+                                connection.getCanvas().getCommandStack().execute(cmd);
+                                app.toolbar.connectChannels(chnl1, chnl2)
+                            }
+                        }
+                    }, 10)
+                }
+            }
+            else self.setVisible(false)
+        }, port);
+
+
+        port.on("dragstart", function (e) {
+            if (siblingChannel) {
+                siblingChannel.setVisible(true)
+                siblingChannel.setVisible(true)
+            }
+        }, port);
+        port.on("dragend", function () {
+            if (siblingChannel) siblingChannel.setVisible(false)
         }, port);
 
         // this.orientation = attr.orientation;
@@ -113,12 +153,11 @@ ChannelShape = draw2d.shape.basic.Label.extend({
 
     setOrientation: function (orientation, repaint = true) {
         this.orientation = orientation;
-        let prop = this.ORIENTATION_PROPERTIES[orientation];
+        let prop = this.ORIENTATION_PROPERTIES(this.siblingChannel)[orientation];
         this.getHybridPort(0).setLocator(prop.locator);
         this.rotationAngle = prop.rotationAngle;
         this.height = 0;
         this.setPadding(prop.padding);
-
         if (repaint) {
             this.repaint();
         }
@@ -189,17 +228,17 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
         // Children links.
         // this.channels = [];
         for (let i = 0; i < attr.channelsCount; i++) {
-            this.addChannel();
+            this.addChannel(i);
         }
 
         // this.getNode().fpgaLayout.add(this, this.getNode().fpgaLayout);
     },
 
-    addChannel: function () {
+    addChannel: function (i) {
         orientation = this.getOrientation();
         let prop = this.ORIENTATION_PROPERTIES[orientation];
-        channel = new ChannelShape({
-            text: "ch" + (this.getChannels().getSize()),
+        let channel = new ChannelShape({
+            text: "ch" + i,
             stroke: 0,
             radius: 0,
             bgColor: null,
@@ -208,17 +247,39 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
             // resizeable:true,
             // editor:new draw2d.ui.LabelEditor()
             orientation: this.orientation,
+            visible: false
         });
+
+
+        this.channelLayout.add(channel, {
+            [prop.arrangement[0]]: 0,
+            [prop.arrangement[1]]: i
+        });
+
+        let channel2 = new ChannelShape({
+            text: "ch" + i,
+            stroke: 0,
+            radius: 0,
+            bgColor: null,
+            // padding:{left:25, top:3, right:27, bottom:5},
+            fontColor: "#4a4a4a",
+            // resizeable:true,
+            // editor:new draw2d.ui.LabelEditor()
+            orientation: this.orientation,
+            siblingChannel: channel
+        });
+
+        this.channelLayout.add(channel2, {
+            [prop.arrangement[0]]: 0,
+            [prop.arrangement[1]]: i
+        });
+
+
 
         if (this.getChannels().getSize() > 0) {
             let gridDef = this.channelLayout.gridDef;
             gridDef[`def_${prop.arrangement[1]}s`].push(-1);
         }
-
-        this.channelLayout.add(channel, {
-            [prop.arrangement[0]]: 0,
-            [prop.arrangement[1]]: this.getChannels().getSize()
-        });
 
         return channel;
     },
@@ -227,10 +288,10 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
         return this.channelLayout.getChildren();
     },
 
-    getChannelFromFpgalink: function (string_channel) {
+    getChannelFromFpgalink: function (string_channel, isSibling) {
         // ch0, ch1, ch2, ch3"
         // n00, ..
-        var num = parseInt(string_channel.substring(2));
+        var num = parseInt(string_channel.substring(2)) * 2 + (isSibling ? 0 : 1);
         return this.getChildren().get(1).getChildren().get(num);
     },
 
@@ -268,13 +329,16 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
         this.fpgaLabel.__cellConstraint.row = prop.labelRow;
         this.channelLayout.__cellConstraint.row = prop.channelLayoutRow;
 
+        
+
         gridDef[`def_${prop.arrangement[0]}s`] = Array(1).fill(-1);
         gridDef[`def_${prop.arrangement[1]}s`] = Array(this.getChannels().getSize()).fill(-1);
         this.getChannels().each(function (i, ch) {
             ch.__cellConstraint[prop.arrangement[0]] = 0;
-            ch.__cellConstraint[prop.arrangement[1]] = i;
+            ch.__cellConstraint[prop.arrangement[1]] = Math.floor(i / 2);
             ch.setOrientation(orientation, false);
         });
+
 
         if (repaint) {
             this.gridDef.layoutRequired = true;
@@ -387,10 +451,11 @@ NodeShape = draw2d.shape.layout.FlexGridLayout.extend({
 
         gridDef[`def_${prop.arrangement[0]}s`] = Array(1).fill(-1);
         gridDef[`def_${prop.arrangement[1]}s`] = Array(this.getFPGAs().getSize()).fill(-1);
-        this.getFPGAs().each(function (i, ch) {
-            ch.__cellConstraint[prop.arrangement[0]] = 0;
-            ch.__cellConstraint[prop.arrangement[1]] = i;
-            ch.setOrientation(orientation, false);
+
+        this.getFPGAs().each(function (i, fpga) {
+            fpga.__cellConstraint[prop.arrangement[0]] = 0;
+            fpga.__cellConstraint[prop.arrangement[1]] = i;
+            fpga.setOrientation(orientation, false);
         });
 
         this.height = 0;
@@ -413,7 +478,6 @@ NodeShape = draw2d.shape.layout.FlexGridLayout.extend({
     getFPGAFromFpgalink: function (string_acl) {
         // acl0 = FPGA 0
         // acl1 = FPGA 1
-        // console.log(this.getChildren().get(1).getChildren().get(0))
         if (string_acl == "acl0") {
             return this.getChildren().get(1).getChildren().get(0);
         } else if (string_acl == "acl1") {

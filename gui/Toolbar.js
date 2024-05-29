@@ -719,7 +719,6 @@ example.Toolbar = Class.extend({
 
 				// Custom link with format: n00:acl0:ch0-n00:acl1:ch0
 				default:
-
 					// Parse and add fpga links: n00:acl0:ch0-n00:acl1:ch0
 					var links = full_match.split("-");
 
@@ -757,7 +756,7 @@ example.Toolbar = Class.extend({
 						// Get FPGA.
 						var tfpga_p2 = tnode_p2.getFPGAFromFpgalink(link_p2[1]);
 
-						chan1 = tfpga_p2.getChannelFromFpgalink(link_p2[2]);
+						chan1 = tfpga_p2.getChannelFromFpgalink(link_p2[2], link_p2[2] == link_p1[2]);
 					} else {
 						// Channel is to ethernet switch.
 						chan1 = eth_switch;
