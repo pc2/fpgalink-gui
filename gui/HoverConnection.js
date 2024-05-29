@@ -1,6 +1,7 @@
 var defaultRouterClassName = "draw2d.layout.connection.SplineConnectionRouter";
 var defaultRouter = new draw2d.layout.connection.SplineConnectionRouter();
 
+
 var HoverConnection = draw2d.Connection.extend({
 
     init: function (sourcePort, targetPort) {
@@ -75,7 +76,6 @@ var HoverConnection = draw2d.Connection.extend({
                     case "delete":
                         // without undo/redo support
                         //     this.getCanvas().remove(this);
-
                         // with undo/redo support
                         var cmd = new draw2d.command.CommandDelete(this);
                         this.getCanvas().getCommandStack().execute(cmd);
