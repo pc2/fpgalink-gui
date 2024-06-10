@@ -38,7 +38,7 @@ ChannelShape = draw2d.shape.basic.Label.extend({
             },
             [OrientationEnum.east]: {
                 "rotationAngle": 0,
-                "padding": isSibling ? { left: 25, top: 5, right: 25, bottom: 5 } : { left: 25, top: 20, right: 25, bottom: 5 },
+                "padding": isSibling ? { left: 25, top: 10, right: 25, bottom: 10 } : { left: 27, top: 0, right: 25, bottom: 5 },
                 "locator": new draw2d.layout.locator.RightLocator(),
             },
             [OrientationEnum.south]: {
@@ -48,7 +48,7 @@ ChannelShape = draw2d.shape.basic.Label.extend({
             },
             [OrientationEnum.west]: {
                 "rotationAngle": 0,
-                "padding": isSibling ? { left: 25, top: 5, right: 25, bottom: 5 } : { left: 25, top: 20, right: 25, bottom: 5 },
+                "padding": isSibling ? { left: 25, top: 10, right: 25, bottom: 10 } : { left: 27, top: 0, right: 25, bottom: 5 },
                 "locator": new draw2d.layout.locator.LeftLocator(),
             },
         }
@@ -258,7 +258,7 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
 
         let channel2 = new ChannelShape({
             text: "ch" + i,
-            stroke: 0,
+            stroke: 1,
             radius: 0,
             bgColor: null,
             // padding:{left:25, top:3, right:27, bottom:5},
