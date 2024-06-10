@@ -126,3 +126,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cecece', end
   color:red;
   margin-top: -5px;
 }
+
+rect.draw2d_ResizeHandle {
+  display: none;
+}
