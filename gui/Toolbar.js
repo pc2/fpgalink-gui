@@ -196,7 +196,6 @@ example.Toolbar = Class.extend({
 	},
 
 	srunApply: function (srun_raw, node_type) {
-		console.log(srun_raw, node_type);
 		// Get number of fpganodes: -N 1
 		var srun_N_needle = "-N ";
 		var srun_N = -1;
@@ -344,7 +343,6 @@ example.Toolbar = Class.extend({
 			full_match = full_match.substring(full_match.length - 1) == "\"" ? full_match.substring(0, full_match.length - 1) : full_match;
 
 			// Look for topologies or custom links.
-			console.log("Full Match", full_match);
 			switch (full_match) {
 				case "pair":
 					// Idea:
@@ -764,8 +762,6 @@ example.Toolbar = Class.extend({
 						chan1 = eth_switch;
 					}
 
-					console.log(chan0, chan1);
-
 					// Get channels, connect and draw them.
 					this.connectChannels(chan0, chan1);
 
@@ -960,8 +956,6 @@ example.Toolbar = Class.extend({
 	},
 
 	arrangeTopology: function (topology_name, fpganodes) {
-		console.log(fpganodes);
-
 		switch (topology_name) {
 			case "pair":
 
