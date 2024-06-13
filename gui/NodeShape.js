@@ -291,6 +291,7 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
     getChannelFromFpgalink: function (string_channel, isSibling) {
         // ch0, ch1, ch2, ch3"
         // n00, ..
+        
         var num = parseInt(string_channel.substring(2)) * 2 + (isSibling ? 0 : 1);
         return this.getChildren().get(1).getChildren().get(num);
     },

@@ -755,8 +755,8 @@ example.Toolbar = Class.extend({
 						var tnode_p2 = fpganodes[this.getNodeIdFpgalink(link_p2[0])];
 						// Get FPGA.
 						var tfpga_p2 = tnode_p2.getFPGAFromFpgalink(link_p2[1]);
-
-						chan1 = tfpga_p2.getChannelFromFpgalink(link_p2[2], link_p2[2] == link_p1[2]);
+						var isSibling = link_p2[0] == link_p1[0] && link_p2[1] == link_p1[1] && link_p2[2] == link_p1[2];
+						chan1 = tfpga_p2.getChannelFromFpgalink(link_p2[2], isSibling);
 					} else {
 						// Channel is to ethernet switch.
 						chan1 = eth_switch;
@@ -956,8 +956,6 @@ example.Toolbar = Class.extend({
 	},
 
 	arrangeTopology: function (topology_name, fpganodes) {
-		console.log(fpganodes);
-
 		switch (topology_name) {
 			case "pair":
 
