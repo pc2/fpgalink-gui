@@ -319,7 +319,7 @@ example.Toolbar = Class.extend({
 			} else {
 				pos_x = 20;
 
-				pos_y += 300;
+				pos_y += 370;
 			}
 
 		}

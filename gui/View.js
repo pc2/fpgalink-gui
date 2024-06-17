@@ -26,7 +26,7 @@ example.View = draw2d.Canvas.extend({
     },
 
     getNodeNameNew: function () {
-        var newname = "n";
+        var newname = "Node";
         // var numnodes = this.getFigures().getSize();
         var numnodes = get_number_of_fpga_nodes(this.getFigures());
 

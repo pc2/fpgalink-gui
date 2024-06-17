@@ -238,7 +238,7 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
         orientation = this.getOrientation();
         let prop = this.ORIENTATION_PROPERTIES[orientation];
         let channel = new ChannelShape({
-            text: "ch" + i,
+            text: "Channel" + i,
             stroke: 0,
             radius: 0,
             bgColor: null,
@@ -257,7 +257,7 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
         });
 
         let channel2 = new ChannelShape({
-            text: "ch" + i,
+            text: "Channel" + i,
             stroke: 1,
             radius: 0,
             bgColor: null,
@@ -421,7 +421,7 @@ NodeShape = draw2d.shape.layout.FlexGridLayout.extend({
         let prop = this.ORIENTATION_PROPERTIES[orientation];
         let fpga = new FPGAShape({
             "orientation": this.orientation,
-            "name": string_acl,
+            "name": "FPGA" + string_acl.substring(3),
             "channelsCount": channelsCount
         });
 
@@ -557,7 +557,7 @@ NodeShape = draw2d.shape.layout.FlexGridLayout.extend({
     },
 
     getName: function () {
-        return this.nodeLabel.getText();
+        return "n" + this.nodeLabel.getText().substring(4);
     },
 
     getLabel: function () {

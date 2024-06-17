@@ -21,7 +21,9 @@ function generate_fpgalink_output(channel) {
     var parent_fpga = channel.getFPGA();
     var parent_node = parent_fpga.getNode();
 
-    fpgalink = parent_node.getName() + ":" + parent_fpga.getName() + ":" + channel.getText();
+    var channelName = "ch" + channel.getText().substring(7)
+
+    fpgalink = parent_node.getName() + ":" + parent_fpga.getName() + ":" + channelName;
   }
 
   return fpgalink;
