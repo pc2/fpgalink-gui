@@ -406,7 +406,6 @@ NodeShape = draw2d.shape.layout.FlexGridLayout.extend({
             rows: "grow",
             columns: "grow"
         });
-        console.log(this.fpgaLayout);
 
         let orientation = attr == undefined ? OrientationEnum.east : attr.orientation;
         let prop = this.ORIENTATION_PROPERTIES[orientation];
