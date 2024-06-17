@@ -308,7 +308,6 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
     },
 
     getName: function () {
-
         return "acl" + this.fpgaLabel.getText().substring(5);
     },
 
@@ -334,7 +333,7 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
         
 
         gridDef[`def_${prop.arrangement[0]}s`] = Array(1).fill(-1);
-        gridDef[`def_${prop.arrangement[1]}s`] = Array(this.getChannels().getSize()).fill(-1);
+        gridDef[`def_${prop.arrangement[1]}s`] = Array(this.getChannels().getSize() / 2).fill(-1);
         this.getChannels().each(function (i, ch) {
             ch.__cellConstraint[prop.arrangement[0]] = 0;
             ch.__cellConstraint[prop.arrangement[1]] = Math.floor(i / 2);

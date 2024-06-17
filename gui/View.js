@@ -60,15 +60,18 @@ example.View = draw2d.Canvas.extend({
         switch($(droppedDomNode).data("type")) {
             case "node-intel" :
                 var node = new NodeShape({ "orientation": $(droppedDomNode).data("shape") })
-
+                
                 // node.setOrientation(orientation);
                 node.setName(this.getNodeNameNew());
                 node.addFPGA("acl0", 4);
                 node.addFPGA("acl1", 4);
-
+                
                 // create a command for the undo/redo support
                 var command = new draw2d.command.CommandAdd(this, node, x, y);
                 this.getCommandStack().execute(command);
+                
+                // Workaround to fix size problem
+                node.setOrientation(node.orientation);
 
                 break;
             case "node-xilinx":
