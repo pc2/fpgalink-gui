@@ -168,6 +168,17 @@ example.Toolbar = Class.extend({
 		return parseInt(string_n.substring(1));
 	},
 
+	getSwitchFromName: function(name, switches) {
+		// e.g: name eth00
+		let switch_number = name.substring(3)
+		for (let i = 0; i < switches.length; i++) {
+			const s = switches[i];
+			if (s.getText().split(" ")[2] == switch_number) {
+				return s
+			}
+		}
+	},
+
 	/**
 	 * @method
 	 * Called if the selection in the cnavas has been changed. You must register this
@@ -199,8 +210,8 @@ example.Toolbar = Class.extend({
 		// Get number of fpganodes: -N 1
 		var srun_N_needle = "-N ";
 		var srun_N = -1;
+		var srun_S = -1;
 		var fpgalinks = [];
-		let with_ethernet = false;
 
 		// Look for -N argument.
 		var i = 0;
@@ -212,21 +223,18 @@ example.Toolbar = Class.extend({
 			// -N not available. Pre-process command:
 
 			// Pre-process command for "n2fpga.." node id to replace with "n.." node names.
-			var regFPGA = /((n2fpga\d{2}):(acl[012]{1}):(ch[0123]{1})|eth)-((n2fpga\d{2}):(acl[012]{1}):(ch[0123]{1})|eth)/g;
+			var regFPGA = /((n2fpga\d{2}):(acl[012]{1}):(ch[0123]{1})|eth\d{2})-((n2fpga\d{2}):(acl[012]{1}):(ch[0123]{1})|eth\d{2})/g;
 			var resultFPGA;
 			const mapFPGA = new Map();
 
 			while ((resultFPGA = regFPGA.exec(srun_raw)) !== null) {
 				// fpgalinks.push(result);
-				if (resultFPGA[1] != "eth") {
+
+				if (!resultFPGA[1].includes("eth")) {
 					mapFPGA.set(resultFPGA[2], 1);
-				} else {
-					with_ethernet = true;
 				}
-				if (resultFPGA[5] != "eth") {
+				if (!resultFPGA[5].includes("eth")) {
 					mapFPGA.set(resultFPGA[6], 1);
-				} else {
-					with_ethernet = true;
 				}
 				// console.log(resultFPGA);
 			}
@@ -245,43 +253,55 @@ example.Toolbar = Class.extend({
 
 			// salloc: SPANK_FPGALINK0=n00:acl0:ch3-n00:acl1:ch3 salloc: SPANK_FPGALINK1=n00:acl0:ch2-n00:acl1:ch2 salloc: SPANK_FPGALINK2=n00:acl0:ch0-n00:acl1:ch0 salloc: SPANK_FPGALINK3=n00:acl0:ch1-n00:acl1:ch1
 
-			var reg = /((n[01]{1}\d{1}):(acl[012]{1}):(ch[0123]{1})|eth)-((n[01]{1}\d{1}):(acl[012]{1}):(ch[0123]{1})|eth)/g;
+			var reg = /((n[01]{1}\d{1}):(acl[012]{1}):(ch[0123]{1})|eth\d{2})-((n[01]{1}\d{1}):(acl[012]{1}):(ch[0123]{1})|eth\d{2})/g;
 			var result;
 			const mapN = new Map();
+			const mapS = new Map();
 
 			// result: Array(9) [ "n00:acl0:ch1-n00:acl2:ch0", "n00:acl0:ch1", "n00", "acl0", "ch1", "n00:acl2:ch0", "n00", "acl2", "ch0" ]
 			while ((result = reg.exec(srun_raw)) !== null) {
 				fpgalinks.push(result);
 
-				if (result[1] != "eth") {
+				if (!result[1].includes("eth")) {
 					mapN.set(result[2], 1);
 				} else {
-					with_ethernet = true;
+					mapS.set(result[1], 1);
 				}
-				if (result[5] != "eth") {
+				if (!result[5].includes("eth")) {
 					mapN.set(result[6], 1);
 				} else {
-					with_ethernet = true;
+					mapS.set(result[5], 1);
 				}
 				
 				// console.log(result);
 			}
 
-			// console.log(mapN.size);
 			srun_N = mapN.size;
+			srun_S = mapS.size;
 		}
 
-		// Create Ethernet switch if required.
-		var eth_switch = null;
-		if (with_ethernet) {
-			var pos_y = 20;
-			var pos_x = 200;
+		// Create Ethernet switches if required.
+		var eth_switches = []
+		var pos_y = 20;
+		var pos_x = 200;
+		for (i = 0; i < srun_S; i++) {
 
-			eth_switch = new SwitchShape({ "orientation": OrientationEnum.north })
+			let eth_switch = new SwitchShape({ "orientation": OrientationEnum.north });
+			eth_switch.setText(this.view.getSwitchNameNew());
+
+			eth_switches.push(eth_switch);
 
 			// create a command for the undo/redo support
 			var command = new draw2d.command.CommandAdd(this.view, eth_switch, pos_x, pos_y);
 			this.view.getCommandStack().execute(command);
+
+			
+			if (i % 2 == 0) {
+				pos_x += 200;
+			} else {
+				pos_x = 200;
+				pos_y += 150;
+			}
 		}
 
 		// Create fpganodes.
@@ -723,10 +743,10 @@ example.Toolbar = Class.extend({
 					var links = full_match.split("-");
 
 					// Point 1 (think of source).
-					// value: n00:acl0:ch0 or eth (for Ethernet switch).
+					// value: n00:acl0:ch0 or eth00 (for Ethernet switch).
 					var link_p1 = links[0].split(":");
 					// Point 2 (think of destination).
-					// value: n00:acl0:ch0 or eth (for Ethernet switch).
+					// value: n00:acl0:ch0 or eth00 (for Ethernet switch).
 					var link_p2 = links[1].split(":");
 
 					// Channels to connect. Logic is required to differentiate if
@@ -745,7 +765,7 @@ example.Toolbar = Class.extend({
 						chan0 = tfpga_p1.getChannelFromFpgalink(link_p1[2]);
 					} else {
 						// Channel is to ethernet switch.
-						chan0 = eth_switch;
+						chan0 = this.getSwitchFromName(link_p1[0], eth_switches)
 					}
 
 					if (link_p2.length == 3) {
@@ -759,10 +779,13 @@ example.Toolbar = Class.extend({
 						chan1 = tfpga_p2.getChannelFromFpgalink(link_p2[2], isSibling);
 					} else {
 						// Channel is to ethernet switch.
-						chan1 = eth_switch;
+						chan1 = this.getSwitchFromName(link_p2[0], eth_switches)
 					}
 
 					// Get channels, connect and draw them.
+					// console.log(srun_raw);
+					// console.log(eth_switches);
+					// console.log("The 2 channels are: ", chan0, chan1);
 					this.connectChannels(chan0, chan1);
 
 					// if(link_p1[2] == "ch0") {
@@ -808,7 +831,7 @@ example.Toolbar = Class.extend({
 					chan0 = tfpga_p1.getChannelFromFpgalink(link_p1[2]);
 				} else {
 					// Channel is to ethernet switch.
-					chan0 = eth_switch;
+					chan0 =  this.getSwitchFromName(link_p1[0], eth_switches);
 				}
 
 				if (link_p2.length == 3) {
@@ -822,7 +845,7 @@ example.Toolbar = Class.extend({
 					chan1 = tfpga_p2.getChannelFromFpgalink(link_p2[2]);
 				} else {
 					// Channel is to ethernet switch.
-					chan1 = eth_switch;
+					chan1 =  this.getSwitchFromName(link_p2[0], eth_switches);
 				}
 
 				// Get channels, connect and draw them.
@@ -938,8 +961,29 @@ example.Toolbar = Class.extend({
 		// if (!tchannel_p1.getIsDrawn()) {
 			var c = new HoverConnection();
 
-			c.setSource(tchannel_p1.getHybridPort(0));
-			c.setTarget(tchannel_p2.getHybridPort(0));
+			// In case of ethernet switch, distirbute the connections over all
+			// ports, this is just visiual optimization
+			// Idea: get all ports, and pick the first port with least amount of connections
+
+			function getLeastPort(ch) {
+				let port = ch.getPorts().data[0];
+				if (ch.getPorts().data.length > 1) {
+					for (let i = 0; i < ch.getPorts().data.length; i++) {
+						const p = ch.getPorts().data[i];
+						if (p.connections.data.length < port.connections.data.length) {
+							port = p;
+						}
+					}
+				}
+
+				return port;
+			}
+
+			let sourcePort = getLeastPort(tchannel_p1);
+			let targetPort = getLeastPort(tchannel_p2);
+			
+			c.setSource(sourcePort);
+			c.setTarget(targetPort);
 
 			// Add connector to model.
 			tchannel_p1.setConnector(c);
