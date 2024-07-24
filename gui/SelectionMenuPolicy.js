@@ -67,18 +67,20 @@ var SelectionMenuPolicy = draw2d.policy.figure.SelectionPolicy.extend({
 			let rotateRightBtn = $("<div class='overlayMenuItem'>&#10227;</div>");
 
 			this.overlay.append(deleteBtn);
-			this.overlay.append(rotateLeftBtn);
-			this.overlay.append(rotateRightBtn);
+			// if (figure instanceof NodeShape) {
+				this.overlay.append(rotateLeftBtn);
+				this.overlay.append(rotateRightBtn);
+			// }
 			$("body").append(this.overlay);
 
 			rotateLeftBtn.on("click", function () {
-				if (figure instanceof NodeShape) {
+				if (figure instanceof NodeShape || figure instanceof SwitchShape) {
 					figure.setOrientation(OrientationEnum.next(figure.getOrientation()));
 				}
 			});
 
 			rotateRightBtn.on("click", function () {
-				if (figure instanceof NodeShape) {
+				if (figure instanceof NodeShape || figure instanceof SwitchShape) {
 					figure.setOrientation(OrientationEnum.prev(figure.getOrientation()));
 				}
 			});
@@ -96,6 +98,7 @@ var SelectionMenuPolicy = draw2d.policy.figure.SelectionPolicy.extend({
 
 					var i = 0;
 					var num_to_delete = parseInt(figure.getName().substring(1));
+
 					for (i = 0; i < fpganodes.getSize(); i++) {
 						var node = fpganodes.get(i);
 
@@ -118,6 +121,33 @@ var SelectionMenuPolicy = draw2d.policy.figure.SelectionPolicy.extend({
 
 							var command_rename = new draw2d.command.CommandAttr(nodeLabel, { text: newname });
 
+							command.add(command_rename);
+						}
+					}
+				} else if (figure instanceof SwitchShape) {
+					var switches = canvas.getFigures();
+
+					var i = 0;
+					var num_to_delete = parseInt(figure.getText().split(" ")[2]);
+					for (i = 0; i < switches.getSize(); i++) {
+						var ethSwitch = switches.get(i);
+
+						if (ethSwitch.NAME != "SwitchShape") {
+							continue;
+						}
+
+						var ethSwitchNum = parseInt(ethSwitch.getText().split(" ")[2]);
+						// Update all Switchs that have greater num than the ethSwitch to delete.
+						if (num_to_delete < ethSwitchNum) {
+							var newnum = ethSwitchNum - 1;
+
+							var newname = "Ethernet Switch ";
+							if (newnum < 10) {
+								newname += "0";
+							}
+							newname += newnum;
+
+							var command_rename = new draw2d.command.CommandAttr(ethSwitch, { text: newname });
 							command.add(command_rename);
 						}
 					}

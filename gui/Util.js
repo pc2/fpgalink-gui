@@ -15,8 +15,9 @@ function generate_fpgalink_output(channel) {
   let fpgalink = "";
   // channel is either of type ChannelShape (if connected to FPGA node)
   //   or "Ethernet Switch" (if connected to the switch)
-  if(channel.getText() == "Ethernet Switch") {
-    fpgalink = "eth";
+  if(channel.getText().includes("Ethernet Switch")) {
+    num = channel.getText().split(" ")[2]
+    fpgalink = "eth" + num;
   } else {
     var parent_fpga = channel.getFPGA();
     var parent_node = parent_fpga.getNode();
@@ -41,4 +42,18 @@ function get_number_of_fpga_nodes(figures) {
   }
 
   return number_of_fpga_nodes;
+}
+
+function get_number_of_switch_nodes(figures) {
+  let number_of_switch_nodes = 0;
+
+  let figure = figures.data;
+
+  for(let i = 0; i < figure.length; i++) {
+    if (figure.at(i).NAME == "SwitchShape") {
+      number_of_switch_nodes++
+    }
+  }
+
+  return number_of_switch_nodes;
 }

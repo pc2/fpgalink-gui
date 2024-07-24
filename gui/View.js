@@ -37,6 +37,17 @@ example.View = draw2d.Canvas.extend({
         return newname + numnodes;
     },
 
+    getSwitchNameNew: function () {
+        var newname = "Ethernet Switch ";
+        var numnodes = get_number_of_switch_nodes(this.getFigures());
+
+        if (numnodes < 10) {
+            newname += "0";
+        }
+
+        return newname + numnodes;
+    },
+
     /**
      * @method
      * Called if the user drop the droppedDomNode onto the canvas.<br>
@@ -112,6 +123,7 @@ example.View = draw2d.Canvas.extend({
                 break;
             case "node-ethernet-switch":
                 var eth_switch = new SwitchShape({ "orientation": $(droppedDomNode).data("shape") })
+                eth_switch.setText(this.getSwitchNameNew())
 
                 // create a command for the undo/redo support
                 var command = new draw2d.command.CommandAdd(this, eth_switch, x, y);
