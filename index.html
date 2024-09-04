@@ -96,6 +96,12 @@
                 if (urlParams.has('import')) {
                     srun_cmd = urlParams.get('import');
 
+                    // Special case to replace eth with eth00
+                    srun_cmd = srun_cmd.replace(/eth(?!\d{2})/g, 'eth00')
+                    
+                    console.log( "hi9" ,srun_cmd);
+                    
+
                     var get_node_type = "";
 
                     if (urlParams.has('node-type') && 
