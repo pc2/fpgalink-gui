@@ -163,12 +163,17 @@ example.Toolbar = Class.extend({
 
 	},
 
-	getNodeIdFpgalink: function (string_n) {
+	getNodeIdFpgalink: function (string_n, fpganodes) {
 		// n00, ..
-		return parseInt(string_n.substring(1));
+		for (let i = 0; i < fpganodes.length; i++) {
+			const node = fpganodes[i];
+			if (node.getName() == string_n) {
+				return node;
+			}
+		}
 	},
 
-	getSwitchFromName: function(name, switches) {
+	getSwitchFromName: function (name, switches) {
 		// e.g: name eth00
 		let switch_number = name.substring(3)
 		for (let i = 0; i < switches.length; i++) {
@@ -207,6 +212,7 @@ example.Toolbar = Class.extend({
 	},
 
 	srunApply: function (srun_raw, node_type) {
+
 		// Get number of fpganodes: -N 1
 		var srun_N_needle = "-N ";
 		var srun_N = -1;
@@ -272,7 +278,7 @@ example.Toolbar = Class.extend({
 				} else {
 					mapS.set(result[5], 1);
 				}
-				
+
 				// console.log(result);
 			}
 
@@ -295,7 +301,7 @@ example.Toolbar = Class.extend({
 			var command = new draw2d.command.CommandAdd(this.view, eth_switch, pos_x, pos_y);
 			this.view.getCommandStack().execute(command);
 
-			
+
 			if (i % 2 == 0) {
 				pos_x += 200;
 			} else {
@@ -322,8 +328,8 @@ example.Toolbar = Class.extend({
 			let num_fpgas = node_type == NodeTypeEnum.intel ? 2 : 3;
 			let num_channels = node_type == NodeTypeEnum.intel ? 4 : 2;
 
-			for(var f = 0; f < num_fpgas; f++) {
-				node.addFPGA("acl"+f, num_channels);
+			for (var f = 0; f < num_fpgas; f++) {
+				node.addFPGA("acl" + f, num_channels);
 			}
 
 			fpganodes.push(node);
@@ -362,444 +368,13 @@ example.Toolbar = Class.extend({
 			full_match = full_match.substring(0, 1) == "\"" ? full_match.substring(1) : full_match;
 			full_match = full_match.substring(full_match.length - 1) == "\"" ? full_match.substring(0, full_match.length - 1) : full_match;
 
-			// Look for topologies or custom links.
-			switch (full_match) {
-				case "pair":
-					// Idea:
-					//
-					// Within each node, all channels of one FPGA board are connected to the
-					// respective channel of the other FPGA board.
-					// No connections between nodes are made.
-
-					// Go over all nodes
-					for (i = 0; i < srun_N; i++) {
-						var node = fpganodes[i];
-						// var shape = node.getShape();
-
-						// Connect all channels from first FPGA to second FPGA.
-						var fpga0 = node.getFPGAFromFpgalink("acl0");
-						var fpga1 = node.getFPGAFromFpgalink("acl1");
-
-						// Go over all channels of FPGA.
-						var k = 0;
-						for (k = 0; k < 4; k++) {
-							this.connectChannels(fpga0.getChannelFromFpgalink("ch" + k), fpga1.getChannelFromFpgalink("ch" + k));
-						}
-					}
-
-					// Arrange nodes for better visualization.
-					this.arrangeTopology("pair", fpganodes);
-
-					break;
-				case "clique":
-					// Only clique of 2 nodes is supported.
-					if (srun_N != 2) {
-						alert("Only clique of 2 nodes is supported.");
-
-						break;
-					}
-
-					// Get both nodes.
-					var n00 = fpganodes[0];
-					var n01 = fpganodes[1];
-
-					// Get all fpgas
-					var fpga_n00_0 = n00.getFPGAFromFpgalink("acl0");
-					var fpga_n00_1 = n00.getFPGAFromFpgalink("acl1");
-					var fpga_n01_0 = n01.getFPGAFromFpgalink("acl0");
-					var fpga_n01_1 = n01.getFPGAFromFpgalink("acl1");
-
-					// Connect channels specific to clique
-					this.connectChannels(fpga_n00_0.getChannelFromFpgalink("ch0"), fpga_n01_0.getChannelFromFpgalink("ch0"));
-					this.connectChannels(fpga_n00_0.getChannelFromFpgalink("ch1"), fpga_n00_1.getChannelFromFpgalink("ch1"));
-					this.connectChannels(fpga_n00_0.getChannelFromFpgalink("ch2"), fpga_n01_1.getChannelFromFpgalink("ch2"));
-					this.connectChannels(fpga_n00_0.getChannelFromFpgalink("ch3"), fpga_n01_1.getChannelFromFpgalink("ch3"));
-
-					this.connectChannels(fpga_n00_1.getChannelFromFpgalink("ch0"), fpga_n01_1.getChannelFromFpgalink("ch0"));
-					this.connectChannels(fpga_n00_1.getChannelFromFpgalink("ch2"), fpga_n01_0.getChannelFromFpgalink("ch2"));
-					this.connectChannels(fpga_n00_1.getChannelFromFpgalink("ch3"), fpga_n01_0.getChannelFromFpgalink("ch3"));
-
-					this.connectChannels(fpga_n01_0.getChannelFromFpgalink("ch1"), fpga_n01_1.getChannelFromFpgalink("ch1"));
-
-					// Arrange nodes for better visualization.
-					this.arrangeTopology("clique", fpganodes);
-
-					break;
-				// Ring
-				case "ringO":
-					// Idea:
-					// Special handling for first and last node in ring (peel, remainder),
-					// Loop for in-between nodes.
-					var j;
-					for (j = 0; j < srun_N; j++) {
-						// Get both nodes.
-						// Previous
-						var nPrev;
-						if (j == 0) {
-							nPrev = fpganodes[0];
-						} else {
-							nPrev = fpganodes[j - 1];
-						}
-						// current node
-						var nCurrent = fpganodes[j];
-						// next
-						var nNext;
-						if (j == srun_N - 1) {
-							nNext = fpganodes[j];
-						} else {
-							nNext = fpganodes[j + 1];
-						}
-
-						// Get all fpgas.
-						var fpga_nPrev_acl0 = nPrev.getFPGAFromFpgalink("acl0");
-						var fpga_nPrev_acl1 = nPrev.getFPGAFromFpgalink("acl1");
-						var fpga_nCurrent_acl0 = nCurrent.getFPGAFromFpgalink("acl0");
-						var fpga_nCurrent_acl1 = nCurrent.getFPGAFromFpgalink("acl1");
-						var fpga_nNext_acl0 = nNext.getFPGAFromFpgalink("acl0");
-						var fpga_nNext_acl1 = nNext.getFPGAFromFpgalink("acl1");
-
-						// Connect channels specific to rinO
-						//
-						// A.
-						var A_src = fpga_nCurrent_acl0.getChannelFromFpgalink("ch1");
-						var A_dst;
-						if (j == srun_N - 1) {
-							A_dst = fpga_nCurrent_acl1.getChannelFromFpgalink("ch0");
-						} else {
-							A_dst = fpga_nNext_acl0.getChannelFromFpgalink("ch0");;
-						}
-						//
-						// B.
-						var B_src = fpga_nCurrent_acl1.getChannelFromFpgalink("ch1");
-						var B_dst;
-						if (j == 0) {
-							B_dst = fpga_nCurrent_acl0.getChannelFromFpgalink("ch0");
-						} else {
-							B_dst = fpga_nPrev_acl1.getChannelFromFpgalink("ch0");;
-						}
-						//
-						// C.
-						var C_src = fpga_nCurrent_acl0.getChannelFromFpgalink("ch3");
-						var C_dst;
-						if (j == srun_N - 1) {
-							C_dst = fpga_nCurrent_acl1.getChannelFromFpgalink("ch2");
-						} else {
-							C_dst = fpga_nNext_acl0.getChannelFromFpgalink("ch2");;
-						}
-						//
-						// D.
-						var D_src = fpga_nCurrent_acl1.getChannelFromFpgalink("ch3");
-						var D_dst;
-						if (j == 0) {
-							D_dst = fpga_nCurrent_acl0.getChannelFromFpgalink("ch2");
-						} else {
-							D_dst = fpga_nPrev_acl1.getChannelFromFpgalink("ch2");;
-						}
-
-						this.connectChannels(A_src, A_dst);
-						this.connectChannels(B_src, B_dst);
-						this.connectChannels(C_src, C_dst);
-						this.connectChannels(D_src, D_dst);
-
-						// // Set color for up.
-						// C_src.getConnector().setColor(ColorEnum.red);
-						// D_src.getConnector().setColor(ColorEnum.red);
-					}
-
-					// Arrange nodes for better visualization.
-					this.arrangeTopology("ringO", fpganodes);
-
-					break;
-				case "ringN":
-					// ringN, going down in acl0 column and back up in acl1 column
-					// Idea:
-					// Special handling for first and last node in ring (peel, remainder),
-					// Loop for in-between nodes.
-					var j;
-					for (j = 0; j < srun_N; j++) {
-						// Get nodes.
-						var nFirst = fpganodes[0];
-						// Previous
-						var nPrev;
-						if (j == 0) {
-							nPrev = fpganodes[0];
-						} else {
-							nPrev = fpganodes[j - 1];
-						}
-						// current node
-						var nCurrent = fpganodes[j];
-						// next
-						var nNext;
-						if (j == srun_N - 1) {
-							nNext = fpganodes[j];
-						} else {
-							nNext = fpganodes[j + 1];
-						}
-
-						// Get all fpgas.
-						var fpga_nFirst_acl0 = nFirst.getFPGAFromFpgalink("acl0");
-						var fpga_nFirst_acl1 = nFirst.getFPGAFromFpgalink("acl1");
-						var fpga_nPrev_acl0 = nPrev.getFPGAFromFpgalink("acl0");
-						var fpga_nPrev_acl1 = nPrev.getFPGAFromFpgalink("acl1");
-						var fpga_nCurrent_acl0 = nCurrent.getFPGAFromFpgalink("acl0");
-						var fpga_nCurrent_acl1 = nCurrent.getFPGAFromFpgalink("acl1");
-						var fpga_nNext_acl0 = nNext.getFPGAFromFpgalink("acl0");
-						var fpga_nNext_acl1 = nNext.getFPGAFromFpgalink("acl1");
-
-						// Connect channels specific to rinO
-						//
-						// A.
-						var A_src = fpga_nCurrent_acl0.getChannelFromFpgalink("ch1");
-						var A_dst;
-						if (j == srun_N - 1) {
-							A_dst = fpga_nFirst_acl1.getChannelFromFpgalink("ch0");
-						} else {
-							A_dst = fpga_nNext_acl0.getChannelFromFpgalink("ch0");;
-						}
-						//
-						// B.
-						var B_src = fpga_nCurrent_acl1.getChannelFromFpgalink("ch1");
-						var B_dst;
-						if (j == srun_N - 1) {
-							B_dst = fpga_nFirst_acl0.getChannelFromFpgalink("ch0");
-						} else {
-							B_dst = fpga_nNext_acl1.getChannelFromFpgalink("ch0");;
-						}
-						//
-						// C.
-						var C_src = fpga_nCurrent_acl0.getChannelFromFpgalink("ch3");
-						var C_dst;
-						if (j == srun_N - 1) {
-							C_dst = fpga_nFirst_acl1.getChannelFromFpgalink("ch2");
-						} else {
-							C_dst = fpga_nNext_acl0.getChannelFromFpgalink("ch2");;
-						}
-						//
-						// D.
-						var D_src = fpga_nCurrent_acl1.getChannelFromFpgalink("ch3");
-						var D_dst;
-						if (j == srun_N - 1) {
-							D_dst = fpga_nFirst_acl0.getChannelFromFpgalink("ch2");
-						} else {
-							D_dst = fpga_nNext_acl1.getChannelFromFpgalink("ch2");;
-						}
-
-						this.connectChannels(A_src, A_dst);
-						this.connectChannels(B_src, B_dst);
-						this.connectChannels(C_src, C_dst);
-						this.connectChannels(D_src, D_dst);
-
-						// Set color for up.
-						// C_src.getConnector().setColor(ColorEnum.red);
-						// D_src.getConnector().setColor(ColorEnum.red);
-					}
-
-					// Arrange nodes for better visualization.
-					this.arrangeTopology("ringN", fpganodes);
-
-					break;
-				case "ringZ":
-					// Ring with two links per direction, acl0 and acl1 neighbors
-					// Idea:
-					// Special handling for first and last node in ring (peel, remainder),
-					// Loop for in-between nodes.
-					var j;
-					for (j = 0; j < srun_N; j++) {
-						// Get nodes.
-						var nFirst = fpganodes[0];
-						// Previous
-						var nPrev;
-						if (j == 0) {
-							nPrev = fpganodes[0];
-						} else {
-							nPrev = fpganodes[j - 1];
-						}
-						// current node
-						var nCurrent = fpganodes[j];
-						// next
-						var nNext;
-						if (j == srun_N - 1) {
-							nNext = fpganodes[j];
-						} else {
-							nNext = fpganodes[j + 1];
-						}
-
-						// Get all fpgas.
-						var fpga_nFirst_acl0 = nFirst.getFPGAFromFpgalink("acl0");
-						var fpga_nFirst_acl1 = nFirst.getFPGAFromFpgalink("acl1");
-						var fpga_nPrev_acl0 = nPrev.getFPGAFromFpgalink("acl0");
-						var fpga_nPrev_acl1 = nPrev.getFPGAFromFpgalink("acl1");
-						var fpga_nCurrent_acl0 = nCurrent.getFPGAFromFpgalink("acl0");
-						var fpga_nCurrent_acl1 = nCurrent.getFPGAFromFpgalink("acl1");
-						var fpga_nNext_acl0 = nNext.getFPGAFromFpgalink("acl0");
-						var fpga_nNext_acl1 = nNext.getFPGAFromFpgalink("acl1");
-
-						// Connect channels specific to rinO
-						//
-						// A.
-						var A_src = fpga_nCurrent_acl0.getChannelFromFpgalink("ch1");
-						var A_dst = fpga_nCurrent_acl1.getChannelFromFpgalink("ch0");
-						//
-						// B.
-						var B_src = fpga_nCurrent_acl1.getChannelFromFpgalink("ch1");
-						var B_dst;
-						if (j == srun_N - 1) {
-							B_dst = fpga_nFirst_acl0.getChannelFromFpgalink("ch0");
-						} else {
-							B_dst = fpga_nNext_acl0.getChannelFromFpgalink("ch0");;
-						}
-						//
-						// C.
-						var C_src = fpga_nCurrent_acl0.getChannelFromFpgalink("ch3");
-						var C_dst = fpga_nCurrent_acl1.getChannelFromFpgalink("ch2");;
-						//
-						// D.
-						var D_src = fpga_nCurrent_acl1.getChannelFromFpgalink("ch3");
-						var D_dst;
-						if (j == srun_N - 1) {
-							D_dst = fpga_nFirst_acl0.getChannelFromFpgalink("ch2");
-						} else {
-							D_dst = fpga_nNext_acl0.getChannelFromFpgalink("ch2");;
-						}
-
-						this.connectChannels(A_src, A_dst);
-						this.connectChannels(B_src, B_dst);
-						this.connectChannels(C_src, C_dst);
-						this.connectChannels(D_src, D_dst);
-
-						// Set color for up.
-						// C_src.getConnector().setColor(ColorEnum.red);
-						// D_src.getConnector().setColor(ColorEnum.red);
-					}
-
-					// Arrange nodes for better visualization.
-					this.arrangeTopology("ringZ", fpganodes);
-
-					break;
-				// Torus
-				case "torus2":
-					// Torus with 2 FPGAs per row.
-					this.torusTopo(srun_N, 2, fpganodes);
-
-					// Arrange nodes for better visualization.
-					this.arrangeTopology("torus2", fpganodes);
-
-					break;
-				case "torus3":
-					// At least 2 nodes are required.
-					if (srun_N < 2) {
-						alert("Topology torus3 requires at least 2 nodes.");
-						break;
-					}
-
-					this.torusTopo(srun_N, 3, fpganodes);
-
-					// Arrange nodes for better visualization.
-					this.arrangeTopology("torus3", fpganodes);
-
-					break;
-				case "torus4":
-					// At least 2 nodes are required.
-					if (srun_N < 2) {
-						alert("Topology torus4 requires at least 2 nodes.");
-						break;
-					}
-
-					this.torusTopo(srun_N, 4, fpganodes);
-
-					// Arrange nodes for better visualization.
-					this.arrangeTopology("torus4", fpganodes);
-
-					break;
-				case "torus5":
-					// At least 3 nodes are required.
-					if (srun_N < 3) {
-						alert("Topology torus5 requires at least 3 nodes.");
-						break;
-					}
-
-					this.torusTopo(srun_N, 5, fpganodes);
-
-					// Arrange nodes for better visualization.
-					this.arrangeTopology("torus5", fpganodes);
-					break;
-				case "torus6":
-					// At least 3 nodes are required.
-					if (srun_N < 3) {
-						alert("Topology torus6 requires at least 3 nodes.");
-						break;
-					}
-
-					this.torusTopo(srun_N, 6, fpganodes);
-
-					// Arrange nodes for better visualization.
-					this.arrangeTopology("torus6", fpganodes);
-
-					break;
-
-				// Custom link with format: n00:acl0:ch0-n00:acl1:ch0
-				default:
-					// Parse and add fpga links: n00:acl0:ch0-n00:acl1:ch0
-					var links = full_match.split("-");
-
-					// Point 1 (think of source).
-					// value: n00:acl0:ch0 or eth00 (for Ethernet switch).
-					var link_p1 = links[0].split(":");
-					// Point 2 (think of destination).
-					// value: n00:acl0:ch0 or eth00 (for Ethernet switch).
-					var link_p2 = links[1].split(":");
-
-					// Channels to connect. Logic is required to differentiate if
-					//   the channel is between FPGAs or to/from Ethernet switch.
-					let chan0;
-					let chan1;
-
-					if (link_p1.length == 3) {
-						// Channel is from FPGA node.
-						// Get node.
-						var tnode_p1 = fpganodes[this.getNodeIdFpgalink(link_p1[0])];
-						// Get FPGA.
-						var tfpga_p1 = tnode_p1.getFPGAFromFpgalink(link_p1[1]);
-
-						// Get channel.
-						chan0 = tfpga_p1.getChannelFromFpgalink(link_p1[2]);
-					} else {
-						// Channel is to ethernet switch.
-						chan0 = this.getSwitchFromName(link_p1[0], eth_switches)
-					}
-
-					if (link_p2.length == 3) {
-						// Channel is to FPGA node.
-
-						// Get node.
-						var tnode_p2 = fpganodes[this.getNodeIdFpgalink(link_p2[0])];
-						// Get FPGA.
-						var tfpga_p2 = tnode_p2.getFPGAFromFpgalink(link_p2[1]);
-						var isSibling = link_p2[0] == link_p1[0] && link_p2[1] == link_p1[1] && link_p2[2] == link_p1[2];
-						chan1 = tfpga_p2.getChannelFromFpgalink(link_p2[2], isSibling);
-					} else {
-						// Channel is to ethernet switch.
-						chan1 = this.getSwitchFromName(link_p2[0], eth_switches)
-					}
-
-					// Get channels, connect and draw them.
-					// console.log(srun_raw);
-					// console.log(eth_switches);
-					// console.log("The 2 channels are: ", chan0, chan1);
-					this.connectChannels(chan0, chan1);
-
-					// if(link_p1[2] == "ch0") {
-					// 	tfpga_p1.getChannelFromFpgalink(link_p1[2]).getConnector().setColor(ColorEnum.red);
-					// }
-
-					break;
-			}
+			this.createNodesAndConnections(full_match, srun_N, fpganodes, eth_switches);
 
 			// Remove found link.
 			srun_raw_copy = srun_raw_copy.substring(next_space);
 		}
 
-		
+
 		// Parse and add fpga links: n00:acl0:ch0-n00:acl1:ch0
 		if (srun_raw.indexOf(srun_fpgalinks_needle) == -1) {
 			// Array(7) [ "n00:acl1:ch0-n00:acl1:ch1", "00", "1", "0", "00", "1", "1" ]
@@ -823,7 +398,7 @@ example.Toolbar = Class.extend({
 				if (link_p1.length == 3) {
 					// Channel is from FPGA node.
 					// Get node.
-					var tnode_p1 = fpganodes[this.getNodeIdFpgalink(link_p1[0])];
+					var tnode_p1 = this.getNodeIdFpgalink(link_p1[0], fpganodes);
 					// Get FPGA.
 					var tfpga_p1 = tnode_p1.getFPGAFromFpgalink(link_p1[1]);
 
@@ -831,21 +406,21 @@ example.Toolbar = Class.extend({
 					chan0 = tfpga_p1.getChannelFromFpgalink(link_p1[2]);
 				} else {
 					// Channel is to ethernet switch.
-					chan0 =  this.getSwitchFromName(link_p1[0], eth_switches);
+					chan0 = this.getSwitchFromName(link_p1[0], eth_switches);
 				}
 
 				if (link_p2.length == 3) {
 					// Channel is to FPGA node.
 
 					// Get node.
-					var tnode_p2 = fpganodes[this.getNodeIdFpgalink(link_p2[0])];
+					var tnode_p2 = this.getNodeIdFpgalink(link_p2[0], fpganodes);
 					// Get FPGA.
 					var tfpga_p2 = tnode_p2.getFPGAFromFpgalink(link_p2[1]);
 
 					chan1 = tfpga_p2.getChannelFromFpgalink(link_p2[2]);
 				} else {
 					// Channel is to ethernet switch.
-					chan1 =  this.getSwitchFromName(link_p2[0], eth_switches);
+					chan1 = this.getSwitchFromName(link_p2[0], eth_switches);
 				}
 
 				// Get channels, connect and draw them.
@@ -853,8 +428,443 @@ example.Toolbar = Class.extend({
 			}
 		}
 
-		
-		
+
+
+	},
+
+	createNodesAndConnections: function (full_match, srun_N, fpganodes, eth_switches) {
+		// Look for topologies or custom links.
+		switch (full_match) {
+			case "pair":
+				// Idea:
+				//
+				// Within each node, all channels of one FPGA board are connected to the
+				// respective channel of the other FPGA board.
+				// No connections between nodes are made.
+
+				// Go over all nodes
+				for (i = 0; i < srun_N; i++) {
+					var node = fpganodes[i];
+					// var shape = node.getShape();
+
+					// Connect all channels from first FPGA to second FPGA.
+					var fpga0 = node.getFPGAFromFpgalink("acl0");
+					var fpga1 = node.getFPGAFromFpgalink("acl1");
+
+					// Go over all channels of FPGA.
+					var k = 0;
+					for (k = 0; k < 4; k++) {
+						this.connectChannels(fpga0.getChannelFromFpgalink("ch" + k), fpga1.getChannelFromFpgalink("ch" + k));
+					}
+				}
+
+				// Arrange nodes for better visualization.
+				this.arrangeTopology("pair", fpganodes);
+
+				break;
+			case "clique":
+				// Only clique of 2 nodes is supported.
+				if (srun_N != 2) {
+					alert("Only clique of 2 nodes is supported.");
+
+					break;
+				}
+
+				// Get both nodes.
+				var n00 = fpganodes[0];
+				var n01 = fpganodes[1];
+
+				// Get all fpgas
+				var fpga_n00_0 = n00.getFPGAFromFpgalink("acl0");
+				var fpga_n00_1 = n00.getFPGAFromFpgalink("acl1");
+				var fpga_n01_0 = n01.getFPGAFromFpgalink("acl0");
+				var fpga_n01_1 = n01.getFPGAFromFpgalink("acl1");
+
+				// Connect channels specific to clique
+				this.connectChannels(fpga_n00_0.getChannelFromFpgalink("ch0"), fpga_n01_0.getChannelFromFpgalink("ch0"));
+				this.connectChannels(fpga_n00_0.getChannelFromFpgalink("ch1"), fpga_n00_1.getChannelFromFpgalink("ch1"));
+				this.connectChannels(fpga_n00_0.getChannelFromFpgalink("ch2"), fpga_n01_1.getChannelFromFpgalink("ch2"));
+				this.connectChannels(fpga_n00_0.getChannelFromFpgalink("ch3"), fpga_n01_1.getChannelFromFpgalink("ch3"));
+
+				this.connectChannels(fpga_n00_1.getChannelFromFpgalink("ch0"), fpga_n01_1.getChannelFromFpgalink("ch0"));
+				this.connectChannels(fpga_n00_1.getChannelFromFpgalink("ch2"), fpga_n01_0.getChannelFromFpgalink("ch2"));
+				this.connectChannels(fpga_n00_1.getChannelFromFpgalink("ch3"), fpga_n01_0.getChannelFromFpgalink("ch3"));
+
+				this.connectChannels(fpga_n01_0.getChannelFromFpgalink("ch1"), fpga_n01_1.getChannelFromFpgalink("ch1"));
+
+				// Arrange nodes for better visualization.
+				this.arrangeTopology("clique", fpganodes);
+
+				break;
+			// Ring
+			case "ringO":
+				// Idea:
+				// Special handling for first and last node in ring (peel, remainder),
+				// Loop for in-between nodes.
+				var j;
+				for (j = 0; j < srun_N; j++) {
+					// Get both nodes.
+					// Previous
+					var nPrev;
+					if (j == 0) {
+						nPrev = fpganodes[0];
+					} else {
+						nPrev = fpganodes[j - 1];
+					}
+					// current node
+					var nCurrent = fpganodes[j];
+					// next
+					var nNext;
+					if (j == srun_N - 1) {
+						nNext = fpganodes[j];
+					} else {
+						nNext = fpganodes[j + 1];
+					}
+
+					// Get all fpgas.
+					var fpga_nPrev_acl0 = nPrev.getFPGAFromFpgalink("acl0");
+					var fpga_nPrev_acl1 = nPrev.getFPGAFromFpgalink("acl1");
+					var fpga_nCurrent_acl0 = nCurrent.getFPGAFromFpgalink("acl0");
+					var fpga_nCurrent_acl1 = nCurrent.getFPGAFromFpgalink("acl1");
+					var fpga_nNext_acl0 = nNext.getFPGAFromFpgalink("acl0");
+					var fpga_nNext_acl1 = nNext.getFPGAFromFpgalink("acl1");
+
+					// Connect channels specific to rinO
+					//
+					// A.
+					var A_src = fpga_nCurrent_acl0.getChannelFromFpgalink("ch1");
+					var A_dst;
+					if (j == srun_N - 1) {
+						A_dst = fpga_nCurrent_acl1.getChannelFromFpgalink("ch0");
+					} else {
+						A_dst = fpga_nNext_acl0.getChannelFromFpgalink("ch0");;
+					}
+					//
+					// B.
+					var B_src = fpga_nCurrent_acl1.getChannelFromFpgalink("ch1");
+					var B_dst;
+					if (j == 0) {
+						B_dst = fpga_nCurrent_acl0.getChannelFromFpgalink("ch0");
+					} else {
+						B_dst = fpga_nPrev_acl1.getChannelFromFpgalink("ch0");;
+					}
+					//
+					// C.
+					var C_src = fpga_nCurrent_acl0.getChannelFromFpgalink("ch3");
+					var C_dst;
+					if (j == srun_N - 1) {
+						C_dst = fpga_nCurrent_acl1.getChannelFromFpgalink("ch2");
+					} else {
+						C_dst = fpga_nNext_acl0.getChannelFromFpgalink("ch2");;
+					}
+					//
+					// D.
+					var D_src = fpga_nCurrent_acl1.getChannelFromFpgalink("ch3");
+					var D_dst;
+					if (j == 0) {
+						D_dst = fpga_nCurrent_acl0.getChannelFromFpgalink("ch2");
+					} else {
+						D_dst = fpga_nPrev_acl1.getChannelFromFpgalink("ch2");;
+					}
+
+					this.connectChannels(A_src, A_dst);
+					this.connectChannels(B_src, B_dst);
+					this.connectChannels(C_src, C_dst);
+					this.connectChannels(D_src, D_dst);
+
+					// // Set color for up.
+					// C_src.getConnector().setColor(ColorEnum.red);
+					// D_src.getConnector().setColor(ColorEnum.red);
+				}
+
+				// Arrange nodes for better visualization.
+				this.arrangeTopology("ringO", fpganodes);
+
+				break;
+			case "ringN":
+				// ringN, going down in acl0 column and back up in acl1 column
+				// Idea:
+				// Special handling for first and last node in ring (peel, remainder),
+				// Loop for in-between nodes.
+				var j;
+				for (j = 0; j < srun_N; j++) {
+					// Get nodes.
+					var nFirst = fpganodes[0];
+					// Previous
+					var nPrev;
+					if (j == 0) {
+						nPrev = fpganodes[0];
+					} else {
+						nPrev = fpganodes[j - 1];
+					}
+					// current node
+					var nCurrent = fpganodes[j];
+					// next
+					var nNext;
+					if (j == srun_N - 1) {
+						nNext = fpganodes[j];
+					} else {
+						nNext = fpganodes[j + 1];
+					}
+
+					// Get all fpgas.
+					var fpga_nFirst_acl0 = nFirst.getFPGAFromFpgalink("acl0");
+					var fpga_nFirst_acl1 = nFirst.getFPGAFromFpgalink("acl1");
+					var fpga_nPrev_acl0 = nPrev.getFPGAFromFpgalink("acl0");
+					var fpga_nPrev_acl1 = nPrev.getFPGAFromFpgalink("acl1");
+					var fpga_nCurrent_acl0 = nCurrent.getFPGAFromFpgalink("acl0");
+					var fpga_nCurrent_acl1 = nCurrent.getFPGAFromFpgalink("acl1");
+					var fpga_nNext_acl0 = nNext.getFPGAFromFpgalink("acl0");
+					var fpga_nNext_acl1 = nNext.getFPGAFromFpgalink("acl1");
+
+					// Connect channels specific to rinO
+					//
+					// A.
+					var A_src = fpga_nCurrent_acl0.getChannelFromFpgalink("ch1");
+					var A_dst;
+					if (j == srun_N - 1) {
+						A_dst = fpga_nFirst_acl1.getChannelFromFpgalink("ch0");
+					} else {
+						A_dst = fpga_nNext_acl0.getChannelFromFpgalink("ch0");;
+					}
+					//
+					// B.
+					var B_src = fpga_nCurrent_acl1.getChannelFromFpgalink("ch1");
+					var B_dst;
+					if (j == srun_N - 1) {
+						B_dst = fpga_nFirst_acl0.getChannelFromFpgalink("ch0");
+					} else {
+						B_dst = fpga_nNext_acl1.getChannelFromFpgalink("ch0");;
+					}
+					//
+					// C.
+					var C_src = fpga_nCurrent_acl0.getChannelFromFpgalink("ch3");
+					var C_dst;
+					if (j == srun_N - 1) {
+						C_dst = fpga_nFirst_acl1.getChannelFromFpgalink("ch2");
+					} else {
+						C_dst = fpga_nNext_acl0.getChannelFromFpgalink("ch2");;
+					}
+					//
+					// D.
+					var D_src = fpga_nCurrent_acl1.getChannelFromFpgalink("ch3");
+					var D_dst;
+					if (j == srun_N - 1) {
+						D_dst = fpga_nFirst_acl0.getChannelFromFpgalink("ch2");
+					} else {
+						D_dst = fpga_nNext_acl1.getChannelFromFpgalink("ch2");;
+					}
+
+					this.connectChannels(A_src, A_dst);
+					this.connectChannels(B_src, B_dst);
+					this.connectChannels(C_src, C_dst);
+					this.connectChannels(D_src, D_dst);
+
+					// Set color for up.
+					// C_src.getConnector().setColor(ColorEnum.red);
+					// D_src.getConnector().setColor(ColorEnum.red);
+				}
+
+				// Arrange nodes for better visualization.
+				this.arrangeTopology("ringN", fpganodes);
+
+				break;
+			case "ringZ":
+				// Ring with two links per direction, acl0 and acl1 neighbors
+				// Idea:
+				// Special handling for first and last node in ring (peel, remainder),
+				// Loop for in-between nodes.
+				var j;
+				for (j = 0; j < srun_N; j++) {
+					// Get nodes.
+					var nFirst = fpganodes[0];
+					// Previous
+					var nPrev;
+					if (j == 0) {
+						nPrev = fpganodes[0];
+					} else {
+						nPrev = fpganodes[j - 1];
+					}
+					// current node
+					var nCurrent = fpganodes[j];
+					// next
+					var nNext;
+					if (j == srun_N - 1) {
+						nNext = fpganodes[j];
+					} else {
+						nNext = fpganodes[j + 1];
+					}
+
+					// Get all fpgas.
+					var fpga_nFirst_acl0 = nFirst.getFPGAFromFpgalink("acl0");
+					var fpga_nFirst_acl1 = nFirst.getFPGAFromFpgalink("acl1");
+					var fpga_nPrev_acl0 = nPrev.getFPGAFromFpgalink("acl0");
+					var fpga_nPrev_acl1 = nPrev.getFPGAFromFpgalink("acl1");
+					var fpga_nCurrent_acl0 = nCurrent.getFPGAFromFpgalink("acl0");
+					var fpga_nCurrent_acl1 = nCurrent.getFPGAFromFpgalink("acl1");
+					var fpga_nNext_acl0 = nNext.getFPGAFromFpgalink("acl0");
+					var fpga_nNext_acl1 = nNext.getFPGAFromFpgalink("acl1");
+
+					// Connect channels specific to rinO
+					//
+					// A.
+					var A_src = fpga_nCurrent_acl0.getChannelFromFpgalink("ch1");
+					var A_dst = fpga_nCurrent_acl1.getChannelFromFpgalink("ch0");
+					//
+					// B.
+					var B_src = fpga_nCurrent_acl1.getChannelFromFpgalink("ch1");
+					var B_dst;
+					if (j == srun_N - 1) {
+						B_dst = fpga_nFirst_acl0.getChannelFromFpgalink("ch0");
+					} else {
+						B_dst = fpga_nNext_acl0.getChannelFromFpgalink("ch0");;
+					}
+					//
+					// C.
+					var C_src = fpga_nCurrent_acl0.getChannelFromFpgalink("ch3");
+					var C_dst = fpga_nCurrent_acl1.getChannelFromFpgalink("ch2");;
+					//
+					// D.
+					var D_src = fpga_nCurrent_acl1.getChannelFromFpgalink("ch3");
+					var D_dst;
+					if (j == srun_N - 1) {
+						D_dst = fpga_nFirst_acl0.getChannelFromFpgalink("ch2");
+					} else {
+						D_dst = fpga_nNext_acl0.getChannelFromFpgalink("ch2");;
+					}
+
+					this.connectChannels(A_src, A_dst);
+					this.connectChannels(B_src, B_dst);
+					this.connectChannels(C_src, C_dst);
+					this.connectChannels(D_src, D_dst);
+
+					// Set color for up.
+					// C_src.getConnector().setColor(ColorEnum.red);
+					// D_src.getConnector().setColor(ColorEnum.red);
+				}
+
+				// Arrange nodes for better visualization.
+				this.arrangeTopology("ringZ", fpganodes);
+
+				break;
+			// Torus
+			case "torus2":
+				// Torus with 2 FPGAs per row.
+				this.torusTopo(srun_N, 2, fpganodes);
+
+				// Arrange nodes for better visualization.
+				this.arrangeTopology("torus2", fpganodes);
+
+				break;
+			case "torus3":
+				// At least 2 nodes are required.
+				if (srun_N < 2) {
+					alert("Topology torus3 requires at least 2 nodes.");
+					break;
+				}
+
+				this.torusTopo(srun_N, 3, fpganodes);
+
+				// Arrange nodes for better visualization.
+				this.arrangeTopology("torus3", fpganodes);
+
+				break;
+			case "torus4":
+				// At least 2 nodes are required.
+				if (srun_N < 2) {
+					alert("Topology torus4 requires at least 2 nodes.");
+					break;
+				}
+
+				this.torusTopo(srun_N, 4, fpganodes);
+
+				// Arrange nodes for better visualization.
+				this.arrangeTopology("torus4", fpganodes);
+
+				break;
+			case "torus5":
+				// At least 3 nodes are required.
+				if (srun_N < 3) {
+					alert("Topology torus5 requires at least 3 nodes.");
+					break;
+				}
+
+				this.torusTopo(srun_N, 5, fpganodes);
+
+				// Arrange nodes for better visualization.
+				this.arrangeTopology("torus5", fpganodes);
+				break;
+			case "torus6":
+				// At least 3 nodes are required.
+				if (srun_N < 3) {
+					alert("Topology torus6 requires at least 3 nodes.");
+					break;
+				}
+
+				this.torusTopo(srun_N, 6, fpganodes);
+
+				// Arrange nodes for better visualization.
+				this.arrangeTopology("torus6", fpganodes);
+
+				break;
+
+			// Custom link with format: n00:acl0:ch0-n00:acl1:ch0
+			default:
+				// Parse and add fpga links: n00:acl0:ch0-n00:acl1:ch0
+				var links = full_match.split("-");
+
+				// Point 1 (think of source).
+				// value: n00:acl0:ch0 or eth00 (for Ethernet switch).
+				var link_p1 = links[0].split(":");
+				// Point 2 (think of destination).
+				// value: n00:acl0:ch0 or eth00 (for Ethernet switch).
+				var link_p2 = links[1].split(":");
+
+				// Channels to connect. Logic is required to differentiate if
+				//   the channel is between FPGAs or to/from Ethernet switch.
+				let chan0;
+				let chan1;
+
+				if (link_p1.length == 3) {
+					// Channel is from FPGA node.
+					// Get node.
+					var tnode_p1 = this.getNodeIdFpgalink(link_p1[0], fpganodes);
+					// Get FPGA.
+					var tfpga_p1 = tnode_p1.getFPGAFromFpgalink(link_p1[1]);
+
+					// Get channel.
+					chan0 = tfpga_p1.getChannelFromFpgalink(link_p1[2]);
+				} else {
+					// Channel is to ethernet switch.
+					chan0 = this.getSwitchFromName(link_p1[0], eth_switches)
+				}
+
+				if (link_p2.length == 3) {
+					// Channel is to FPGA node.
+
+					// Get node.
+					var tnode_p2 = this.getNodeIdFpgalink(link_p2[0], fpganodes);
+					// Get FPGA.
+					var tfpga_p2 = tnode_p2.getFPGAFromFpgalink(link_p2[1]);
+					var isSibling = link_p2[0] == link_p1[0] && link_p2[1] == link_p1[1] && link_p2[2] == link_p1[2];
+					chan1 = tfpga_p2.getChannelFromFpgalink(link_p2[2], isSibling);
+				} else {
+					// Channel is to ethernet switch.
+					chan1 = this.getSwitchFromName(link_p2[0], eth_switches)
+				}
+
+				// Get channels, connect and draw them.
+				// console.log(srun_raw);
+				// console.log(eth_switches);
+				// console.log("The 2 channels are: ", chan0, chan1);
+				this.connectChannels(chan0, chan1);
+
+				// if(link_p1[2] == "ch0") {
+				// 	tfpga_p1.getChannelFromFpgalink(link_p1[2]).getConnector().setColor(ColorEnum.red);
+				// }
+
+				break;
+		}
 	},
 
 	makeGrid: function (N, width) {
@@ -909,7 +919,7 @@ example.Toolbar = Class.extend({
 				// 0: n00
 				// 1: acl0
 				// Get node.
-				var tnode_p1 = fpganodes[this.getNodeIdFpgalink(link_p1[0])];
+				var tnode_p1 = this.getNodeIdFpgalink(link_p1[0], fpganodes);
 				// Get FPGA.
 				var tfpga_p1 = tnode_p1.getFPGAFromFpgalink(link_p1[1]);
 
@@ -918,7 +928,7 @@ example.Toolbar = Class.extend({
 				// 0: n00
 				// 1: acl0
 				// Get node.
-				var tnode_p2 = fpganodes[this.getNodeIdFpgalink(link_p2[0])];
+				var tnode_p2 = this.getNodeIdFpgalink(link_p2[0], fpganodes);
 				// Get FPGA.
 				var tfpga_p2 = tnode_p2.getFPGAFromFpgalink(link_p2[1]);
 
@@ -927,7 +937,7 @@ example.Toolbar = Class.extend({
 				// 0: n00
 				// 1: acl0
 				// Get node.
-				var tnode_p3 = fpganodes[this.getNodeIdFpgalink(link_p3[0])];
+				var tnode_p3 = this.getNodeIdFpgalink(link_p3[0], fpganodes);
 				// Get FPGA.
 				var tfpga_p3 = tnode_p3.getFPGAFromFpgalink(link_p3[1]);
 
@@ -943,10 +953,10 @@ example.Toolbar = Class.extend({
 		}
 	},
 
-	printTopo : function(list, format='acl:ch', separator=' <-> ', prefix='') {
+	printTopo: function (list, format = 'acl:ch', separator = ' <-> ', prefix = '') {
 		var row = 0;
-	  for(row = 0; row < list.length; row++) {
-			console.log(prefix+separator+((list[row])))
+		for (row = 0; row < list.length; row++) {
+			console.log(prefix + separator + ((list[row])))
 		}
 	},
 
@@ -959,43 +969,43 @@ example.Toolbar = Class.extend({
 		//
 		// Draw connection only ones.
 		// if (!tchannel_p1.getIsDrawn()) {
-			var c = new HoverConnection();
+		var c = new HoverConnection();
 
-			// In case of ethernet switch, distirbute the connections over all
-			// ports, this is just visiual optimization
-			// Idea: get all ports, and pick the first port with least amount of connections
+		// In case of ethernet switch, distirbute the connections over all
+		// ports, this is just visiual optimization
+		// Idea: get all ports, and pick the first port with least amount of connections
 
-			function getLeastPort(ch) {
-				let port = ch.getPorts().data[0];
-				if (ch.getPorts().data.length > 1) {
-					for (let i = 0; i < ch.getPorts().data.length; i++) {
-						const p = ch.getPorts().data[i];
-						if (p.connections.data.length < port.connections.data.length) {
-							port = p;
-						}
+		function getLeastPort(ch) {
+			let port = ch.getPorts().data[0];
+			if (ch.getPorts().data.length > 1) {
+				for (let i = 0; i < ch.getPorts().data.length; i++) {
+					const p = ch.getPorts().data[i];
+					if (p.connections.data.length < port.connections.data.length) {
+						port = p;
 					}
 				}
-
-				return port;
 			}
 
-			let sourcePort = getLeastPort(tchannel_p1);
-			let targetPort = getLeastPort(tchannel_p2);
-			
-			c.setSource(sourcePort);
-			c.setTarget(targetPort);
+			return port;
+		}
 
-			// Add connector to model.
-			tchannel_p1.setConnector(c);
-			tchannel_p2.setConnector(c);
+		let sourcePort = getLeastPort(tchannel_p1);
+		let targetPort = getLeastPort(tchannel_p2);
 
-			// // Flag both connectors as drawn.
-			// tchannel_p1.setIsDrawn(true);
-			// tchannel_p2.setIsDrawn(true);
+		c.setSource(sourcePort);
+		c.setTarget(targetPort);
 
-			// create a command for the undo/redo support
-			var command = new draw2d.command.CommandAdd(this.view, c, 0, 0);
-			this.view.getCommandStack().execute(command);
+		// Add connector to model.
+		tchannel_p1.setConnector(c);
+		tchannel_p2.setConnector(c);
+
+		// // Flag both connectors as drawn.
+		// tchannel_p1.setIsDrawn(true);
+		// tchannel_p2.setIsDrawn(true);
+
+		// create a command for the undo/redo support
+		var command = new draw2d.command.CommandAdd(this.view, c, 0, 0);
+		this.view.getCommandStack().execute(command);
 		// }
 	},
 
@@ -1053,7 +1063,7 @@ example.Toolbar = Class.extend({
 					//   See: https://wikis.uni-paderborn.de/pc2doc/FPGA_Serial_Channels#Ring_topology
 					node_fpga0_channels.get(1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
 					node_fpga0_channels.get(3).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
-				}	
+				}
 
 				break;
 			// Torus

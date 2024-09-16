@@ -130,3 +130,54 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cecece', end
 rect.draw2d_ResizeHandle {
   display: none;
 }
+
+
+/******************************************************************
+ * CSS for custom menu
+ ******************************************************************/
+
+.custom-menu {
+  margin: 0;
+  display: none;
+  z-index: 1000;
+  position: absolute;
+  overflow: hidden;
+  border: 1px solid #CCC;
+  white-space: nowrap;
+  font-family: sans-serif;
+  background: #FFF;
+  color: #333;
+  border-radius: 5px;
+  padding: 0;
+}
+
+.custom-menu .title {
+  padding: 8px 12px;
+  font-size: 13px;
+  color: rgb(61, 113, 130);
+  border-bottom: 1px solid #CCC;
+}
+
+.custom-menu ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* Each of the items in the list */
+.custom-menu li {
+  padding: 8px 12px;
+  cursor: pointer;
+  list-style-type: none;
+  transition: all .3s ease;
+  user-select: none;
+}
+
+.custom-menu li.clear {
+  border-top: 1px solid #CCC;
+  color: red;
+
+}
+
+.custom-menu li:hover {
+  background-color: #DEF;
+}

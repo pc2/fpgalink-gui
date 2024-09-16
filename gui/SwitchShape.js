@@ -34,26 +34,40 @@ SwitchShape = draw2d.shape.basic.Label.extend({
         this.connector;
         this.isDrawn = false;
 
-        // Create 7 ports
+    
+        // Create 8 normal ports
         for (let i = 0; i < 8; i++) {
             let port = this.createPort("hybrid");
             port.setName(`inout_${i}` + this.id);
+
+            port.on("dragstart", function (e) {
+                toggle_config_ports(app.view.figures.data, false);
+            }, port);
+
+            port.on("dragend", function (e) {
+                toggle_config_ports(app.view.figures.data, true);
+            }, port);
         }
 
+        // Create config port
+        let config_port = this.createPort("hybrid");
+        config_port.setName(`config_port_` + this.id);
+        config_port.setBackgroundColor("#00FF00");
+        config_port.setColor("#000000");
 
-        // port.setMaxFanOut(1);
-        // port.on("connect", function () {
-        //     this.setVisible(false);
-        // }, port);
-        // port.on("disconnect", function () {
-        //     this.setVisible(true);
-        // }, port);
+        config_port.on("dragstart", function (e) {
+            toggle_non_config_ports(app.view.figures.data, "hide", "Switch");
+        }, config_port);
 
-        // this.orientation = attr.orientation;
+        config_port.on("dragend", function (e) {
+            toggle_non_config_ports(app.view.figures.data, "show", "Switch");
+        }, config_port);
+
+
+
+
         this.setOrientation(attr.orientation, false);
-
         this.installEditPolicy(new SelectionMenuPolicy());
-        // this.getFPGA().channelLayout.add(this);
     },
 
     setLinksToChannel: function (partner) {
@@ -79,6 +93,23 @@ SwitchShape = draw2d.shape.basic.Label.extend({
 
     getConnector: function () {
         return this.connector;
+    },
+
+    getAllConnections: function () {
+        let connections = [];
+
+        let ports = this.hybridPorts.data;
+        // -1 is to skip last port which is the config port
+        for (let i = 0; i < ports.length - 1; i++) {
+            const p = ports[i];
+            connections.push(...p.connections.data);
+        }
+
+        return connections;
+    },
+
+    getName: function() {
+        return "eth" + this.getText().substr(-2);
     },
 
     getOrientation: function () {

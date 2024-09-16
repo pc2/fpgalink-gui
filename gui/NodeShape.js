@@ -105,13 +105,30 @@ ChannelShape = draw2d.shape.basic.Label.extend({
 
 
         port.on("dragstart", function (e) {
+            toggle_config_ports(app.view.figures.data, false);
+
             if (siblingChannel) {
                 siblingChannel.setVisible(true)
                 siblingChannel.setVisible(true)
             }
+
+            // Intel nodes cannot connect to a switch so if I am
+            // an intel node, then hide all switch ports
+            // Loop over all figures and all ports and hide all config ports            
+            if (self.getFPGA().getNode().getType() == "Intel") {
+                toggle_all_switch_ports(app.view.figures.data, false)
+            }
+
         }, port);
         port.on("dragend", function () {
+            toggle_config_ports(app.view.figures.data, true);
+
             if (siblingChannel) siblingChannel.setVisible(false)
+
+            // Show switch ports again
+            if (self.getFPGA().getNode().getType() == "Intel") {
+                toggle_all_switch_ports(app.view.figures.data, true)
+            }
         }, port);
 
         // this.orientation = attr.orientation;
@@ -291,7 +308,7 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
     getChannelFromFpgalink: function (string_channel, isSibling) {
         // ch0, ch1, ch2, ch3"
         // n00, ..
-        
+
         var num = parseInt(string_channel.substring(2)) * 2 + (isSibling ? 0 : 1);
         return this.getChildren().get(1).getChildren().get(num);
     },
@@ -330,7 +347,7 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
         this.fpgaLabel.__cellConstraint.row = prop.labelRow;
         this.channelLayout.__cellConstraint.row = prop.channelLayoutRow;
 
-        
+
 
         gridDef[`def_${prop.arrangement[0]}s`] = Array(1).fill(-1);
         gridDef[`def_${prop.arrangement[1]}s`] = Array(this.getChannels().getSize() / 2).fill(-1);
@@ -360,28 +377,34 @@ NodeShape = draw2d.shape.layout.FlexGridLayout.extend({
             labelRow: 0,
             fpgaLayoutRow: 1,
             arrangement: ["row", "col"],
+            port_locator: new draw2d.layout.locator.XYRelPortLocator(100, 10)
         },
         [OrientationEnum.east]: {
             // labelPadding: {left: 25, right: 25},
             labelRow: 0,
             fpgaLayoutRow: 1,
             arrangement: ["col", "row"],
+            port_locator: new draw2d.layout.locator.XYRelPortLocator(101, 3)
         },
         [OrientationEnum.south]: {
             // labelPadding: {left: 100, right: 100},
             labelRow: 1,
             fpgaLayoutRow: 0,
             arrangement: ["row", "col"],
+            port_locator: new draw2d.layout.locator.XYRelPortLocator(100, 90)
         },
         [OrientationEnum.west]: {
             // labelPadding: {left: 25, right: 25},
             labelRow: 0,
             fpgaLayoutRow: 1,
             arrangement: ["col", "row"],
+            port_locator: new draw2d.layout.locator.XYRelPortLocator(0, 3)
         },
     }),
 
     init: function (attr) {
+        let self = this;
+
         this._super($.extend({
             bgColor: "#dbddde",
             color: "#d7d7d7",
@@ -414,6 +437,23 @@ NodeShape = draw2d.shape.layout.FlexGridLayout.extend({
 
         this.installEditPolicy(new SelectionMenuPolicy());
         this.orientation = orientation;
+
+
+
+        let config_port = this.createPort("hybrid", prop.port_locator);
+        config_port.setName("config_port_" + this.id);
+        config_port.setMaxFanOut(1);
+        config_port.setName(`config_port_` + this.id);
+        config_port.setBackgroundColor("#00FF00");
+        config_port.setColor("#000000");
+
+        config_port.on("dragstart", function (e) {
+            toggle_non_config_ports(app.view.figures.data, "hide", self.getType());
+        }, config_port);
+
+        config_port.on("dragend", function () {
+            toggle_non_config_ports(app.view.figures.data, "show", self.getType());
+        }, config_port);
     },
 
     addFPGA: function (string_acl, channelsCount) {
@@ -459,6 +499,8 @@ NodeShape = draw2d.shape.layout.FlexGridLayout.extend({
             fpga.setOrientation(orientation, false);
         });
 
+        this.getHybridPort(0).setLocator(prop.port_locator);
+
         this.height = 0;
         this.width = 0;
 
@@ -474,6 +516,40 @@ NodeShape = draw2d.shape.layout.FlexGridLayout.extend({
 
     getOrientation: function () {
         return this.orientation;
+    },
+
+    getType: function () {
+        return this.getFPGAs().data.length == 3 ? "Xilinx" : "Intel";
+    },
+
+    getChannelPorts: function () {
+        let ports = [];
+
+        let fpgas = this.getFPGAs().data;
+        for (let j = 0; j < fpgas.length; j++) {
+            const fpga = fpgas[j];
+            let channels = fpga.getChannels().data;
+
+            for (let k = 0; k < channels.length; k++) {
+                const channel = channels[k];
+                ports.push(...channel.hybridPorts.data);
+            }
+        }
+
+        return ports;
+    },
+
+    getAllConnections: function () {
+        let connections = [];
+
+        let ports = this.getChannelPorts();
+        for (let i = 0; i < ports.length; i++) {
+            const p = ports[i];
+
+            connections.push(...p.connections.data);
+        }
+
+        return connections;
     },
 
     getFPGAFromFpgalink: function (string_acl) {

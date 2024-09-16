@@ -66,14 +66,17 @@
                     for (let i = 0; i < connections.getSize(); i++) {
                         var connection = connections.get(i);
 
-                        // Parent is ChannelShape.
-                        let source_channel = connection.getSource().getParent();
-                        let target_channel = connection.getTarget().getParent();
+                        // Ignore in case this is a config connection
+                        if (!connection.sourcePort.name.includes("config_port")) {
+                            // Parent is ChannelShape.
+                            let source_channel = connection.getSource().getParent();
+                            let target_channel = connection.getTarget().getParent();
 
-                        let source_fpgalink_text = generate_fpgalink_output(source_channel);
-                        let target_fpgalink_text = generate_fpgalink_output(target_channel);
+                            let source_fpgalink_text = generate_fpgalink_output(source_channel);
+                            let target_fpgalink_text = generate_fpgalink_output(target_channel);
 
-                        srun_export += " --fpgalink=" + source_fpgalink_text + "-" + target_fpgalink_text + "";
+                            srun_export += " --fpgalink=" + source_fpgalink_text + "-" + target_fpgalink_text + "";
+                        }
                     }
 
                     // Export --fpgalink.
@@ -99,9 +102,6 @@
                     // Special case to replace eth with eth00
                     srun_cmd = srun_cmd.replace(/eth(?!\d{2})/g, 'eth00')
                     
-                    console.log( "hi9" ,srun_cmd);
-                    
-
                     var get_node_type = "";
 
                     if (urlParams.has('node-type') && 
@@ -188,7 +188,32 @@
 
     <div id="content">
         <div id="toolbar"></div>
-        <div id="canvas" class="" style="width:3000px; height:3000px;"></div>
+        <div id="canvas" class="" style="width:3000px; height:3000px;">
+            <!-- Menu for config options for 2 nodes -->
+            <ul class='custom-menu mult'>
+                <li data-action="one-by-one">1:1 Mapping</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Menu for config options for single nodes -->
+    <div class='custom-menu single'>
+        <div class="title">Configure Connection:</div>
+        <ul>
+            <li data-action="loopback">Loopback</li>
+            <li class="intel-only" data-action="pair">Pair</li>
+            <li data-action="channel">Channel i to i + 1</li>
+            <li class="intel-only" data-action="torus2">Torus2</li>
+        </ul>
+        <div class="intel-only title">Rings</div>
+        <ul class="intel-only">
+            <li data-action="ringO">RingO</li>
+            <li data-action="ringN">RingN</li>
+            <li data-action="ringZ">RingZ</li>
+        </ul>
+        <ul>
+            <li class="clear" data-action="clear">Clear all connections</li>
+        </ul>
     </div>
 
     <div id="navigation" class="">
