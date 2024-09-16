@@ -65,12 +65,16 @@ var SelectionMenuPolicy = draw2d.policy.figure.SelectionPolicy.extend({
 			let deleteBtn = $("<div class='overlayMenuItem overlayMenuDeleteItem'>&#10006;</div>");
 			let rotateLeftBtn = $("<div class='overlayMenuItem'>&#10226;</div>");
 			let rotateRightBtn = $("<div class='overlayMenuItem'>&#10227;</div>");
+			let options = $("<div class='overlayMenuItem' style='padding-right: 10px;'>&#8942;</div>");
 
 			this.overlay.append(deleteBtn);
-			// if (figure instanceof NodeShape) {
-				this.overlay.append(rotateLeftBtn);
-				this.overlay.append(rotateRightBtn);
-			// }
+			this.overlay.append(rotateLeftBtn);
+			this.overlay.append(rotateRightBtn);
+			
+			if (figure instanceof NodeShape) {
+				this.overlay.append(options);
+			}
+			
 			$("body").append(this.overlay);
 
 			rotateLeftBtn.on("click", function () {
@@ -160,6 +164,75 @@ var SelectionMenuPolicy = draw2d.policy.figure.SelectionPolicy.extend({
 				// var command= new draw2d.command.CommandDelete(figure);
 				// canvas.getCommandStack().execute(command);
 			})
+
+			options.on("click", function(ev) {
+				
+				// If the document is clicked somewhere
+				$(document).bind("mousedown", function (e) {
+					// If the clicked element is not the menu, hide the menu
+					// and remove the config connection
+					if (!$(e.target).parents(".custom-menu.single").length > 0) {
+						$(".custom-menu.single").hide(100);
+						
+						$(document).unbind("mousedown");
+						$(".custom-menu.single li").unbind("click");
+					}
+				});
+
+				// Hide Intel-only configs for Xilinx Nodes
+				if (figure.getType() == "Xilinx") {
+					$(".custom-menu.single .intel-only").hide();
+				} else {
+					$(".custom-menu.single .intel-only").show();
+				}
+			
+				// If the menu element is clicked
+				$(".custom-menu.single li").one("click", function () {
+					// This is the triggered action name
+
+					// Check if the node has any connection and display 
+					// a warning message, if accepted, then remove all
+					// current connections
+					let node_connections = figure.getAllConnections();
+					let continueAction = true;
+
+					if (node_connections.length) {
+						continueAction = confirm("The current connections will be deleted, do you want to continue?");
+					}
+
+					if (!continueAction) return;
+
+					// Delete current connections
+					delete_connections(node_connections, canvas);
+					
+					let action = $(this).attr("data-action");
+					switch (action) {
+						case "loopback":
+							connectBasedOnConfig([figure], "loopback");
+							break;
+						case "channel":
+							connectBasedOnConfig([figure], "channel");
+							break;
+						case "clear":
+							break;
+						default:
+							app.toolbar.createNodesAndConnections(action, 1, [figure], [])
+							break;
+					}
+			
+					// Hide it AFTER the action was triggered
+					$(".custom-menu.single").hide(100);
+					$(document).unbind("mousedown");
+					$(".custom-menu.single li").unbind("click");
+				});
+			
+			
+			
+				$(".custom-menu.single").finish().toggle(100).css({
+					top: ev.clientY + "px",
+					left: ev.clientX + "px"
+				});
+			});
 		}
 		this.posOverlay(figure);
 	},
