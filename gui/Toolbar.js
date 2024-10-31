@@ -165,12 +165,24 @@ example.Toolbar = Class.extend({
 
 	getNodeIdFpgalink: function (string_n, fpganodes) {
 		// n00, ..
+		let found_node;
 		for (let i = 0; i < fpganodes.length; i++) {
 			const node = fpganodes[i];
 			if (node.getName() == string_n) {
-				return node;
+				found_node = node;
+				break;
 			}
 		}
+
+		// This case happens when for example there is already n00 created
+		// and the user import a new node with needle n00, e.g: --fpgalink=n00:acl1:ch0-n00:acl1:ch1
+		// In this case I need to return the correct node
+		if (!found_node) {
+			let fpga_index = parseInt(string_n.substring(1))
+			found_node = fpganodes[fpga_index];
+		}
+
+		return found_node;
 	},
 
 	getSwitchFromName: function (name, switches) {
