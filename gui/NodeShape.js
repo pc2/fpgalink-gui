@@ -76,6 +76,8 @@ ChannelShape = draw2d.shape.basic.Label.extend({
 
         port.on("connect", function () {
             this.setVisible(false);
+            console.log("Firing");
+            
             if (siblingChannel) siblingChannel.setVisible(false)
         }, port)
         port.on("disconnect", function () {

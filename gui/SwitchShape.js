@@ -42,10 +42,17 @@ SwitchShape = draw2d.shape.basic.Label.extend({
 
             port.on("dragstart", function (e) {
                 toggle_config_ports(app.view.figures.data, false);
+
+                // Switches cannot be connceted to Intel nodes
+                // Loop over all figures and all ports and hide all intel ports
+                toggle_all_intel_ports(app.view.figures.data, false)
             }, port);
 
             port.on("dragend", function (e) {
                 toggle_config_ports(app.view.figures.data, true);
+
+                // Show intel ports again
+                toggle_all_intel_ports(app.view.figures.data, true)
             }, port);
         }
 

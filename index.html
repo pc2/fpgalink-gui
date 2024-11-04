@@ -3,7 +3,7 @@
 <head>
     <title>FPGALink-GUI</title>
     <!-- powered by at least five blockchains! -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
@@ -96,16 +96,17 @@
                 var get_decoded = decodeURI(window.location.search);
                 const urlParams = new URLSearchParams(get_decoded);
 
+                
                 if (urlParams.has('import')) {
                     srun_cmd = urlParams.get('import');
-
+                    
                     // Special case to replace eth with eth00
                     srun_cmd = srun_cmd.replace(/eth(?!\d{2})/g, 'eth00')
-                    
+                                        
                     var get_node_type = "";
 
                     if (urlParams.has('node-type') && 
-                       (urlParams.get('node-type') == NodeTypeEnum.intel ||
+                        (urlParams.get('node-type') == NodeTypeEnum.intel ||
                         urlParams.get('node-type') == NodeTypeEnum.xilinx)) {
                         get_node_type = urlParams.get('node-type'); 
                     } else {
@@ -113,6 +114,9 @@
                         // Idea: If command has
                         //   * acl2, it has to be Xilinx
                         //   * chX, where X >= 2, it has to be Intel
+
+
+
                         if (srun_cmd.indexOf("acl2") > -1) {
                             get_node_type = NodeTypeEnum.xilinx;
                         }
