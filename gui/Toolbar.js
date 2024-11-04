@@ -30,6 +30,20 @@ example.Toolbar = Class.extend({
 		this.redoButton = $("<button>Redo</button>");
 		this.html.append(this.redoButton);
 		this.redoButton.button().click($.proxy(function () {
+
+			// This is a workaround to fix a bug in the redo
+			// The bug is when the connections are created using the connectChannels
+			// function, then the redo command will cause bugs, so this will check 
+			// if the redo command is a connection, then set the source and target
+			// port to fix the bug
+			let redostack = this.view.getCommandStack().redostack;
+			let redocommand = redostack[redostack.length - 1];
+			if (redocommand.figure instanceof HoverConnection && redocommand.label == "Add Shape") {
+				let connection = redocommand.figure;
+				connection.setSource(connection.sourcePort);
+				connection.setTarget(connection.targetPort);
+			}
+			
 			this.view.getCommandStack().redo();
 		}, this)).button("option", "disabled", true);
 
@@ -367,7 +381,16 @@ example.Toolbar = Class.extend({
 		var srun_fpgalinks_needle = "--fpgalink=";
 
 		var srun_raw_copy = srun_raw;
-		var fromIndex = 0;
+
+		// If there is no --fpgalink, just add them so that the following 
+		// while loop will work normally 
+		if(srun_raw_copy.indexOf(srun_fpgalinks_needle) == -1) {
+			srun_raw_copy = srun_raw_copy.trim().split(" ").map((x => {
+				x = "--fpgalink=" + x;
+				return x;
+			})).join(" ");
+		}
+
 		while ((i = srun_raw_copy.indexOf(srun_fpgalinks_needle)) > -1) {
 			var next_space = srun_raw_copy.indexOf(" ", i + srun_fpgalinks_needle.length);
 			// Check if space symbol is available at end.
@@ -385,63 +408,6 @@ example.Toolbar = Class.extend({
 			// Remove found link.
 			srun_raw_copy = srun_raw_copy.substring(next_space);
 		}
-
-
-		// Parse and add fpga links: n00:acl0:ch0-n00:acl1:ch0
-		if (srun_raw.indexOf(srun_fpgalinks_needle) == -1) {
-			// Array(7) [ "n00:acl1:ch0-n00:acl1:ch1", "00", "1", "0", "00", "1", "1" ]
-			// Array(9)["n00:acl0:ch1-eth", "n00:acl0:ch1", "n00", "acl0", "ch1", "eth", undefined, undefined, undefined]
-			for (var i = 0; i < fpgalinks.length; i++) {
-				// Parse and add fpga links: n00:acl0:ch0-n00:acl1:ch0
-				var links = fpgalinks[i][0].split("-");
-
-				// Point 1 (think of source).
-				// value: n00:acl0:ch0 or eth (for Ethernet switch).
-				var link_p1 = links[0].split(":");
-				// Point 2 (think of destination).
-				// value: n00:acl0:ch0 or eth (for Ethernet switch).
-				var link_p2 = links[1].split(":");
-
-				// Channels to connect. Logic is required to differentiate if
-				//   the channel is between FPGAs or to/from Ethernet switch.
-				let chan0;
-				let chan1;
-
-				if (link_p1.length == 3) {
-					// Channel is from FPGA node.
-					// Get node.
-					var tnode_p1 = this.getNodeIdFpgalink(link_p1[0], fpganodes);
-					// Get FPGA.
-					var tfpga_p1 = tnode_p1.getFPGAFromFpgalink(link_p1[1]);
-
-					// Get channel.
-					chan0 = tfpga_p1.getChannelFromFpgalink(link_p1[2]);
-				} else {
-					// Channel is to ethernet switch.
-					chan0 = this.getSwitchFromName(link_p1[0], eth_switches);
-				}
-
-				if (link_p2.length == 3) {
-					// Channel is to FPGA node.
-
-					// Get node.
-					var tnode_p2 = this.getNodeIdFpgalink(link_p2[0], fpganodes);
-					// Get FPGA.
-					var tfpga_p2 = tnode_p2.getFPGAFromFpgalink(link_p2[1]);
-
-					chan1 = tfpga_p2.getChannelFromFpgalink(link_p2[2]);
-				} else {
-					// Channel is to ethernet switch.
-					chan1 = this.getSwitchFromName(link_p2[0], eth_switches);
-				}
-
-				// Get channels, connect and draw them.
-				this.connectChannels(chan0, chan1);
-			}
-		}
-
-
-
 	},
 
 	createNodesAndConnections: function (full_match, srun_N, fpganodes, eth_switches) {
@@ -866,9 +832,6 @@ example.Toolbar = Class.extend({
 				}
 
 				// Get channels, connect and draw them.
-				// console.log(srun_raw);
-				// console.log(eth_switches);
-				// console.log("The 2 channels are: ", chan0, chan1);
 				this.connectChannels(chan0, chan1);
 
 				// if(link_p1[2] == "ch0") {
@@ -981,7 +944,7 @@ example.Toolbar = Class.extend({
 		//
 		// Draw connection only ones.
 		// if (!tchannel_p1.getIsDrawn()) {
-		var c = new HoverConnection();
+
 
 		// In case of ethernet switch, distirbute the connections over all
 		// ports, this is just visiual optimization
@@ -1004,8 +967,7 @@ example.Toolbar = Class.extend({
 		let sourcePort = getLeastPort(tchannel_p1);
 		let targetPort = getLeastPort(tchannel_p2);
 
-		c.setSource(sourcePort);
-		c.setTarget(targetPort);
+		var c = new HoverConnection(sourcePort, targetPort);
 
 		// Add connector to model.
 		tchannel_p1.setConnector(c);

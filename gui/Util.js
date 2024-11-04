@@ -128,7 +128,28 @@ function toggle_all_switch_ports(figures, isVisible) {
     }
 }
 
-function delete_connections(connections, canvas, addToStack=true) {
+function toggle_all_intel_ports(figures, isVisible) {
+    for (let i = 0; i < figures.length; i++) {
+        const figure = figures[i];
+        if (figure instanceof NodeShape && figure.getType() == "Intel") {
+            let channelPorts = figure.getChannelPorts();
+            for (let k = 0; k < channelPorts.length; k++) {
+                const p = channelPorts[k];
+
+                if (!isVisible) {
+                    p.setVisible(false);
+                } else {
+                    // Show only ports that does not have any connection
+                    if (!p.connections.data.length && p.parent.siblingChannel) {
+                        p.setVisible(true);
+                    }
+                }
+            }
+        }
+    }
+}
+
+function delete_connections(connections, canvas, addToStack = true) {
     for (let i = 0; i < connections.length; i++) {
         const conn = connections[i];
 
@@ -137,7 +158,7 @@ function delete_connections(connections, canvas, addToStack=true) {
             canvas.getCommandStack().execute(cmd);
         } else {
             canvas.remove(conn);
-        }   
+        }
     }
 }
 
@@ -160,7 +181,7 @@ function connectBasedOnConfig(nodes, config, eth_switch) {
                 }
             } else if (config == "loopback") {
                 let fpgalink_cmd = `${nodes[0].getName()}:acl${i}:ch${j}-${nodes[0].getName()}:acl${i}:ch${j}`;
-				app.toolbar.createNodesAndConnections(fpgalink_cmd, 2, nodes, [])
+                app.toolbar.createNodesAndConnections(fpgalink_cmd, 2, nodes, [])
             } else if (config == "channel") {
                 if (j % 2 == 0) {
                     let fpgalink_cmd = `${nodes[0].getName()}:acl${i}:ch${j}-${nodes[0].getName()}:acl${i}:ch${j + 1}`;
