@@ -65,28 +65,29 @@ var SelectionMenuPolicy = draw2d.policy.figure.SelectionPolicy.extend({
 			let deleteBtn = $("<div class='overlayMenuItem overlayMenuDeleteItem'>&#10006;</div>");
 			let rotateLeftBtn = $("<div class='overlayMenuItem'>&#10226;</div>");
 			let rotateRightBtn = $("<div class='overlayMenuItem'>&#10227;</div>");
-			let options = $("<div class='overlayMenuItem' style='padding-right: 10px;'>&#8942;</div>");
+			let nodeOptions = $("<div class='overlayMenuItem options' style='padding-right: 10px;'>&#8942;</div>");
+			let labelOptions = $("<div class='overlayMenuItem options' style='padding-right: 10px;'>&#8942;</div>");
 
 			this.overlay.append(deleteBtn);
 			this.overlay.append(rotateLeftBtn);
 			this.overlay.append(rotateRightBtn);
 			
 			if (figure instanceof NodeShape) {
-				this.overlay.append(options);
+				this.overlay.append(nodeOptions);
+			}
+			
+			if (figure instanceof Label) {
+				this.overlay.append(labelOptions);
 			}
 			
 			$("body").append(this.overlay);
 
 			rotateLeftBtn.on("click", function () {
-				if (figure instanceof NodeShape || figure instanceof SwitchShape) {
-					figure.setOrientation(OrientationEnum.next(figure.getOrientation()));
-				}
+				figure.setOrientation(OrientationEnum.next(figure.getOrientation()));
 			});
 
 			rotateRightBtn.on("click", function () {
-				if (figure instanceof NodeShape || figure instanceof SwitchShape) {
-					figure.setOrientation(OrientationEnum.prev(figure.getOrientation()));
-				}
+				figure.setOrientation(OrientationEnum.prev(figure.getOrientation()));
 			});
 
 			deleteBtn.on("click", function () {
@@ -165,7 +166,7 @@ var SelectionMenuPolicy = draw2d.policy.figure.SelectionPolicy.extend({
 				// canvas.getCommandStack().execute(command);
 			})
 
-			options.on("click", function(ev) {
+			nodeOptions.on("click", function(ev) {
 				
 				// If the document is clicked somewhere
 				$(document).bind("mousedown", function (e) {
@@ -226,11 +227,55 @@ var SelectionMenuPolicy = draw2d.policy.figure.SelectionPolicy.extend({
 					$(".custom-menu.single li").unbind("click");
 				});
 			
-			
-			
+				let { x, y } = ev.target.getBoundingClientRect();
 				$(".custom-menu.single").finish().toggle(100).css({
-					top: ev.clientY + "px",
-					left: ev.clientX + "px"
+					top: (y + 30) + "px",
+					left: x + "px"
+				});
+			});
+
+			labelOptions.on("click", function(ev) {
+				
+				// If the document is clicked somewhere
+				$(document).bind("mousedown", function (e) {
+					// If the clicked element is not the menu, hide the menu
+					if (!$(e.target).parents(".custom-menu.label").length > 0) {
+						$(".custom-menu.label").hide(100);
+						
+						$(document).unbind("mousedown");
+						$(".custom-menu.label li").unbind("click");
+					}
+				});
+			
+				// If the menu element is clicked
+				$(".custom-menu.label li").one("click", function () {
+					// This is the triggered action name
+					let action = $(this).attr("data-action");
+					let color = action.split("-")[1];
+					
+					// Change background color
+					if (action.startsWith("bg")) {
+						figure.setBackgroundColor(color);
+						figure.setColor(color);
+					} else {
+						figure.setFontColor(color);
+					}
+					
+					
+					
+					
+					
+			
+					// Hide it AFTER the action was triggered
+					$(".custom-menu.label").hide(100);
+					$(document).unbind("mousedown");
+					$(".custom-menu.label li").unbind("click");
+				});
+			
+				let { x, y } = ev.target.getBoundingClientRect();
+				$(".custom-menu.label").finish().toggle(100).css({
+					top: (y + 30) + "px",
+					left: x + "px"
 				});
 			});
 		}

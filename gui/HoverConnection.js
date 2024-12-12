@@ -77,12 +77,6 @@ function showCustomConfigs(x, y, connection) {
                 }
 
                 break;
-            case "second":
-                alert("second");
-                break;
-            case "third":
-                alert("Third");
-                break;
         }
 
         // Remove the config connection without adding it to the command stack

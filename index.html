@@ -7,9 +7,17 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/shepherd.js/dist/js/shepherd.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js/dist/css/shepherd.css">
+
     <link type="text/css" rel="stylesheet" href="./css/aristo/jquery-ui-1.8.16.custom.css" />
     <link type="text/css" rel="stylesheet" href="./css/jquery.layout.css" />
     <link type="text/css" rel="stylesheet" href="./css/application.css" />
+
+
 
     <script src="./lib/jquery.js"></script>
     <script src="./lib/jquery-ui.js"></script>
@@ -26,8 +34,8 @@
     <script src="./gui/SelectionMenuPolicy.js"></script>
     <script src="./gui/NodeShape.js"></script>
     <script src="./gui/SwitchShape.js"></script>
-    <!--<script src="./gui/NodeShapeHorizontal.js"></script>-->
-    <!-- <script src="./gui/NodeShapeVertical.js"></script>-->
+    <script src="./gui/Label.js"></script>
+    
     <script type="text/javascript">
         var app;
         document.addEventListener("DOMContentLoaded", function () {
@@ -96,19 +104,19 @@
                 var get_decoded = decodeURI(window.location.search);
                 const urlParams = new URLSearchParams(get_decoded);
 
-                
+
                 if (urlParams.has('import')) {
                     srun_cmd = urlParams.get('import');
-                    
+
                     // Special case to replace eth with eth00
                     srun_cmd = srun_cmd.replace(/eth(?!\d{2})/g, 'eth00')
-                                        
+
                     var get_node_type = "";
 
-                    if (urlParams.has('node-type') && 
+                    if (urlParams.has('node-type') &&
                         (urlParams.get('node-type') == NodeTypeEnum.intel ||
-                        urlParams.get('node-type') == NodeTypeEnum.xilinx)) {
-                        get_node_type = urlParams.get('node-type'); 
+                            urlParams.get('node-type') == NodeTypeEnum.xilinx)) {
+                        get_node_type = urlParams.get('node-type');
                     } else {
                         // Apply minor heuristic if command is for Xilinx or Intel.
                         // Idea: If command has
@@ -120,17 +128,17 @@
                         if (srun_cmd.indexOf("acl2") > -1) {
                             get_node_type = NodeTypeEnum.xilinx;
                         }
-                        if (srun_cmd.indexOf("ch2") > -1 || srun_cmd.indexOf("ch3") > -1 ) {
+                        if (srun_cmd.indexOf("ch2") > -1 || srun_cmd.indexOf("ch3") > -1) {
                             get_node_type = NodeTypeEnum.intel;
                         }
 
                         // If heuristic does not catch, ask user.
-                        if(get_node_type == "") {
+                        if (get_node_type == "") {
                             document.getElementById("prompt-node-type").showModal();
                         }
                     }
 
-                    if(get_node_type != "") {
+                    if (get_node_type != "") {
                         app.toolbar.srunApply(srun_cmd, get_node_type);
                     }
                 }
@@ -149,6 +157,16 @@
                 document.getElementById("prompt-node-type").close();
                 app.toolbar.srunApply(srun_cmd, NodeTypeEnum.xilinx);
             });
+
+            // Tutorial Buttons
+            let tutorialButtons = $(".tutorial-btn");
+            tutorialButtons.button().click($.proxy(function (ev) {
+                let btn = ev.target.parentElement;
+                let type = btn.dataset.type;
+                let currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('tutorial', type);
+                window.open(currentUrl.toString(), '_blank');
+            }, this)).button("option", "enabled", true);
 
             // Navigation.
             // Grid toggle.
@@ -182,6 +200,14 @@
             writer.marshal(canvas, function (json) {
                 $("#json_output").text(JSON.stringify(json, null, 2));
             });
+        }
+
+        // If the tutorial param is set, start the tutorial
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('tutorial')) {
+            let script = document.createElement("script");
+            script.src = "./gui/Tutorial.js";
+            document.head.appendChild(script);
         }
 
     </script>
@@ -220,17 +246,52 @@
         </ul>
     </div>
 
+    <!-- Menu for config options for labels -->
+    <div class='custom-menu label'>
+        <div class="title">Change background color:</div>
+        <ul>
+            <li data-action="bg-black">Black</li>
+            <li data-action="bg-white">White</li>
+            <li data-action="bg-#5b5b5b">Grey</li>
+            <li data-action="bg-red">Red</li>
+            <li data-action="bg-yellow">Yellow</li>
+            <li data-action="bg-green">Green</li>
+            <li data-action="bg-blue">Blue</li>
+        </ul>
+        <div class="intel-only title">Change text color:</div>
+        <ul>
+            <li data-action="t-black">Black</li>
+            <li data-action="t-white">White</li>
+            <li data-action="t-#5b5b5b">Grey</li>
+            <li data-action="t-red">Red</li>
+            <li data-action="t-yellow">Yellow</li>
+            <li data-action="t-green">Green</li>
+            <li data-action="t-blue">Blue</li>
+        </ul>
+    </div>
+
     <div id="navigation" class="">
 
         <p style="font-size:22px;"><strong><a href="index.html" style="color:#18b0e2;">FPGALink-GUI</a></strong></p>
 
-        <p style="color:#fff;"><strong>Add FPGA Nodes by <br />Drag&Drop</strong></p>
-        <div data-type="node-intel" data-shape="east" class="palette_node_element draw2d_droppable">Intel Stratix 10 Node</div>
-        <div data-type="node-xilinx" data-shape="east" class="palette_node_element draw2d_droppable">Xilinx Alveo U280 Nodes</div>
-        <p style="color:#fff;"><strong>Add Ethernet Switch by <br />Drag&Drop</strong></p>
-        <div data-type="node-ethernet-switch" data-shape="north" class="palette_node_element draw2d_droppable">Ethernet Switch</div>
-        <p style="color:#fff;"><strong>Add Annotations</strong></p>
-        <div data-type="label" data-shape="label" class="palette_node_element draw2d_droppable">Label</div>
+        <p style="color:#fff;"><strong>Add Elements by Drag&Drop</strong></p>
+        <div data-type="node-intel" id="intel-node" data-shape="east" class="palette_node_element draw2d_droppable">
+            Intel Stratix 10
+            Node</div>
+        <div data-type="node-xilinx" id="xilinx-node" data-shape="east" class="palette_node_element draw2d_droppable">
+            Xilinx Alveo U280
+            Nodes</div>
+        <div data-type="node-ethernet-switch" id="ethernet-switch" data-shape="north"
+            class="palette_node_element draw2d_droppable">Ethernet
+            Switch</div>
+        <div data-type="label" data-shape="label" id="label" class="palette_node_element draw2d_droppable">Label</div>
+
+        <p style="color:#fff;"><strong>Tutorials</strong></p>
+        <button data-type="basic" class="tutorial-btn">Basic Tutorial</button>
+        <button data-type="advanced" class="tutorial-btn">Advanced Tutorial</button>
+        <button data-type="switch" class="tutorial-btn">Switch Tutorial</button>
+        <button data-type="actions" class="tutorial-btn">Actions Tutorial</button>
+
         <p style="color:#fff;"><strong>Settings</strong></p>
         <button id="toggleGridButton">Toggle Grid</button>
         <p style="color:#fff;">Change Router</p>
@@ -256,12 +317,6 @@
         JSON input
         <textarea id="json_input" rows="4" cols="40"></textarea>
     </div> -->
-
-    <div id="svg_output_div"
-        style="overflow:auto;position:absolute; top:270px; right:20px; width:350; height:110;background:white;border:1px solid gray;display:none;">
-        SVG output
-        <textarea id="svg_output" rows="4" cols="40"></textarea>
-    </div>
 
     <dialog id="prompt-node-type" role="dialog" aria-labelledby="prompt-dialog-heading">
         Node type (intel or xilinx) unclear. Select<br />

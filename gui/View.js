@@ -67,72 +67,8 @@ example.View = draw2d.Canvas.extend({
         // Switch between types that can be added.
         //   - type "node": n2fpga nodes (with orientation)
         //   - type "label": different labels for decoration
-        
-        switch($(droppedDomNode).data("type")) {
-            case "node-intel" :
-                var node = new NodeShape({ "orientation": $(droppedDomNode).data("shape") })
-                
-                // node.setOrientation(orientation);
-                node.setName(this.getNodeNameNew());
-                node.addFPGA("acl0", 4);
-                node.addFPGA("acl1", 4);
-                
-                // create a command for the undo/redo support
-                var command = new draw2d.command.CommandAdd(this, node, x, y);
-                this.getCommandStack().execute(command);
-                
-                // Workaround to fix size problem
-                node.setOrientation(node.orientation);
 
-                break;
-            case "node-xilinx":
-                var node = new NodeShape({ "orientation": $(droppedDomNode).data("shape") })
-
-                // node.setOrientation(orientation);
-                node.setName(this.getNodeNameNew());
-                node.addFPGA("acl0", 2);
-                node.addFPGA("acl1", 2);
-                node.addFPGA("acl2", 2);
-
-                // create a command for the undo/redo support
-                var command = new draw2d.command.CommandAdd(this, node, x, y);
-                this.getCommandStack().execute(command);
-
-                break;
-            case "label" :
-                // Add decoration by type.
-                switch ($(droppedDomNode).data("shape")) {
-                    case "label" :
-                        var figure = new draw2d.shape.note.PostIt({
-                            text: "label text",
-                            color: "#000000",
-                            padding: 20
-                        });
-
-                        figure.installEditor(new draw2d.ui.LabelInplaceEditor());
-
-                        // create a command for the undo/redo support
-                        var command = new draw2d.command.CommandAdd(this, figure, x, y);
-                        this.getCommandStack().execute(command);
-
-                        break;
-                    default :
-                        console.log("unknown shape.");
-                }
-
-                break;
-            case "node-ethernet-switch":
-                var eth_switch = new SwitchShape({ "orientation": $(droppedDomNode).data("shape") })
-                eth_switch.setText(this.getSwitchNameNew())
-
-                // create a command for the undo/redo support
-                var command = new draw2d.command.CommandAdd(this, eth_switch, x, y);
-                this.getCommandStack().execute(command);
-
-                break;
-            default :
-                console.log("unknown type: \"" + $(droppedDomNode).data("type") + "\".");
-        }
-
+        // This function is available in the Utils.js
+        createNodes($(droppedDomNode).data("type"), $(droppedDomNode).data("shape"), x, y);
     }
 });
