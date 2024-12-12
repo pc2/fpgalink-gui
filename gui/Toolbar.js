@@ -16,10 +16,13 @@ example.Toolbar = Class.extend({
 		//
 		view.on("select", $.proxy(this.onSelectionChanged, this));
 
+		let undoRedoContainer = $("<span class='undo-redo-container'></span>");
+		this.html.append(undoRedoContainer);
+
 		// Inject the UNDO Button and the callbacks
 		//
 		this.undoButton = $("<button>Undo</button>");
-		this.html.append(this.undoButton);
+		undoRedoContainer.append(this.undoButton);
 		this.undoButton.button().click($.proxy(function () {
 			this.view.getCommandStack().undo();
 			// console.log(this.view);
@@ -28,7 +31,7 @@ example.Toolbar = Class.extend({
 		// Inject the REDO Button and the callback
 		//
 		this.redoButton = $("<button>Redo</button>");
-		this.html.append(this.redoButton);
+		undoRedoContainer.append(this.redoButton);
 		this.redoButton.button().click($.proxy(function () {
 
 			// This is a workaround to fix a bug in the redo
@@ -43,7 +46,7 @@ example.Toolbar = Class.extend({
 				connection.setSource(connection.sourcePort);
 				connection.setTarget(connection.targetPort);
 			}
-			
+
 			this.view.getCommandStack().redo();
 		}, this)).button("option", "disabled", true);
 
@@ -98,8 +101,12 @@ example.Toolbar = Class.extend({
 
 		// Inject the SRUN Button
 		//
+
+		let importContainer = $("<span class='import-container'></span>");
+		this.html.append(importContainer);
+
 		this.srunImportIntelButton = $("<button>IMPORT INTEL</button>");
-		this.html.append(this.srunImportIntelButton);
+		importContainer.append(this.srunImportIntelButton);
 		this.srunImportIntelButton.button().click($.proxy(function () {
 			var srun_raw = prompt("Enter command, f.e. srun", "FPGALINK0=n2fpga03:acl1:ch0-n2fpga03:acl1:ch1  FPGALINK1=n2fpga02:acl0:ch0-n2fpga02:acl0:ch1  FPGALINK2=n2fpga02:acl0:ch2-n2fpga02:acl0:ch3  FPGALINK3=n2fpga03:acl1:ch2-n2fpga03:acl1:ch3");
 
@@ -108,7 +115,7 @@ example.Toolbar = Class.extend({
 		}, this)).button("option", "enabled", true);
 
 		this.srunImportXilinxButton = $("<button>IMPORT XILINX</button>");
-		this.html.append(this.srunImportXilinxButton);
+		importContainer.append(this.srunImportXilinxButton);
 		this.srunImportXilinxButton.button().click($.proxy(function () {
 			var srun_raw = prompt("Enter command, f.e. srun", " -N 2 --fpgalink=n01:acl1:ch1-n00:acl2:ch1 --fpgalink=n01:acl2:ch0-n01:acl2:ch1 --fpgalink=n00:acl1:ch0-n00:acl1:ch1 --fpgalink=n01:acl0:ch0-n01:acl0:ch1 --fpgalink=n00:acl0:ch0-n01:acl1:ch0 --fpgalink=n00:acl0:ch1-n00:acl2:ch0");
 
@@ -122,9 +129,9 @@ example.Toolbar = Class.extend({
 
 		// Inject the srun EXPORT Button
 		//
-		this.srunExportInput = $("<input type=\"text\" size=\"4\" value=\"\" id=\"srunExportInput\">");
+		this.srunExportInput = $("<input type=\"text\" size=\"4\" value=\"\" id=\"srunExportInput\" hidden>");
 		this.html.append(this.srunExportInput);
-		this.srunExportButton = $("<button>Copy --fpgalink</button>");
+		this.srunExportButton = $("<button class='copy-fpgalink'>Copy --fpgalink</button>");
 		this.html.append(this.srunExportButton);
 		this.srunExportButton.button().click($.proxy(function () {
 
@@ -139,9 +146,9 @@ example.Toolbar = Class.extend({
 
 		// Inject the url EXPORT Button
 		//
-		this.urlExportInput = $("<input type=\"text\" size=\"4\" value=\"\" id=\"urlExportInput\">");
+		this.urlExportInput = $("<input type=\"text\" size=\"4\" value=\"\" id=\"urlExportInput\" hidden>");
 		this.html.append(this.urlExportInput);
-		this.urlExportButton = $("<button>Copy URL</button>");
+		this.urlExportButton = $("<button class='copy-url'>Copy URL</button>");
 		this.html.append(this.urlExportButton);
 		this.urlExportButton.button().click($.proxy(function () {
 
@@ -155,24 +162,59 @@ example.Toolbar = Class.extend({
 		this.html.append(this.delimiter);
 
 		// Export SVG.
-		this.svgExportButton = $("<button>Export SVG</button>");
+		this.svgExportButton = $("<button class='export-svg'>Export SVG</button>");
 		this.html.append(this.svgExportButton);
 
 		this.svgExportButton.button().click($.proxy(function () {
+			// Turn off the grid if it's turned on
+			// First, save previous state
+			let gridIsOn = app.toolbar.installedPolicy != null;
+			if (gridIsOn) {
+				// Simulate click on the button
+				$("#toggleGridButton").click();
+			}
 
+			// Save current dimensions
 			var tDimension = new draw2d.geo.Rectangle(0, 0, view.getWidth(), view.getHeight());
 
+			// Set the dimenstion to fit current nodes
 			view.setDimension();
 
+			// Get the SVG text
+			let svgText = "";
 			var writer = new draw2d.io.svg.Writer();
 			writer.marshal(view, function (svg) {
-				$("#svg_output").text(svg);
+				svgText = svg;
 			});
 
+			// Set the view back to its old dimension
 			view.setDimension(tDimension);
 
-			$('#svg_output_div').show();
+			// Turn on the grid again, if it was turned on
+			if (gridIsOn) {
+				// Simulate click on the button
+				$("#toggleGridButton").click();
+			}
 
+			// Download the SVG
+			// Convert SVG string to a Blob
+			const blob = new Blob([svgText], { type: 'image/svg+xml' });
+
+			// Create a temporary object URL
+			const url = URL.createObjectURL(blob);
+
+			// Create a temporary <a> element
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = 'output.svg';
+			document.body.appendChild(a);
+
+			// Trigger the download
+			a.click();
+
+			// Clean up
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
 		}, this)).button("option", "enabled", true);
 
 	},
@@ -384,7 +426,7 @@ example.Toolbar = Class.extend({
 
 		// If there is no --fpgalink, just add them so that the following 
 		// while loop will work normally 
-		if(srun_raw_copy.indexOf(srun_fpgalinks_needle) == -1) {
+		if (srun_raw_copy.indexOf(srun_fpgalinks_needle) == -1) {
 			srun_raw_copy = srun_raw_copy.trim().split(" ").map((x => {
 				x = "--fpgalink=" + x;
 				return x;

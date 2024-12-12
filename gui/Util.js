@@ -192,3 +192,67 @@ function connectBasedOnConfig(nodes, config, eth_switch) {
         }
     }
 }
+
+function createNodes(type, shape, x, y) {
+    let view = app.view;
+
+    switch (type) {
+        case "node-intel":
+            var node = new NodeShape({ "orientation": shape })
+
+            // node.setOrientation(orientation);
+            node.setName(view.getNodeNameNew());
+            node.addFPGA("acl0", 4);
+            node.addFPGA("acl1", 4);
+
+            // create a command for the undo/redo support
+            var command = new draw2d.command.CommandAdd(view, node, x, y);
+            view.getCommandStack().execute(command);
+
+            // Workaround to fix size problem
+            node.setOrientation(node.orientation);
+
+            break;
+        case "node-xilinx":
+            var node = new NodeShape({ "orientation": shape })
+
+            // node.setOrientation(orientation);
+            node.setName(view.getNodeNameNew());
+            node.addFPGA("acl0", 2);
+            node.addFPGA("acl1", 2);
+            node.addFPGA("acl2", 2);
+
+            // create a command for the undo/redo support
+            var command = new draw2d.command.CommandAdd(view, node, x, y);
+            view.getCommandStack().execute(command);
+
+            break;
+        case "label":
+            // Add decoration by type.
+            switch (shape) {
+                case "label":
+                    var label = new Label({"orientation": "north"});
+
+                    // create a command for the undo/redo support
+                    var command = new draw2d.command.CommandAdd(view, label, x, y);
+                    view.getCommandStack().execute(command);
+
+                    break;
+                default:
+                    console.log("unknown shape.");
+            }
+
+            break;
+        case "node-ethernet-switch":
+            var eth_switch = new SwitchShape({ "orientation": shape })
+            eth_switch.setText(view.getSwitchNameNew())
+
+            // create a command for the undo/redo support
+            var command = new draw2d.command.CommandAdd(view, eth_switch, x, y);
+            view.getCommandStack().execute(command);
+
+            break;
+        default:
+            console.log("unknown type: \"" + $(droppedDomNode).data("type") + "\".");
+    }
+}

@@ -86,10 +86,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cecece', end
  padding:10px;
  cursor:move;
  width:90px;
- margin: 30px auto 30px auto;
+ margin: 15px auto 15px auto;
  text-align:center;
- align:center;
  border-radius: 5px;
+}
+
+.tutorial-btn {
+  margin-bottom: 15px;
 }
 
 .shadow {
@@ -158,6 +161,13 @@ rect.draw2d_ResizeHandle {
   border-bottom: 1px solid #CCC;
 }
 
+.custom-menu.label .title {
+  padding: 4px 6px;
+  font-size: 11px;
+  color: rgb(61, 113, 130);
+  border-bottom: 1px solid #CCC;
+}
+
 .custom-menu ul {
   margin: 0;
   padding: 0;
@@ -172,6 +182,11 @@ rect.draw2d_ResizeHandle {
   user-select: none;
 }
 
+.custom-menu.label li {
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
 .custom-menu li.clear {
   border-top: 1px solid #CCC;
   color: red;
@@ -180,4 +195,14 @@ rect.draw2d_ResizeHandle {
 
 .custom-menu li:hover {
   background-color: #DEF;
+}
+
+/******************************************************************
+ * CSS for Tutorial
+ ******************************************************************/
+.pointer-none,
+.pointer-none *,
+.to-be-deleted,
+.to-be-deleted * {
+  pointer-events: none !important;
 }
