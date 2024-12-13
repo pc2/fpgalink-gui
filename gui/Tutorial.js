@@ -36,10 +36,7 @@ const steps = {
         }
     },
     "advanced": {
-        "createNode": {
-            title: 'Create a Node',
-            description: 'First of all, lets create a node and select it. <br/> When you select the node, a list of options will appear!',
-        },
+        // createNode & nodeOptions steps are being added from the basic tutorial in the JS
         "nodeConfigurations": {
             title: 'Node Configurations',
             description: 'When you select the 3 dots, you will find the following menu. <br/> There are a set of pre-defined connections which you choose from. </br> Lets try the Pair configuration.',
