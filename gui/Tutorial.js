@@ -1,5 +1,5 @@
 const steps = {
-    "advanced": {
+    "basic": {
         "createNode": {
             title: 'Create a Node',
             description: 'You can create a node by drag and drop this label into the grid',
@@ -28,6 +28,15 @@ const steps = {
             side: "right",
             align: 'start',
         },
+        "copyConfiguration": {
+            title: 'Copy Configuration',
+            description: 'Once you have implemented your design, you can click here to copy the --fpgalink configuration. This configuration can be used later with the changeFPGALinks tool to configure the connections of the FPGA. You can learn more about the changeFPGALinks tool <a href="https://upb-pc2.atlassian.net/wiki/spaces/PC2DOK/pages/1903821/changeFPGALinks" target="_blank">here</a>',
+            side: "bottom",
+            align: 'center',
+        }
+    },
+    "advanced": {
+        // createNode & nodeOptions steps are being added from the basic tutorial in the JS
         "nodeConfigurations": {
             title: 'Node Configurations',
             description: 'When you select the 3 dots, you will find the following menu. <br/> There are a set of pre-defined connections which you choose from. </br> Lets try the Pair configuration.',
@@ -57,12 +66,6 @@ const steps = {
             description: 'You can see now that each channel from the first node is connected to its relative channel in the second node.',
             side: "right",
             align: 'center',
-        },
-        "copyConfiguration": {
-            title: 'Copy Configuration',
-            description: 'Once you have implemented your design, you can click here to copy the --fpgalink configuration. This configuration can be used later with the changeFPGALinks tool to configure the connections of the FPGA. You can learn more about the changeFPGALinks tool <a href="https://upb-pc2.atlassian.net/wiki/spaces/PC2DOK/pages/1903821/changeFPGALinks" target="_blank">here</a>',
-            side: "bottom",
-            align: 'center',
         }
     },
     "switch": {
@@ -86,7 +89,7 @@ const steps = {
             side: "right",
             align: "center"
         }
-        // copy --fpgalink step is being added in the JS from the advanced tutorial
+        // copy --fpgalink step is being added in the JS from the basic tutorial
     },
     "actions": {
         "undoRedo": {
@@ -101,7 +104,7 @@ const steps = {
             side: "bottom",
             align: 'center',
         },
-        // copy --fpgalink step is being added in the JS from the advanced tutorial
+        // copy --fpgalink step is being added in the JS from the basic tutorial
         "copyURL": {
             title: 'Copy URL',
             description: 'If you want to share the current design that you have implemented, you can copy the following link and share it with others!',
@@ -117,15 +120,13 @@ const steps = {
     }
 }
 
-
-// Basic is same as advanced but without some steos
-const basicSteps = structuredClone(steps.advanced);
-['nodeConfigurations', 'pairConfiguration', 'connection2Nodes', 'greenPorts', 'mapping1:1'].forEach(k => delete basicSteps[k]);
-steps["basic"] = basicSteps;
+// Add createNode and nodeOptions steps from the basic to the advanced
+steps["advanced"]["createNode"] = steps["basic"]["createNode"];
+steps["advanced"]["nodeOptions"] = steps["basic"]["nodeOptions"];
 
 // Add copy --fpgalink step to the actions tutorial and to the switch tutorial
-steps["actions"]["copyConfiguration"] = steps["advanced"]["copyConfiguration"];
-steps["switch"]["copyConfiguration"] = steps["advanced"]["copyConfiguration"];
+steps["actions"]["copyConfiguration"] = steps["basic"]["copyConfiguration"];
+steps["switch"]["copyConfiguration"] = steps["basic"]["copyConfiguration"];
 
 
 // Get tutorial type from the URL
@@ -137,7 +138,7 @@ let activeSteps = steps[tutorialType];
 // Prepare driver steps
 let driverSteps = [];
 
-if (tutorialType == "advanced" || tutorialType == "basic") {
+if (tutorialType == "basic") {
     driverSteps = [
         {
             element: '#intel-node',
@@ -223,23 +224,60 @@ if (tutorialType == "advanced" || tutorialType == "basic") {
             element: '.overlayMenu',
             popover: {
                 ...activeSteps["nodeOptions"],
-                onNextClick: () => {
-                    if (tutorialType == "advanced") {
-                        // Open the options menu
-                        $(".overlayMenuItem.options").click();
-                        $(".custom-menu.single").addClass("pointer-none");
-                    }
-
-                    driverObj.moveNext();
-                },
                 onPrevClick: () => {
-                    // Recreate the slef connection
+                    // Recreate the self connection
                     let node = app.view.figures.data[0];
                     let nodeChannels = node.getFPGAs().data[0].getChannels().data;
                     app.toolbar.connectChannels(nodeChannels[1], nodeChannels[3]);
 
                     // Unselect the node
                     node.unselect();
+
+                    driverObj.movePrevious();
+                }
+            }
+        },
+        {
+            element: '.copy-fpgalink',
+            popover: {
+                ...activeSteps["copyConfiguration"]
+            }
+        },
+    ];
+
+
+} else if (tutorialType == "advanced") {
+
+    driverSteps = [
+        {
+            element: '#intel-node',
+            popover: {
+                ...activeSteps["createNode"],
+                onNextClick: () => {
+                    // Create a node and select it
+                    let node = createNodes("node-intel", "east", 90, 60);
+                    node.select();
+
+                    driverObj.moveNext();
+                },
+            }
+        },
+        {
+            element: '.overlayMenu',
+            popover: {
+                ...activeSteps["nodeOptions"],
+                onNextClick: () => {
+                    // Open the options menu
+                    $(".overlayMenuItem.options").click();
+                    $(".custom-menu.single").addClass("pointer-none");
+
+                    driverObj.moveNext();
+                },
+                onPrevClick: () => {
+                    // Delete the node by simulating a click on the deleteBtn
+                    let node = app.view.figures.data[0];
+                    node.select();
+                    $(".overlayMenuDeleteItem").click();
 
                     driverObj.movePrevious();
                 }
@@ -446,18 +484,7 @@ if (tutorialType == "advanced" || tutorialType == "basic") {
                 }
             }
         },
-        {
-            element: '.copy-fpgalink',
-            popover: {
-                ...activeSteps["copyConfiguration"]
-            }
-        },
     ];
-
-    if (tutorialType == "basic") {
-        // Remove 5 elements starting from index 5
-        driverSteps.splice(5, 5);
-    }
 } else if (tutorialType == "actions") {
     driverSteps = [
         {
@@ -598,8 +625,8 @@ const driverObj = driver({
         driverObj.destroy();
 
         // Remove the "tutorial=*" from the URL
-        const url = new URL(window.location.href);
-        url.search = "";
+        // const url = new URL(window.location.href);
+        // url.search = "";
         // window.history.replaceState({}, document.title, url);
     }
 });

@@ -196,9 +196,11 @@ function connectBasedOnConfig(nodes, config, eth_switch) {
 function createNodes(type, shape, x, y) {
     let view = app.view;
 
+    let figure = null;
+
     switch (type) {
         case "node-intel":
-            var node = new NodeShape({ "orientation": shape })
+            var node = new NodeShape({ "orientation": shape });
 
             // node.setOrientation(orientation);
             node.setName(view.getNodeNameNew());
@@ -212,6 +214,7 @@ function createNodes(type, shape, x, y) {
             // Workaround to fix size problem
             node.setOrientation(node.orientation);
 
+            figure = node;
             break;
         case "node-xilinx":
             var node = new NodeShape({ "orientation": shape })
@@ -226,22 +229,17 @@ function createNodes(type, shape, x, y) {
             var command = new draw2d.command.CommandAdd(view, node, x, y);
             view.getCommandStack().execute(command);
 
+            figure = node;
             break;
         case "label":
             // Add decoration by type.
-            switch (shape) {
-                case "label":
-                    var label = new Label({"orientation": "north"});
+            var label = new Label({"orientation": "north"});
 
-                    // create a command for the undo/redo support
-                    var command = new draw2d.command.CommandAdd(view, label, x, y);
-                    view.getCommandStack().execute(command);
+            // create a command for the undo/redo support
+            var command = new draw2d.command.CommandAdd(view, label, x, y);
+            view.getCommandStack().execute(command);
 
-                    break;
-                default:
-                    console.log("unknown shape.");
-            }
-
+            figure = label;
             break;
         case "node-ethernet-switch":
             var eth_switch = new SwitchShape({ "orientation": shape })
@@ -251,8 +249,11 @@ function createNodes(type, shape, x, y) {
             var command = new draw2d.command.CommandAdd(view, eth_switch, x, y);
             view.getCommandStack().execute(command);
 
+            figure = eth_switch;
             break;
         default:
             console.log("unknown type: \"" + $(droppedDomNode).data("type") + "\".");
     }
+
+    return figure;
 }

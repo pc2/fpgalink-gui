@@ -116,8 +116,9 @@ var HoverConnection = draw2d.Connection.extend({
         // Show custom configs only for config ports 
         setTimeout(() => {
             if (self.sourcePort.name.includes("config_port")) {
-                let x = this.start.x - 60 + ((this.end.x - this.start.x) / 2)
-                let y = this.start.y + ((this.end.y - this.start.y) / 2)
+                let canvasOffset = $("#canvas").offset();
+                let x = canvasOffset.left + this.start.x - 60 + ((this.end.x - this.start.x) / 2)
+                let y = canvasOffset.top + this.start.y + ((this.end.y - this.start.y) / 2)
                 showCustomConfigs(x, y, self);
             }
         }, 10);

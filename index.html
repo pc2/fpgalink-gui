@@ -35,7 +35,7 @@
     <script src="./gui/NodeShape.js"></script>
     <script src="./gui/SwitchShape.js"></script>
     <script src="./gui/Label.js"></script>
-    
+
     <script type="text/javascript">
         var app;
         document.addEventListener("DOMContentLoaded", function () {
@@ -205,9 +205,11 @@
         // If the tutorial param is set, start the tutorial
         const params = new URLSearchParams(window.location.search);
         if (params.has('tutorial')) {
-            let script = document.createElement("script");
-            script.src = "./gui/Tutorial.js";
-            document.head.appendChild(script);
+            setTimeout(() => {
+                let script = document.createElement("script");
+                script.src = "./gui/Tutorial.js";
+                document.head.appendChild(script);
+            }, 200);
         }
 
     </script>
@@ -219,12 +221,14 @@
     <div id="content">
         <div id="toolbar"></div>
         <div id="canvas" class="" style="width:3000px; height:3000px;">
-            <!-- Menu for config options for 2 nodes -->
-            <ul class='custom-menu mult'>
-                <li data-action="one-by-one">1:1 Mapping</li>
-            </ul>
+
         </div>
     </div>
+
+    <!-- Menu for config options for 2 nodes -->
+    <ul class='custom-menu mult'>
+        <li data-action="one-by-one">1:1 Mapping</li>
+    </ul>
 
     <!-- Menu for config options for single nodes -->
     <div class='custom-menu single'>
