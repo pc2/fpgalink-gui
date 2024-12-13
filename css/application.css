@@ -51,6 +51,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cecece', end
  border-bottom: 1px solid #515151;
 }
 
+#connection_router {
+  margin-bottom: 20px;
+}
+
 
 /******************************************************************
  * Einstellungen der PropertyViews im Editmodus der "Form".
@@ -89,10 +93,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cecece', end
  margin: 15px auto 15px auto;
  text-align:center;
  border-radius: 5px;
-}
-
-.tutorial-btn {
-  margin-bottom: 15px;
 }
 
 .shadow {
@@ -205,4 +205,9 @@ rect.draw2d_ResizeHandle {
 .to-be-deleted,
 .to-be-deleted * {
   pointer-events: none !important;
+}
+
+.tutorial-btn {
+  margin-bottom: 15px;
+  min-width: 150px;
 }
