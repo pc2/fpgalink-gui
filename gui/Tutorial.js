@@ -1,36 +1,36 @@
 const steps = {
     "basic": {
         "createNode": {
-            title: 'Create a Node',
-            description: 'You can create a node by drag and drop this label into the grid',
+            title: 'Create an Element',
+            description: 'You can create elements by drag and drop this label into the main grid.<br /><br />The highlighted element represents an FPGA node equiped with Intel Stratix 10 FPGAs.',
         },
         "nodeStructure": {
-            title: 'Node Structure',
-            description: 'The node is divided into different FPGAs, each FPGA into different channels. <br/> You can find more information about the nodes <a href="https://upb-pc2.atlassian.net/wiki/spaces/PC2DOK/pages/1901733/Hardware+Overview" target="_blank">here</a>',
+            title: 'Element Structure',
+            description: 'This element represents an FPGA node. It is divided into two FPGA cards <code class="mycode">FPGA 0</code> and <code class="mycode">FPGA 1</code>.<br /><br /> Each FPGA card has four QSFP channels for direct FPGA-to-FPGA communication that can be setup with this tool. <br/><br/> You can find more information about the different FPGA nodes <a href="https://upb-pc2.atlassian.net/wiki/spaces/PC2DOK/pages/1901733/Hardware+Overview" target="_blank">here</a>.',
             side: "right",
             align: 'start',
         },
         "setConnection": {
-            title: 'Set a Connection',
+            title: 'Setup a new Configuration',
             description: 'You can use these grey ports to set up connections by dragging the port to another port.',
             side: "right",
             align: 'start',
         },
         "selfConnections": {
-            title: 'Self Connections',
-            description: 'You can connect channels within the some node',
+            title: 'Example Connection',
+            description: 'In this example <code class="mycode">Channel 0</code> and <code class="mycode">1</code> of <code class="mycode">FPGA 0</code> are connected.<br /><br />You can try out different connections. The tool tries to prevent unsupported connections.',
             side: "right",
             align: 'start',
         },
         "nodeOptions": {
-            title: 'Node Options',
-            description: 'Once you select a node, a list of options will appear. You can rotate, delete or configure a node.',
+            title: 'Options',
+            description: 'Once you select an element, a list of options will appear. You can rotate, delete or configure elements.<br /><br />On many elements a right click offers additional functionalities.',
             side: "right",
             align: 'start',
         },
         "copyConfiguration": {
             title: 'Copy Configuration',
-            description: 'Once you have implemented your design, you can click here to copy the --fpgalink configuration. This configuration can be used later with the changeFPGALinks tool to configure the connections of the FPGA. You can learn more about the changeFPGALinks tool <a href="https://upb-pc2.atlassian.net/wiki/spaces/PC2DOK/pages/1903821/changeFPGALinks" target="_blank">here</a>',
+            description: 'Once you have setup your desired connections, you click this button to generate and copy the actual command to execute the actual configuration at the cluster. <br /><br />This is done with the help of the <code class="mycode">changeFPGALinks</code> utility tool. You can learn more about it <a href="https://upb-pc2.atlassian.net/wiki/spaces/PC2DOK/pages/1903821/changeFPGALinks" target="_blank">here</a>.',
             side: "bottom",
             align: 'center',
         }

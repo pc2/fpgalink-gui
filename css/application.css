@@ -211,3 +211,20 @@ rect.draw2d_ResizeHandle {
   margin-bottom: 15px;
   min-width: 150px;
 }
+
+.mycode {
+  font-size: 0.875em;
+  font-family: var(--ds-font-family-code, ui-monospace, Menlo, "Segoe UI Mono", "Ubuntu Mono", monospace);
+  font-weight: var(--ds-font-weight-regular, 400);
+  background-color: var(--ds--code--bg-color,var(--ds-background-neutral, #F4F5F7));
+  color: var(--ds-text, #172B4D);
+  border-style: none;
+  border-radius: var(--ds-border-radius, 3px);
+  display: inline;
+  padding: 2px 0.5ch;
+  box-decoration-break: clone;
+  overflow: auto;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
