@@ -202,10 +202,6 @@ if (tutorialType == "basic") {
             popover: {
                 ...activeSteps["selfConnections"],
                 onNextClick: () => {
-                    // Remove the old connection
-                    let nodeConnections = app.view.figures.data[0].getAllConnections();
-                    delete_connections(nodeConnections, app.view);
-
                     let node = app.view.figures.data[0];
                     node.select();
 
@@ -225,12 +221,8 @@ if (tutorialType == "basic") {
             popover: {
                 ...activeSteps["nodeOptions"],
                 onPrevClick: () => {
-                    // Recreate the self connection
-                    let node = app.view.figures.data[0];
-                    let nodeChannels = node.getFPGAs().data[0].getChannels().data;
-                    app.toolbar.connectChannels(nodeChannels[1], nodeChannels[3]);
-
                     // Unselect the node
+                    let node = app.view.figures.data[0];
                     node.unselect();
 
                     driverObj.movePrevious();

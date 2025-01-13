@@ -134,11 +134,8 @@ example.Toolbar = Class.extend({
 		this.srunExportButton = $("<button class='copy-fpgalink'>Copy --fpgalink</button>");
 		this.html.append(this.srunExportButton);
 		this.srunExportButton.button().click($.proxy(function () {
-
-			var copyText = document.getElementById("srunExportInput");
-			copyText.select();
-			copyText.setSelectionRange(0, 99999)
-			document.execCommand("copy");
+			let copyText = document.getElementById("srunExportInput").value;
+			navigator.clipboard.writeText(copyText)
 		}, this)).button("option", "enabled", true);
 
 		this.delimiter = $("<span class='toolbar_delimiter'>&nbsp;</span>");
@@ -151,11 +148,8 @@ example.Toolbar = Class.extend({
 		this.urlExportButton = $("<button class='copy-url'>Copy URL</button>");
 		this.html.append(this.urlExportButton);
 		this.urlExportButton.button().click($.proxy(function () {
-
-			var copyText = document.getElementById("urlExportInput");
-			copyText.select();
-			copyText.setSelectionRange(0, 99999)
-			document.execCommand("copy");
+			let copyText = document.getElementById("urlExportInput").value;
+			navigator.clipboard.writeText(copyText)
 		}, this)).button("option", "enabled", true);
 
 		this.delimiter = $("<span class='toolbar_delimiter'>&nbsp;</span>");
