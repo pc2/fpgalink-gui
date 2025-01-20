@@ -444,6 +444,17 @@ example.Toolbar = Class.extend({
 			// Remove found link.
 			srun_raw_copy = srun_raw_copy.substring(next_space);
 		}
+
+		// Check if there is a torus flag in the URL parameters
+		let urlParams = new URLSearchParams(window.location.search);
+		let torusFlag = urlParams.get('torus');
+
+		if (torusFlag) {
+			// In this case, I want to create a torus view
+			// Each node will be separated into 2 fpga nodes
+			let topology_name = full_match.startsWith("torus") ? full_match : torusFlag;
+			this.activateTorusView(parseInt(topology_name.slice(-1)));
+		}
 	},
 
 	createNodesAndConnections: function (full_match, srun_N, fpganodes, eth_switches) {
@@ -1151,5 +1162,254 @@ example.Toolbar = Class.extend({
 				break;
 		}
 
+	},
+
+	activateTorusView: function (torus) {
+		var LabelRectangle = draw2d.shape.basic.Rectangle.extend({
+			init: function (attr) {
+				this._super(attr);
+				this.mainLabel = new draw2d.shape.basic.Label({ text: attr.label, fontColor: "#fff", stroke: 0 });
+				this.add(this.mainLabel, new draw2d.layout.locator.CenterLocator(this));
+
+				this.createLabel("top", "0");
+				this.createLabel("bottom", "1");
+				this.createLabel("left", "2");
+				this.createLabel("right", "3");
+			},
+			createLabel: function (position, text) {
+				let CustomTopLocator = draw2d.layout.locator.Locator.extend({
+					init: function () {
+						this._super();
+					},
+					relocate: function (index, target) {
+						let parentBoundingBox = target.getParent().getBoundingBox();
+						
+						let x = 0, y = 0;
+						if (position == "top") {
+							x = (parentBoundingBox.w / 2) - 8;
+							y = 0;
+						} else if (position == "bottom") {
+							x = (parentBoundingBox.w / 2) - 8;
+							y = parentBoundingBox.h - 18;
+						} else if (position == "left") {
+							x = 0;
+							y = (parentBoundingBox.h / 2) - 10;
+						} else {
+							x = parentBoundingBox.w - 16;
+							y = (parentBoundingBox.h / 2) - 10;
+						}
+
+						target.setPosition(x, y);
+					}
+				});
+				// Add channel numbers
+				let topLabel = new draw2d.shape.basic.Label({ text: text, fontColor: "#fff", stroke: 0 });
+				this.add(topLabel, new CustomTopLocator(this));
+			}
+		});
+
+		function createPort(square, locator) {
+			var show = function () { this.setVisible(true); };
+			var hide = function () { this.setVisible(false); };
+			// Add ports to the figure (one on each side)
+			let port = square.createPort("hybrid", locator);
+
+			port.on("connect", hide, port);
+			port.on("disconnect", show, port);
+
+			return port;
+		}
+
+
+		// Loop over all nodes, for each node create 2 fpgas
+		let nodes = app.view.figures.data.filter(x => x instanceof NodeShape);
+		let firstNodeX = nodes[0].x + 100;
+		let firstNodeY = nodes[0].y + 50;
+
+		let columnCounter = -1;
+		let rowCounter = 0;
+		for (let i = 0; i < nodes.length; i++) {
+			for (let j = 0; j < 2; j++) {
+				columnCounter++;
+
+				// Create a custom square shape
+				let square = new LabelRectangle({
+					label: `Node ${i} \n FPGA ${i * 2 + j}`,
+					width: 120,
+					height: 120,
+					x: 350,
+					y: 250,
+					bgColor: "#3498db",
+					color: "#2c3e50",
+					radius: "50%"
+				});
+
+				// Add ports to the figure (one on each side)
+				createPort(square, new draw2d.layout.locator.TopLocator());
+				createPort(square, new draw2d.layout.locator.BottomLocator());
+				createPort(square, new draw2d.layout.locator.LeftLocator());
+				createPort(square, new draw2d.layout.locator.RightLocator());
+
+				let command = new draw2d.command.CommandAdd(app.view, square, firstNodeX + columnCounter * 200, firstNodeY + rowCounter * 150);
+				app.view.getCommandStack().execute(command);
+
+				// Reset columns and move to a new row
+				if (columnCounter == torus - 1) {
+					columnCounter = -1;
+					rowCounter++;
+				}
+			}
+		}
+
+		// Connect all fpgas
+
+		// First, get all unique connections
+		let connectionsObj = {};
+		for (let i = 0; i < nodes.length; i++) {
+			const node = nodes[i];
+			let nodeConnections = node.getAllConnections();
+			for (let j = 0; j < nodeConnections.length; j++) {
+				const connection = nodeConnections[j];
+				connectionsObj[connection.id] = connection;
+			}
+		}
+		let allConnections = Object.values(connectionsObj);
+
+		// Now get all nodes that belong to the torus view
+		let torusNodes = app.view.figures.data.filter(x => x instanceof LabelRectangle);
+
+		// Now loop over all connections
+		for (let i = 0; i < allConnections.length; i++) {
+			const c = allConnections[i];
+
+			let sourcePort = c.sourcePort;
+			let targetPort = c.targetPort;
+
+			// Get parent channel
+			let sourceChannel = sourcePort.parent;
+			let targetChannel = targetPort.parent;
+			// Get channel number
+			let sourceChannelNum = parseInt(sourceChannel.getName().slice(-1));
+			let targetChannelNum = parseInt(targetChannel.getName().slice(-1));
+
+			// Get parent fpga
+			let sourceFPGA = sourceChannel.parentFPGA;
+			let targetFPGA = targetChannel.parentFPGA;
+			// Get FPGA number
+			let sourceFPGANum = parseInt(sourceFPGA.getName().slice(-1));
+			let targetFPGANum = parseInt(targetFPGA.getName().slice(-1));
+
+			// Get parent node
+			let sourceNode = sourceFPGA.getNode();
+			let targetNode = targetFPGA.getNode();
+			// Get node number
+			let sourceNodeNum = parseInt(sourceNode.getName().slice(-2));
+			let targetNodeNum = parseInt(targetNode.getName().slice(-2));
+
+			// Get the fpga index in the torus view
+			let sourceFPGATorusIndex = sourceNodeNum * 2 + sourceFPGANum;
+			let targetFPGATorusIndex = targetNodeNum * 2 + targetFPGANum;
+
+			// Get the fpgas in the torus view
+			let sourceFPGATorus = torusNodes[sourceFPGATorusIndex];
+			let targetFPGATorus = torusNodes[targetFPGATorusIndex];
+
+			// Get the ports in the torus view
+			let sourcePortTorus = sourceFPGATorus.getHybridPort(sourceChannelNum);
+			let targetPortTorus = targetFPGATorus.getHybridPort(targetChannelNum);
+
+			// Now connect these 2 ports
+			let newConnection = new HoverConnection(sourcePortTorus, targetPortTorus, new draw2d.layout.connection.VertexRouter(), c.getColor());
+
+
+			// Create vertices for the ring connections
+
+			// Detect horizental rings
+			if (sourceFPGATorusIndex % torus == 0 || targetFPGATorusIndex % torus == 0) {
+				// Then this is a node in the first column
+
+				// Figure out the ring condition
+				let ringCondition = sourceChannelNum == 2 && targetChannelNum == 3;
+				if (targetFPGATorusIndex % torus == 0) {
+					// Then its the opposite
+					ringCondition = sourceChannelNum == 3 && targetChannelNum == 2;
+				}
+
+				// Check if the current connection is a ring
+				if (ringCondition) {
+					// Then this is a ring connection
+
+					// Get old vertices
+					let vertixStart = newConnection.start;
+					let vertixEnd = newConnection.end;
+					if (vertixStart.y > vertixEnd.y) {
+						// Then swap
+						vertixStart = newConnection.end;
+						vertixEnd = newConnection.start;
+					}
+
+					// Now create the new vertices
+					let vertices = [
+						vertixStart,
+						new draw2d.geo.Point(vertixStart.x + 50, vertixStart.y),
+						new draw2d.geo.Point(vertixStart.x + 50, vertixStart.y - 70),
+						new draw2d.geo.Point(vertixEnd.x - 50, vertixStart.y - 70),
+						new draw2d.geo.Point(vertixEnd.x - 50, vertixStart.y),
+						vertixEnd
+					];
+
+					// Set vertices
+					newConnection.setVertices(vertices);
+				}
+			}
+			// Detect vertical rings
+			if (sourceFPGATorusIndex < torus || targetFPGATorusIndex < torus) {
+				// Then this is a node in the first row
+
+				// Figure out the ring condition
+				let ringCondition = sourceChannelNum == 0 && targetChannelNum == 1;
+				if (targetFPGATorusIndex < torus) {
+					// Then its the opposite
+					ringCondition = sourceChannelNum == 1 && targetChannelNum == 0;
+				}
+
+				// Check if the current connection is a ring
+				if (ringCondition) {
+					// Then this is a ring connection
+
+					// Get old vertices
+					let vertixStart = newConnection.start;
+					let vertixEnd = newConnection.end;
+					if (vertixStart.x > vertixEnd.x) {
+						// Then swap
+						vertixStart = newConnection.end;
+						vertixEnd = newConnection.start;
+					}
+
+					// Now create the new vertices
+					let vertices = [
+						vertixStart,
+						new draw2d.geo.Point(vertixStart.x, vertixStart.y + 50),
+						new draw2d.geo.Point(vertixStart.x - 120, vertixStart.y + 50),
+						new draw2d.geo.Point(vertixStart.x - 120, vertixEnd.y - 50),
+						new draw2d.geo.Point(vertixStart.x, vertixEnd.y - 50),
+						vertixEnd
+					];
+
+					// Set vertices
+					newConnection.setVertices(vertices);
+				}
+			}
+
+			// Add the connection
+			app.view.add(newConnection);
+		}
+
+		// Finally, delete all nodes
+		for (let i = 0; i < nodes.length; i++) {
+			const element = nodes[i];
+			element.select();
+			$(".overlayMenuDeleteItem").click();
+		}
 	}
 });

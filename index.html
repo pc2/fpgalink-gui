@@ -64,6 +64,12 @@
             // Produce export text into input fields.
             app.view.getCommandStack().addEventListener(function (e) {
                 if (e.isPostChangeEvent()) {
+
+                    // Workaround to stop this for torus view
+                    let urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.get('torus')) return;
+
+                    
                     // displayJSON(app.view);
 
                     // var fpganodes = app.view.getFigures();
