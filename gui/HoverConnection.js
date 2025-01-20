@@ -100,17 +100,17 @@ function showCustomConfigs(x, y, connection) {
 
 var HoverConnection = draw2d.Connection.extend({
 
-    init: function (sourcePort, targetPort) {
+    init: function (sourcePort, targetPort, router, color) {
         var self = this;
         this._super({
-            router: defaultRouter,
+            router: router ? router : defaultRouter,
             radius: 5,
             source: sourcePort,
             target: targetPort,
             stroke: 3,
             outlineStroke: 1,
             outlineColor: "#303030",
-            color: "b9dd69"
+            color: color ? color : "b9dd69"
         });
 
         // Show custom configs only for config ports 

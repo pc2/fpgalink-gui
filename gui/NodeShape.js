@@ -164,6 +164,10 @@ ChannelShape = draw2d.shape.basic.Label.extend({
         return this.getParent().getParent();
     },
 
+    getName: function () {
+        return this.getText();
+    },
+
     getOrientation: function () {
         return this.orientation;
     },
@@ -245,13 +249,13 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
         // Children links.
         // this.channels = [];
         for (let i = 0; i < attr.channelsCount; i++) {
-            this.addChannel(i);
+            this.addChannel(i, this);
         }
 
         // this.getNode().fpgaLayout.add(this, this.getNode().fpgaLayout);
     },
 
-    addChannel: function (i) {
+    addChannel: function (i, parentFPGA) {
         orientation = this.getOrientation();
         let prop = this.ORIENTATION_PROPERTIES[orientation];
         let channel = new ChannelShape({
@@ -264,9 +268,9 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
             // resizeable:true,
             // editor:new draw2d.ui.LabelEditor()
             orientation: this.orientation,
-            visible: false
+            visible: false,
+            parentFPGA: parentFPGA
         });
-
 
         this.channelLayout.add(channel, {
             [prop.arrangement[0]]: 0,
@@ -283,7 +287,8 @@ FPGAShape = draw2d.shape.layout.FlexGridLayout.extend({
             // resizeable:true,
             // editor:new draw2d.ui.LabelEditor()
             orientation: this.orientation,
-            siblingChannel: channel
+            siblingChannel: channel,
+            parentFPGA: parentFPGA
         });
 
         this.channelLayout.add(channel2, {
