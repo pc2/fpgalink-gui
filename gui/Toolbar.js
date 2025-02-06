@@ -172,7 +172,17 @@ example.Toolbar = Class.extend({
 			var tDimension = new draw2d.geo.Rectangle(0, 0, view.getWidth(), view.getHeight());
 
 			// Set the dimenstion to fit current nodes
-			view.setDimension();
+			let widths = view.getFigures().clone().map(function (f) {
+				return f.getAbsoluteX() + f.getWidth()
+			})
+			let heights = view.getFigures().clone().map(function (f) {
+				return f.getAbsoluteY() + f.getHeight()
+			})
+			let initialHeight = Math.max(...heights.asArray())
+			let initialWidth = Math.max(...widths.asArray())
+
+			// Increase a little bit to avoid cutting some lines at the margin
+			view.setDimension(initialWidth + 100, initialHeight + 50);
 
 			// Get the SVG text
 			let svgText = "";
@@ -1183,7 +1193,7 @@ example.Toolbar = Class.extend({
 					},
 					relocate: function (index, target) {
 						let parentBoundingBox = target.getParent().getBoundingBox();
-						
+
 						let x = 0, y = 0;
 						if (position == "top") {
 							x = (parentBoundingBox.w / 2) - 8;
