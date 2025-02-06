@@ -233,7 +233,7 @@ function createNodes(type, shape, x, y) {
             break;
         case "label":
             // Add decoration by type.
-            var label = new Label({"orientation": "north"});
+            var label = new Label({ "orientation": "north" });
 
             // create a command for the undo/redo support
             var command = new draw2d.command.CommandAdd(view, label, x, y);
@@ -256,4 +256,52 @@ function createNodes(type, shape, x, y) {
     }
 
     return figure;
+}
+
+function checkIfTorusView() {
+    let urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('torus') || sessionStorage.hasOwnProperty("torus", "1");
+}
+
+function createCustomTopology(ev, topo) {
+    // Remove old session
+    sessionStorage.removeItem("torus");
+
+    // Check if there is previous nodes available,
+    // then display a warning msg
+    let figuresLength = app.view.figures.data.length;
+    if (figuresLength) {
+        if (!confirm("The current nodes will be removed!")) {
+            return;
+        }
+
+        for (let i = 0; i < figuresLength; i++) {
+            let figure = app.view.figures.data[0];
+            let command_delete = new draw2d.command.CommandDelete(figure);
+            command_delete.execute();
+        }
+    }
+
+    let form = ev.srcElement;
+    let select = form[0];
+    let input = form[1];
+
+    let topoType = select.value;
+    let nbNodes = parseInt(input.value);
+
+    let toolbar = app.toolbar;
+
+    if (topo == "torus") {
+        let FPGAView = form[2];
+
+        if (FPGAView.checked) {
+            sessionStorage.setItem("torus", "1");
+        }
+    }
+
+    let fpgalinkCmd = `-N ${nbNodes} --fpgalink=${topoType}`;
+    toolbar.srunApply(fpgalinkCmd, "intel");
+
+    let dialog = document.getElementById(topo + "-topology-modal");
+    dialog.close();
 }

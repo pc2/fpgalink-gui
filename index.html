@@ -12,6 +12,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/shepherd.js/dist/js/shepherd.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js/dist/css/shepherd.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link type="text/css" rel="stylesheet" href="./css/aristo/jquery-ui-1.8.16.custom.css" />
     <link type="text/css" rel="stylesheet" href="./css/jquery.layout.css" />
@@ -66,10 +67,9 @@
                 if (e.isPostChangeEvent()) {
 
                     // Workaround to stop this for torus view
-                    let urlParams = new URLSearchParams(window.location.search);
-                    if (urlParams.get('torus')) return;
+                    if (checkIfTorusView()) return;
 
-                    
+
                     // displayJSON(app.view);
 
                     // var fpganodes = app.view.getFigures();
@@ -199,6 +199,26 @@
                     line.setRouter(router);
                 });
             });
+
+            // Custom topology
+            let topologyButtons = $(".topology-btn");
+            topologyButtons.button().click($.proxy(function (ev) {
+                let btn = ev.target.parentElement;
+                let type = btn.dataset.type;
+                document.getElementById(type + "-topology-modal").showModal();
+            }, this)).button("option", "enabled", true);
+
+            $(".topology-modal i").click(function (ev) {
+                $(this).closest("dialog")[0].close();
+            });
+
+            $(".topology-modal .button.cancel").click(function (ev) {
+                $(this).closest("dialog")[0].close();
+            });
+
+            $(".topology-modal .button.submit").click(function (ev) {
+                let dialog = $(this).closest("dialog");
+            });
         });
 
         function displayJSON(canvas) {
@@ -234,6 +254,7 @@
     <!-- Menu for config options for 2 nodes -->
     <ul class='custom-menu mult'>
         <li data-action="one-by-one">1:1 Mapping</li>
+        <li class="intel-only" data-action="clique">Clique</li>
     </ul>
 
     <!-- Menu for config options for single nodes -->
@@ -284,49 +305,71 @@
 
         <p style="font-size:22px;"><strong><a href="index.html" style="color:#18b0e2;">FPGALink-GUI</a></strong></p>
 
-        <p style="color:#fff;"><strong>Add Elements by Drag&Drop</strong></p>
-        <div data-type="node-intel" id="intel-node" data-shape="east" class="palette_node_element draw2d_droppable">
-            Intel Stratix 10
-            Node</div>
-        <div data-type="node-xilinx" id="xilinx-node" data-shape="east" class="palette_node_element draw2d_droppable">
-            Xilinx Alveo U280
-            Nodes</div>
-        <div data-type="node-ethernet-switch" id="ethernet-switch" data-shape="north"
-            class="palette_node_element draw2d_droppable">Ethernet
-            Switch</div>
-        <div data-type="label" data-shape="label" id="label" class="palette_node_element draw2d_droppable">Label</div>
-
-        <p style="color:#fff;"><strong>Tutorials</strong></p>
-        <button data-type="basic" class="tutorial-btn">Basic Tutorial</button>
-        <button data-type="advanced" class="tutorial-btn">Advanced Tutorial</button>
-        <button data-type="switch" class="tutorial-btn">Switch Tutorial</button>
-        <button data-type="actions" class="tutorial-btn">Actions Tutorial</button>
-
-        <p style="color:#fff;"><strong>Settings</strong></p>
-        <button id="toggleGridButton">Toggle Grid</button>
-        <p style="color:#fff;">Change Router</p>
-        <select id="connection_router">
-            <option value="draw2d.layout.connection.ManhattanConnectionRouter">Manhattan</option>
-            <option value="draw2d.layout.connection.ManhattanBridgedConnectionRouter">Manhattan Bridged</option>
-            <option value="draw2d.layout.connection.InteractiveManhattanConnectionRouter">Manhattan Interactive</option>
-            <option value="draw2d.layout.connection.CircuitConnectionRouter">Circuit</option>
-            <option value="draw2d.layout.connection.DirectRouter">Direct</option>
-            <option value="draw2d.layout.connection.SplineConnectionRouter" selected="selected">Spline</option>
-            <option value="draw2d.layout.connection.MazeConnectionRouter">Maze</option>
-            <option value="draw2d.layout.connection.SketchConnectionRouter">Sketch</option>
-        </select>
-
+        <div class="menu nodes">
+            <p class="menu-header" style="color:#fff;">
+                <i class="fa fa-chevron-down open"></i>
+                <strong>Elements</strong>
+            </p>
+            <div class="elements">
+                <div data-type="node-intel" id="intel-node" data-shape="east"
+                    class="palette_node_element draw2d_droppable">
+                    Intel Stratix 10
+                    Node</div>
+                <div data-type="node-xilinx" id="xilinx-node" data-shape="east"
+                    class="palette_node_element draw2d_droppable">
+                    Xilinx Alveo U280
+                    Nodes</div>
+                <div data-type="node-ethernet-switch" id="ethernet-switch" data-shape="north"
+                    class="palette_node_element draw2d_droppable">Ethernet
+                    Switch</div>
+                <div data-type="label" data-shape="label" id="label" class="palette_node_element draw2d_droppable">Label
+                </div>
+            </div>
+        </div>
+        <div class="menu tutorials">
+            <p class="menu-header" style="color:#fff;">
+                <i class="fa fa-chevron-right"></i>
+                <strong>Tutorials</strong>
+            </p>
+            <div class="elements" style="display: none;">
+                <button data-type="basic" class="tutorial-btn">Basic Tutorial</button>
+                <button data-type="advanced" class="tutorial-btn">Advanced Tutorial</button>
+                <button data-type="switch" class="tutorial-btn">Switch Tutorial</button>
+                <button data-type="actions" class="tutorial-btn">Actions Tutorial</button>
+            </div>
+        </div>
+        <div class="menu settings">
+            <p class="menu-header" style="color:#fff;">
+                <i class="fa fa-chevron-right"></i>
+                <strong>Settings</strong>
+            </p>
+            <div class="elements" style="display: none;">
+                <button id="toggleGridButton">Toggle Grid</button>
+                <p style="color:#fff;">Change Router</p>
+                <select id="connection_router">
+                    <option value="draw2d.layout.connection.ManhattanConnectionRouter">Manhattan</option>
+                    <option value="draw2d.layout.connection.ManhattanBridgedConnectionRouter">Manhattan Bridged</option>
+                    <option value="draw2d.layout.connection.InteractiveManhattanConnectionRouter">Manhattan Interactive
+                    </option>
+                    <option value="draw2d.layout.connection.CircuitConnectionRouter">Circuit</option>
+                    <option value="draw2d.layout.connection.DirectRouter">Direct</option>
+                    <option value="draw2d.layout.connection.SplineConnectionRouter" selected="selected">Spline</option>
+                    <option value="draw2d.layout.connection.MazeConnectionRouter">Maze</option>
+                    <option value="draw2d.layout.connection.SketchConnectionRouter">Sketch</option>
+                </select>
+            </div>
+        </div>
+        <div class="menu topologies">
+            <p class="menu-header" style="color:#fff;">
+                <i class="fa fa-chevron-right"></i>
+                <strong>Custom Topologies</strong>
+            </p>
+            <div class="elements" style="display: none;">
+                <button class="topology-btn" data-type="ring">Ring</button>
+                <button class="topology-btn" data-type="torus">Torus</button>
+            </div>
+        </div>
     </div>
-
-    <!-- <div id="json_output_div" style="overflow:auto;position:absolute; top:50px; right:20px; width:350; height:110;background:white;border:1px solid gray">
-        JSON output
-        <textarea id="json_output" rows="4" cols="40"></textarea>
-    </div>
-
-    <div id="json_input_div" style="overflow:auto;position:absolute; top:160px; right:20px; width:350; height:110;background:white;border:1px solid gray">
-        JSON input
-        <textarea id="json_input" rows="4" cols="40"></textarea>
-    </div> -->
 
     <dialog id="prompt-node-type" role="dialog" aria-labelledby="prompt-dialog-heading">
         Node type (intel or xilinx) unclear. Select<br />
@@ -336,6 +379,69 @@
         </p>
     </dialog>
 
+    <!-- Custom Topologies Modals -->
+    <dialog id="ring-topology-modal" class="topology-modal" role="dialog" aria-labelledby="prompt-dialog-heading">
+        <div class="header">
+            <div class="title">Ring Topology Modal</div>
+            <i class="fa fa-close"></i>
+        </div>
+        <form onsubmit="event.preventDefault(); createCustomTopology(event, 'ring')">
+            <div class="body">
+                <label for="ringType">
+                    Select the ring type
+                    <select name="ringType">
+                        <option value="ringO">RingO</option>
+                        <option value="ringZ">RingZ</option>
+                        <option value="ringN">RingN</option>
+                    </select>
+                </label>
+
+                <label for="nodesNb">
+                    Enter the number of nodes
+                    <input type="number" name="nodesNb" placeholder="Number of nodes" required>
+                </label>
+            </div>
+            <div class="buttons">
+                <div class="button cancel">Cancel</div>
+                <button class="button submit" type="submit">Submit</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="torus-topology-modal" class="topology-modal" role="dialog" aria-labelledby="prompt-dialog-heading">
+        <div class="header">
+            <div class="title">Torus Topology Modal</div>
+            <i class="fa fa-close"></i>
+        </div>
+        <form onsubmit="event.preventDefault(); createCustomTopology(event, 'torus')">
+            <div class="body">
+                <label for="torusType">
+                    Select the torus type
+                    <select name="torusType">
+                        <option value="torus2">torus2</option>
+                        <option value="torus3">torus3</option>
+                        <option value="torus4">torus4</option>
+                        <option value="torus5">torus5</option>
+                        <option value="torus6">torus6</option>
+                    </select>
+                </label>
+
+                <label for="nodesNb">
+                    Enter the number of nodes
+                    <input type="number" name="nodesNb" placeholder="Number of nodes" required>
+                </label>
+
+                <label for="viewMode">
+                    <input type="checkbox" name="viewMode" id="viewMode">
+                    FPGA view?
+                </label>
+            </div>
+            <div class="buttons">
+                <div class="button cancel">Cancel</div>
+                <button class="button submit" type="submit">Submit</button>
+            </div>
+        </form>
+    </dialog>
 </body>
 
 </html>

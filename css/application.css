@@ -1,54 +1,75 @@
-body{
- font-family:Helvetica, Arial, Verdana, sans-serif;
- color:#6b6b6b;
+body {
+  font-family: Helvetica, Arial, Verdana, sans-serif;
+  color: #6b6b6b;
 }
 
-input{
- background: none repeat scroll 0 0 #f8f8f8;
- border-color: #C6C6C6 #DADADA #EAEAEA;
- border-radius: 4px 4px 4px 4px;
- -moz-box-sizing: border-box;
- padding-left:7px;
- border-style: solid ;
- border-width: 1px;
- vertical-align: middle;
- height:25px;
- font-size:14px;
- line-height:25px;
+input {
+  background: none repeat scroll 0 0 #f8f8f8;
+  border-color: #C6C6C6 #DADADA #EAEAEA;
+  border-radius: 4px 4px 4px 4px;
+  -moz-box-sizing: border-box;
+  padding-left: 7px;
+  border-style: solid;
+  border-width: 1px;
+  vertical-align: middle;
+  height: 25px;
+  font-size: 14px;
+  line-height: 25px;
 }
 
+.menu-header {
+  cursor: pointer;
+  text-align: left;
+}
 
-#container{
- padding:0px;
- margin:0px;
+.menu-header * {
+  vertical-align: middle;
+}
+
+.menu-header i {
+  font-size: 10px;
+  padding-right: 5px;
+}
+
+#container {
+  padding: 0px;
+  margin: 0px;
 }
 
 #canvas {
- padding:0px;
- margin:0px;
- background-color:#FAFAFA;
+  padding: 0px;
+  margin: 0px;
+  background-color: #FAFAFA;
 }
 
-#navigation{
- padding:0px;
- margin:0px;
- background : transparent url(background_drak.jpg);
- text-align: center;
+#navigation {
+  padding: 0px 10px;
+  margin: 0px;
+  background: transparent url(background_drak.jpg);
+  text-align: center;
 }
 
-#toolbar{
-background: #cecece; /* Old browsers */
-background: -moz-linear-gradient(top,  #cecece 0%, #a8a8a8 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cecece), color-stop(100%,#a8a8a8)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  #cecece 0%,#a8a8a8 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  #cecece 0%,#a8a8a8 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  #cecece 0%,#a8a8a8 100%); /* IE10+ */
-background: linear-gradient(to bottom,  #cecece 0%,#a8a8a8 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cecece', endColorstr='#a8a8a8',GradientType=0 ); /* IE6-9 */
- padding:8px;
- margin:0px;
- height:50px;
- border-bottom: 1px solid #515151;
+#toolbar {
+  background: #cecece;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #cecece 0%, #a8a8a8 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #cecece), color-stop(100%, #a8a8a8));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #cecece 0%, #a8a8a8 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #cecece 0%, #a8a8a8 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #cecece 0%, #a8a8a8 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #cecece 0%, #a8a8a8 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cecece', endColorstr='#a8a8a8', GradientType=0);
+  /* IE6-9 */
+  padding: 8px;
+  margin: 0px;
+  height: 50px;
+  border-bottom: 1px solid #515151;
 }
 
 #connection_router {
@@ -60,73 +81,73 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cecece', end
  * Einstellungen der PropertyViews im Editmodus der "Form".
  ******************************************************************/
 #propertypane {
- padding:0px;
- margin:0px;
- width:150px;
- background-color:#7D7D7D;
- border-top:0px;
+  padding: 0px;
+  margin: 0px;
+  width: 150px;
+  background-color: #7D7D7D;
+  border-top: 0px;
 }
 
 /*container of a single property entry*/
 .property_container {
- padding:5px;
- padding-bottom:15px;
+  padding: 5px;
+  padding-bottom: 15px;
 }
 
 .toolbar_delimiter {
-  margin-left:40px;
+  margin-left: 40px;
 }
 
 #content {
- padding:0px;
- margin:0px;
+  padding: 0px;
+  margin: 0px;
 }
 
 
 
-.palette_node_element{
- border:1px solid gray;
- background-color: #f3f3f3;
- padding:10px;
- cursor:move;
- width:90px;
- margin: 15px auto 15px auto;
- text-align:center;
- border-radius: 5px;
+.palette_node_element {
+  border: 1px solid gray;
+  background-color: #f3f3f3;
+  padding: 10px;
+  cursor: move;
+  width: 90px;
+  margin: 15px auto 15px auto;
+  text-align: center;
+  border-radius: 5px;
 }
 
 .shadow {
- -moz-box-shadow: 3px 3px 4px #000;
- -webkit-box-shadow: 3px 3px 4px #000;
- box-shadow: 3px 3px 4px #000;
- /* For IE 8 */
- -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
- /* For IE 5.5 - 7 */
- filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+  -moz-box-shadow: 3px 3px 4px #000;
+  -webkit-box-shadow: 3px 3px 4px #000;
+  box-shadow: 3px 3px 4px #000;
+  /* For IE 8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
+  /* For IE 5.5 - 7 */
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
 }
 
-.overlayMenu{
-  position:absolute;
+.overlayMenu {
+  position: absolute;
   display: flex;
   flex-direction: row-reverse;
   padding: 0 2px;
-  background: rgb(202,202,202);
-  background: linear-gradient(0deg, rgba(202,202,202,1) 0%, rgba(253,253,253,1) 100%);
+  background: rgb(202, 202, 202);
+  background: linear-gradient(0deg, rgba(202, 202, 202, 1) 0%, rgba(253, 253, 253, 1) 100%);
   border: #2c70ff 1px;
   border-radius: 5px;
   border-style: solid;
- }
+}
 
-.overlayMenuItem{
-  padding:2px;
-  cursor:pointer;
-  font-size:25px;
-  color:blue;
+.overlayMenuItem {
+  padding: 2px;
+  cursor: pointer;
+  font-size: 25px;
+  color: blue;
   margin-bottom: -4px;
 }
 
-.overlayMenuDeleteItem{
-  color:red;
+.overlayMenuDeleteItem {
+  color: red;
   margin-top: -5px;
 }
 
@@ -212,19 +233,73 @@ rect.draw2d_ResizeHandle {
   min-width: 150px;
 }
 
-.mycode {
-  font-size: 0.875em;
-  font-family: var(--ds-font-family-code, ui-monospace, Menlo, "Segoe UI Mono", "Ubuntu Mono", monospace);
-  font-weight: var(--ds-font-weight-regular, 400);
-  background-color: var(--ds--code--bg-color,var(--ds-background-neutral, #F4F5F7));
-  color: var(--ds-text, #172B4D);
-  border-style: none;
-  border-radius: var(--ds-border-radius, 3px);
-  display: inline;
-  padding: 2px 0.5ch;
-  box-decoration-break: clone;
-  overflow: auto;
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
+
+/******************************************************************
+ * CSS for topology modals
+ ******************************************************************/
+
+.topology-modal {
+  min-width: 500px;
+  border: none;
+  border-radius: 8px;
+  padding: 0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
 }
 
+.topology-modal .header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight: 600;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.topology-modal .header i {
+  cursor: pointer;
+}
+
+.topology-modal .body {
+  padding: 20px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.topology-modal label {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.topology-modal input:not([type="checkbox"]),
+.topology-modal select {
+  height: 38px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 100%;
+  outline: none;
+  background-color: white;
+  display: inline-block;
+  padding-left: 10px;
+  line-height: 36px;
+  margin-top: 10px;
+}
+
+.topology-modal input[type="checkbox"] {
+  width: 15px;
+}
+
+.topology-modal .buttons {
+  text-align: right;
+  padding: 20px;
+}
+
+.topology-modal .buttons .button {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 10px;
+}

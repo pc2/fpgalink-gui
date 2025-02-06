@@ -5,6 +5,15 @@ var defaultRouter = new draw2d.layout.connection.SplineConnectionRouter();
 function showCustomConfigs(x, y, connection) {
 
     let canvas = connection.getCanvas();
+    let node1 = connection.sourcePort.parent;
+    let node2 = connection.targetPort.parent;
+
+    // Hide Intel-only configs frmo Xilinx Nodes and Switches
+    if (node1 instanceof SwitchShape || node1.getType() == "Xilinx") {
+        $(".custom-menu.mult .intel-only").hide();
+    } else {
+        $(".custom-menu.mult .intel-only").show();
+    }
 
     // If the document is clicked somewhere
     $(document).bind("mousedown", function (e) {
@@ -23,10 +32,7 @@ function showCustomConfigs(x, y, connection) {
 
     // If the menu element is clicked
     $(".custom-menu.mult li").one("click", function () {
-        // Get the nodes
-        let node1 = connection.sourcePort.parent;
-        let node2 = connection.targetPort.parent;
-
+        
         // Check if either nodes has connections and display 
         // a warning message, if accepted, then remove all
         // current connections
@@ -77,6 +83,9 @@ function showCustomConfigs(x, y, connection) {
                 }
 
                 break;
+                case "clique":
+                    app.toolbar.createNodesAndConnections("clique", 2, [node1, node2], [])
+                    break;
         }
 
         // Remove the config connection without adding it to the command stack
