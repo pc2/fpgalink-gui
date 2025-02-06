@@ -55,6 +55,21 @@ example.Application = Class.extend(
 					paneSelector: "#canvas"
 				}
 			});
+
+			$(".menu .menu-header").click(function (ev) {
+				// Get sibling
+				let sibling = $(this).siblings(".elements");
+				// Get icon
+				let icon = $(this).find("i");
+
+				if (sibling.css("display") == "none") {
+					sibling.slideDown(100);
+					icon.removeClass("fa-chevron-right").addClass("fa-chevron-down");
+				} else {
+					sibling.slideUp(100);
+					icon.removeClass("fa-chevron-down").addClass("fa-chevron-right");
+				}
+			})
 		},
 
 		setDefaultRouterClassName: function (newDefaultRouterClassName) {

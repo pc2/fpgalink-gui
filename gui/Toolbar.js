@@ -455,11 +455,8 @@ example.Toolbar = Class.extend({
 			srun_raw_copy = srun_raw_copy.substring(next_space);
 		}
 
-		// Check if there is a torus flag in the URL parameters
-		let urlParams = new URLSearchParams(window.location.search);
-		let torusFlag = urlParams.get('torus');
-
-		if (torusFlag) {
+		// Check if there is a torus flag is enabled
+		if (checkIfTorusView()) {
 			// In this case, I want to create a torus view
 			// Each node will be separated into 2 fpga nodes
 			let topology_name = full_match.startsWith("torus") ? full_match : torusFlag;
@@ -1060,16 +1057,20 @@ example.Toolbar = Class.extend({
 				var node_right_fpga0_channels = node_right_fpgas.get(0).getChannels();
 				var node_right_fpga1_channels = node_right_fpgas.get(1).getChannels();
 
+				console.log(node_left_fpga0_channels, node_left_fpga1_channels);
+				
+
 				// Colorize according to scheme.
 				//   See: https://wikis.uni-paderborn.de/pc2doc/FPGA_Serial_Channels#Clique_topology
-				node_left_fpga0_channels.get(1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.red)
-				node_left_fpga0_channels.get(2).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.yellow)
-				node_left_fpga0_channels.get(3).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
+				// * 2 + 1 because of the hidden channels
+				node_left_fpga0_channels.get(1 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.red)
+				node_left_fpga0_channels.get(2 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.yellow)
+				node_left_fpga0_channels.get(3 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
 
-				node_left_fpga1_channels.get(2).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.yellow)
-				node_left_fpga1_channels.get(3).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
+				node_left_fpga1_channels.get(2 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.yellow)
+				node_left_fpga1_channels.get(3 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
 
-				node_right_fpga0_channels.get(1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.red)
+				node_right_fpga0_channels.get(1 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.red)
 
 				break;
 			// Ring
@@ -1092,8 +1093,12 @@ example.Toolbar = Class.extend({
 
 					// Colorize according to scheme.
 					//   See: https://wikis.uni-paderborn.de/pc2doc/FPGA_Serial_Channels#Ring_topology
-					node_fpga0_channels.get(1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
-					node_fpga0_channels.get(3).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
+					// * 2 + 1 because of the hidden channels
+					node_fpga0_channels.get(2 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
+					node_fpga0_channels.get(3 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
+
+					node_fpga1_channels.get(2 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
+					node_fpga1_channels.get(3 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
 				}
 
 				break;
@@ -1135,15 +1140,15 @@ example.Toolbar = Class.extend({
 
 					// Colorize according to scheme.
 					//   See: https://wikis.uni-paderborn.de/pc2doc/FPGA_Serial_Channels#Torus_topology
-					var node_fpga0_channel_0 = node_fpga0_channels.get(0).getHybridPort(0).getConnections();
-					var node_fpga0_channel_1 = node_fpga0_channels.get(1).getHybridPort(0).getConnections();
-					var node_fpga0_channel_2 = node_fpga0_channels.get(2).getHybridPort(0).getConnections();
-					var node_fpga0_channel_3 = node_fpga0_channels.get(3).getHybridPort(0).getConnections();
+					var node_fpga0_channel_0 = node_fpga0_channels.get(0 * 2 + 1).getHybridPort(0).getConnections();
+					var node_fpga0_channel_1 = node_fpga0_channels.get(1 * 2 + 1).getHybridPort(0).getConnections();
+					var node_fpga0_channel_2 = node_fpga0_channels.get(2 * 2 + 1).getHybridPort(0).getConnections();
+					var node_fpga0_channel_3 = node_fpga0_channels.get(3 * 2 + 1).getHybridPort(0).getConnections();
 
-					var node_fpga1_channel_0 = node_fpga1_channels.get(0).getHybridPort(0).getConnections();
-					var node_fpga1_channel_1 = node_fpga1_channels.get(1).getHybridPort(0).getConnections();
-					var node_fpga1_channel_2 = node_fpga1_channels.get(2).getHybridPort(0).getConnections();
-					var node_fpga1_channel_3 = node_fpga1_channels.get(3).getHybridPort(0).getConnections();
+					var node_fpga1_channel_0 = node_fpga1_channels.get(0 * 2 + 1).getHybridPort(0).getConnections();
+					var node_fpga1_channel_1 = node_fpga1_channels.get(1 * 2 + 1).getHybridPort(0).getConnections();
+					var node_fpga1_channel_2 = node_fpga1_channels.get(2 * 2 + 1).getHybridPort(0).getConnections();
+					var node_fpga1_channel_3 = node_fpga1_channels.get(3 * 2 + 1).getHybridPort(0).getConnections();
 
 					if (node_fpga0_channel_0.getSize() > 0) {
 						node_fpga0_channel_0.get(0).setColor(ColorEnum.blue)
