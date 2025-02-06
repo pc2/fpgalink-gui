@@ -1334,7 +1334,7 @@ example.Toolbar = Class.extend({
 			let targetPortTorus = targetFPGATorus.getHybridPort(targetChannelNum);
 
 			// Now connect these 2 ports
-			let newConnection = new HoverConnection(sourcePortTorus, targetPortTorus, new draw2d.layout.connection.VertexRouter(), c.getColor());
+			let newConnection = new HoverConnection(sourcePortTorus, targetPortTorus, new draw2d.layout.connection.VertexRouter(), ColorEnum.blue);
 
 
 			// Create vertices for the ring connections
@@ -1353,6 +1353,7 @@ example.Toolbar = Class.extend({
 				// Check if the current connection is a ring
 				if (ringCondition) {
 					// Then this is a ring connection
+					newConnection.setColor(ColorEnum.green);
 
 					// Get old vertices
 					let vertixStart = newConnection.start;
@@ -1391,6 +1392,7 @@ example.Toolbar = Class.extend({
 				// Check if the current connection is a ring
 				if (ringCondition) {
 					// Then this is a ring connection
+					newConnection.setColor(ColorEnum.red);
 
 					// Get old vertices
 					let vertixStart = newConnection.start;
