@@ -459,7 +459,7 @@ example.Toolbar = Class.extend({
 		if (checkIfTorusView()) {
 			// In this case, I want to create a torus view
 			// Each node will be separated into 2 fpga nodes
-			let topology_name = full_match.startsWith("torus") ? full_match : torusFlag;
+			let topology_name = full_match.startsWith("torus") ? full_match : checkIfTorusView();			;
 			this.activateTorusView(parseInt(topology_name.slice(-1)));
 		}
 	},
@@ -1058,7 +1058,7 @@ example.Toolbar = Class.extend({
 				var node_right_fpga1_channels = node_right_fpgas.get(1).getChannels();
 
 				console.log(node_left_fpga0_channels, node_left_fpga1_channels);
-				
+
 
 				// Colorize according to scheme.
 				//   See: https://wikis.uni-paderborn.de/pc2doc/FPGA_Serial_Channels#Clique_topology
@@ -1183,15 +1183,15 @@ example.Toolbar = Class.extend({
 		var LabelRectangle = draw2d.shape.basic.Rectangle.extend({
 			init: function (attr) {
 				this._super(attr);
-				this.mainLabel = new draw2d.shape.basic.Label({ text: attr.label, fontColor: "#fff", stroke: 0 });
+				this.mainLabel = new draw2d.shape.basic.Label({ text: attr.label, fontColor: attr.fontColor, stroke: 0 });
 				this.add(this.mainLabel, new draw2d.layout.locator.CenterLocator(this));
 
-				this.createLabel("top", "0");
-				this.createLabel("bottom", "1");
-				this.createLabel("left", "2");
-				this.createLabel("right", "3");
+				this.createLabel("top", "0", attr);
+				this.createLabel("bottom", "1", attr);
+				this.createLabel("left", "2", attr);
+				this.createLabel("right", "3", attr);
 			},
-			createLabel: function (position, text) {
+			createLabel: function (position, text, attr) {
 				let CustomTopLocator = draw2d.layout.locator.Locator.extend({
 					init: function () {
 						this._super();
@@ -1218,7 +1218,7 @@ example.Toolbar = Class.extend({
 					}
 				});
 				// Add channel numbers
-				let topLabel = new draw2d.shape.basic.Label({ text: text, fontColor: "#fff", stroke: 0 });
+				let topLabel = new draw2d.shape.basic.Label({ text: text, fontColor: attr.fontColor, stroke: 0 });
 				this.add(topLabel, new CustomTopLocator(this));
 			}
 		});
@@ -1234,8 +1234,6 @@ example.Toolbar = Class.extend({
 
 			return port;
 		}
-
-
 		// Loop over all nodes, for each node create 2 fpgas
 		let nodes = app.view.figures.data.filter(x => x instanceof NodeShape);
 		let firstNodeX = nodes[0].x + 100;
@@ -1243,19 +1241,25 @@ example.Toolbar = Class.extend({
 
 		let columnCounter = -1;
 		let rowCounter = 0;
+
+		let randomColors = ["3498db", "#e74c3c", "#2ecc71", "#f39c12", "#9b59b6", "#1abc9c", "#34495e", "#f1c40f", "#8e44ad", "#16a085"];
 		for (let i = 0; i < nodes.length; i++) {
 			for (let j = 0; j < 2; j++) {
 				columnCounter++;
 
+				let nodeId = i;
+				if (i < 10) nodeId = "0" + i;
 				// Create a custom square shape
 				let square = new LabelRectangle({
-					label: `Node ${i} \n FPGA ${i * 2 + j}`,
+					label: `Node ${nodeId} \n FPGA ${j} \n (${i * 2 + j})`,
 					width: 120,
 					height: 120,
 					x: 350,
 					y: 250,
-					bgColor: "#3498db",
-					color: "#2c3e50",
+					bgColor: "white",
+					color: randomColors[i % randomColors.length],
+					fontColor: "000",
+					stroke: 3,
 					radius: "50%"
 				});
 
@@ -1353,7 +1357,7 @@ example.Toolbar = Class.extend({
 				// Check if the current connection is a ring
 				if (ringCondition) {
 					// Then this is a ring connection
-					newConnection.setColor(ColorEnum.green);
+					newConnection.setColor(ColorEnum.yellow);
 
 					// Get old vertices
 					let vertixStart = newConnection.start;

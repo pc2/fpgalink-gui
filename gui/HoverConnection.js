@@ -1,6 +1,26 @@
 var defaultRouterClassName = "draw2d.layout.connection.SplineConnectionRouter";
 var defaultRouter = new draw2d.layout.connection.SplineConnectionRouter();
 
+class CommandSetConnectionAnchor extends draw2d.command.Command {
+    constructor(port, anchor) {
+        super("Set Connection Anchor");
+        this.port = port;
+        this.oldAnchor = port.connectionAnchor; // Save the current anchor for undo
+        this.currentAnchor = anchor;
+    }
+
+    execute() {
+        this.port.setConnectionAnchor(this.currentAnchor);
+    }
+
+    undo() {
+        this.port.setConnectionAnchor(this.oldAnchor); // Restore the old anchor
+    }
+
+    redo() {
+        this.execute(); // Reapply the new anchor
+    }
+}
 
 function showCustomConfigs(x, y, connection) {
 
@@ -32,7 +52,7 @@ function showCustomConfigs(x, y, connection) {
 
     // If the menu element is clicked
     $(".custom-menu.mult li").one("click", function () {
-        
+
         // Check if either nodes has connections and display 
         // a warning message, if accepted, then remove all
         // current connections
@@ -83,9 +103,9 @@ function showCustomConfigs(x, y, connection) {
                 }
 
                 break;
-                case "clique":
-                    app.toolbar.createNodesAndConnections("clique", 2, [node1, node2], [])
-                    break;
+            case "clique":
+                app.toolbar.createNodesAndConnections("clique", 2, [node1, node2], [])
+                break;
         }
 
         // Remove the config connection without adding it to the command stack
@@ -170,32 +190,67 @@ var HoverConnection = draw2d.Connection.extend({
                 hide: function () { $.contextMenu('destroy'); }
             },
             callback: function (key, options) {
-                switch (key) {
-                    case "red":
-                        var cmd = new draw2d.command.CommandAttr(this, { color: ColorEnum.red });
-                        this.getCanvas().getCommandStack().execute(cmd);
-
-                        break;
-                    case "yellow":
-                        var cmd = new draw2d.command.CommandAttr(this, { color: ColorEnum.yellow });
-                        this.getCanvas().getCommandStack().execute(cmd);
-                        break;
-                    case "green":
-                        var cmd = new draw2d.command.CommandAttr(this, { color: ColorEnum.green });
-                        this.getCanvas().getCommandStack().execute(cmd);
-                        break;
-                    case "blue":
-                        var cmd = new draw2d.command.CommandAttr(this, { color: ColorEnum.blue });
-                        this.getCanvas().getCommandStack().execute(cmd);
-                        break;
-                    case "delete":
-                        // without undo/redo support
-                        //     this.getCanvas().remove(this);
-                        // with undo/redo support
-                        var cmd = new draw2d.command.CommandDelete(this);
-                        this.getCanvas().getCommandStack().execute(cmd);
-                    default:
-                        break;
+                // Do this for all selected lines
+                for (let i = 0; i < app.view.getLines().data.length; i++) {
+                    const line = app.view.getLines().data[i];
+                    if (!(line.isSelected() || line == this)) continue;
+                    console.log("Hi", line);
+                    
+                    switch (key) {
+                        case "red":
+                            
+                            var cmd = new draw2d.command.CommandAttr(line, { color: ColorEnum.red });
+                            line.getCanvas().getCommandStack().execute(cmd);
+    
+                            break;
+                        case "yellow":
+                            var cmd = new draw2d.command.CommandAttr(line, { color: ColorEnum.yellow });
+                            line.getCanvas().getCommandStack().execute(cmd);
+                            break;
+                        case "green":
+                            var cmd = new draw2d.command.CommandAttr(line, { color: ColorEnum.green });
+                            line.getCanvas().getCommandStack().execute(cmd);
+                            break;
+                        case "blue":
+                            var cmd = new draw2d.command.CommandAttr(line, { color: ColorEnum.blue });
+                            line.getCanvas().getCommandStack().execute(cmd);
+                            break;
+                        case "direct":
+                            var command = new draw2d.command.CommandCollection();
+    
+                            var sourcePortCommand = new CommandSetConnectionAnchor(line.sourcePort, new draw2d.layout.anchor.CenterEdgeConnectionAnchor(line.sourcePort));
+                            var targetPortCommand = new CommandSetConnectionAnchor(line.targetPort, new draw2d.layout.anchor.CenterEdgeConnectionAnchor(line.targetPort));
+                            var directRouterCommand = new draw2d.command.CommandAttr(line, { router: new draw2d.layout.connection.DirectRouter() });
+    
+                            command.add(sourcePortCommand);
+                            command.add(targetPortCommand);
+                            command.add(directRouterCommand);
+    
+                            app.view.getCommandStack().execute(command);
+                            break;
+                        case "default":
+                            var command = new draw2d.command.CommandCollection();
+                            var defaultRouter = eval("new " + defaultRouterClassName + "()");
+    
+                            var sourcePortCommand = new CommandSetConnectionAnchor(line.sourcePort, new draw2d.layout.anchor.ConnectionAnchor(line.sourcePort));
+                            var targetPortCommand = new CommandSetConnectionAnchor(line.targetPort, new draw2d.layout.anchor.ConnectionAnchor(line.targetPort));
+                            var directRouterCommand = new draw2d.command.CommandAttr(line, { router: defaultRouter });
+    
+                            command.add(sourcePortCommand);
+                            command.add(targetPortCommand);
+                            command.add(directRouterCommand);
+    
+                            app.view.getCommandStack().execute(command);
+                            break;
+                        case "delete":
+                            // without undo/redo support
+                            //     line.getCanvas().remove(line);
+                            // with undo/redo support
+                            var cmd = new draw2d.command.CommandDelete(line);
+                            line.getCanvas().getCommandStack().execute(cmd);
+                        default:
+                            break;
+                    }
                 }
 
             }.bind(this),
@@ -208,6 +263,9 @@ var HoverConnection = draw2d.Connection.extend({
                 "green": { name: "Green" },
                 "blue": { name: "Blue" },
                 "sep1": "---------",
+                "direct": { name: "Direct router" },
+                "default": { name: "Default router" },
+                "sep2": "---------",
                 "delete": { name: "Delete" }
             }
         });

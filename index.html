@@ -195,9 +195,12 @@
                 // here: insecure use of eval
                 var router = eval("new " + selectedRouterClassName + "()");
 
+                let command = new draw2d.command.CommandCollection();
                 app.view.getLines().each(function (i, line) {
-                    line.setRouter(router);
+                    let lineCommand = new draw2d.command.CommandAttr(line, {router: router});
+                    command.add(lineCommand);
                 });
+                app.view.getCommandStack().execute(command);
             });
 
             // Custom topology
@@ -264,13 +267,6 @@
             <li data-action="loopback">Loopback</li>
             <li class="intel-only" data-action="pair">Pair</li>
             <li data-action="channel">Channel i to i + 1</li>
-            <li class="intel-only" data-action="torus2">Torus2</li>
-        </ul>
-        <div class="intel-only title">Rings</div>
-        <ul class="intel-only">
-            <li data-action="ringO">RingO</li>
-            <li data-action="ringN">RingN</li>
-            <li data-action="ringZ">RingZ</li>
         </ul>
         <ul>
             <li class="clear" data-action="clear">Clear all connections</li>

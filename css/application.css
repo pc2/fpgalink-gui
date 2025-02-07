@@ -303,3 +303,7 @@ rect.draw2d_ResizeHandle {
   cursor: pointer;
   margin-left: 10px;
 }
+
+.t-center {
+  text-align: center;
+}
