@@ -260,7 +260,7 @@ function createNodes(type, shape, x, y) {
 
 function checkIfTorusView() {
     let urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('torus') || sessionStorage.hasOwnProperty("torus", "1");
+    return urlParams.get('torus') || sessionStorage.hasOwnProperty("torus");
 }
 
 function createCustomTopology(ev, topo) {

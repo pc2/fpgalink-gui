@@ -195,9 +195,12 @@
                 // here: insecure use of eval
                 var router = eval("new " + selectedRouterClassName + "()");
 
+                let command = new draw2d.command.CommandCollection();
                 app.view.getLines().each(function (i, line) {
-                    line.setRouter(router);
+                    let lineCommand = new draw2d.command.CommandAttr(line, {router: router});
+                    command.add(lineCommand);
                 });
+                app.view.getCommandStack().execute(command);
             });
 
             // Custom topology
@@ -264,13 +267,6 @@
             <li data-action="loopback">Loopback</li>
             <li class="intel-only" data-action="pair">Pair</li>
             <li data-action="channel">Channel i to i + 1</li>
-            <li class="intel-only" data-action="torus2">Torus2</li>
-        </ul>
-        <div class="intel-only title">Rings</div>
-        <ul class="intel-only">
-            <li data-action="ringO">RingO</li>
-            <li data-action="ringN">RingN</li>
-            <li data-action="ringZ">RingZ</li>
         </ul>
         <ul>
             <li class="clear" data-action="clear">Clear all connections</li>
@@ -326,6 +322,16 @@
                 </div>
             </div>
         </div>
+        <div class="menu topologies">
+            <p class="menu-header" style="color:#fff;">
+                <i class="fa fa-chevron-right"></i>
+                <strong>Custom Topologies</strong>
+            </p>
+            <div class="elements" style="display: none;">
+                <button class="topology-btn" data-type="ring">Ring</button>
+                <button class="topology-btn" data-type="torus">Torus</button>
+            </div>
+        </div>
         <div class="menu tutorials">
             <p class="menu-header" style="color:#fff;">
                 <i class="fa fa-chevron-right"></i>
@@ -357,16 +363,6 @@
                     <option value="draw2d.layout.connection.MazeConnectionRouter">Maze</option>
                     <option value="draw2d.layout.connection.SketchConnectionRouter">Sketch</option>
                 </select>
-            </div>
-        </div>
-        <div class="menu topologies">
-            <p class="menu-header" style="color:#fff;">
-                <i class="fa fa-chevron-right"></i>
-                <strong>Custom Topologies</strong>
-            </p>
-            <div class="elements" style="display: none;">
-                <button class="topology-btn" data-type="ring">Ring</button>
-                <button class="topology-btn" data-type="torus">Torus</button>
             </div>
         </div>
     </div>
