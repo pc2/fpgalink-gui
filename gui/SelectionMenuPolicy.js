@@ -216,6 +216,12 @@ var SelectionMenuPolicy = draw2d.policy.figure.SelectionPolicy.extend({
 							break;
 						case "clear":
 							break;
+						case "front":
+							figure.toFront();
+							break
+						case "back":
+							figure.toBack();
+							break
 						default:
 							app.toolbar.createNodesAndConnections(action, 1, [figure], [])
 							break;

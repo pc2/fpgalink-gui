@@ -22,6 +22,20 @@ class CommandSetConnectionAnchor extends draw2d.command.Command {
     }
 }
 
+function applyDirectRouter(line) {
+    var command = new draw2d.command.CommandCollection();
+
+    var sourcePortCommand = new CommandSetConnectionAnchor(line.sourcePort, new draw2d.layout.anchor.CenterEdgeConnectionAnchor(line.sourcePort));
+    var targetPortCommand = new CommandSetConnectionAnchor(line.targetPort, new draw2d.layout.anchor.CenterEdgeConnectionAnchor(line.targetPort));
+    var directRouterCommand = new draw2d.command.CommandAttr(line, { router: new draw2d.layout.connection.DirectRouter() });
+
+    command.add(sourcePortCommand);
+    command.add(targetPortCommand);
+    command.add(directRouterCommand);
+
+    app.view.getCommandStack().execute(command);
+}
+
 function showCustomConfigs(x, y, connection) {
 
     let canvas = connection.getCanvas();
@@ -194,14 +208,13 @@ var HoverConnection = draw2d.Connection.extend({
                 for (let i = 0; i < app.view.getLines().data.length; i++) {
                     const line = app.view.getLines().data[i];
                     if (!(line.isSelected() || line == this)) continue;
-                    console.log("Hi", line);
-                    
+
                     switch (key) {
                         case "red":
-                            
+
                             var cmd = new draw2d.command.CommandAttr(line, { color: ColorEnum.red });
                             line.getCanvas().getCommandStack().execute(cmd);
-    
+
                             break;
                         case "yellow":
                             var cmd = new draw2d.command.CommandAttr(line, { color: ColorEnum.yellow });
@@ -216,30 +229,20 @@ var HoverConnection = draw2d.Connection.extend({
                             line.getCanvas().getCommandStack().execute(cmd);
                             break;
                         case "direct":
-                            var command = new draw2d.command.CommandCollection();
-    
-                            var sourcePortCommand = new CommandSetConnectionAnchor(line.sourcePort, new draw2d.layout.anchor.CenterEdgeConnectionAnchor(line.sourcePort));
-                            var targetPortCommand = new CommandSetConnectionAnchor(line.targetPort, new draw2d.layout.anchor.CenterEdgeConnectionAnchor(line.targetPort));
-                            var directRouterCommand = new draw2d.command.CommandAttr(line, { router: new draw2d.layout.connection.DirectRouter() });
-    
-                            command.add(sourcePortCommand);
-                            command.add(targetPortCommand);
-                            command.add(directRouterCommand);
-    
-                            app.view.getCommandStack().execute(command);
+                            applyDirectRouter(line);
                             break;
                         case "default":
                             var command = new draw2d.command.CommandCollection();
                             var defaultRouter = eval("new " + defaultRouterClassName + "()");
-    
+
                             var sourcePortCommand = new CommandSetConnectionAnchor(line.sourcePort, new draw2d.layout.anchor.ConnectionAnchor(line.sourcePort));
                             var targetPortCommand = new CommandSetConnectionAnchor(line.targetPort, new draw2d.layout.anchor.ConnectionAnchor(line.targetPort));
                             var directRouterCommand = new draw2d.command.CommandAttr(line, { router: defaultRouter });
-    
+
                             command.add(sourcePortCommand);
                             command.add(targetPortCommand);
                             command.add(directRouterCommand);
-    
+
                             app.view.getCommandStack().execute(command);
                             break;
                         case "delete":
