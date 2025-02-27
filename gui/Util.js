@@ -299,7 +299,7 @@ function createCustomTopology(ev, topo) {
         }
     }
 
-    let fpgalinkCmd = `-N ${nbNodes} --fpgalink=${topoType}`;
+    let fpgalinkCmd = `-N ${nbNodes} --fpgalink=${topoType}`;    
     toolbar.srunApply(fpgalinkCmd, "intel");
 
     let dialog = document.getElementById(topo + "-topology-modal");

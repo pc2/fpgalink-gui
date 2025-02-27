@@ -608,7 +608,7 @@ example.Toolbar = Class.extend({
 					// C_src.getConnector().setColor(ColorEnum.red);
 					// D_src.getConnector().setColor(ColorEnum.red);
 				}
-
+				
 				// Arrange nodes for better visualization.
 				this.arrangeTopology("ringO", fpganodes);
 
@@ -1084,6 +1084,19 @@ example.Toolbar = Class.extend({
 				for (i = 0; i < fpganodes.length; i++) {
 					var node = fpganodes[i];
 
+					// Set all fpgas orientation to north.
+					// Except last one to south.
+					if (i == fpganodes.length - 1) {
+						node.setOrientation("south");
+					} else {
+						node.setOrientation("north");
+					}
+
+					// Set position under each other
+					node.setPosition(100, 50 + (i * 250));
+					// Bring it to back to make connections visible
+					node.toBack();
+					
 					// FPGAs
 					var node_fpgas = node.getFPGAs();
 
@@ -1094,13 +1107,28 @@ example.Toolbar = Class.extend({
 					// Colorize according to scheme.
 					//   See: https://wikis.uni-paderborn.de/pc2doc/FPGA_Serial_Channels#Ring_topology
 					// * 2 + 1 because of the hidden channels
-					node_fpga0_channels.get(2 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
-					node_fpga0_channels.get(3 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
+					node_fpga0_channels.get(2 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.red)
+					node_fpga0_channels.get(3 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.red)
 
-					node_fpga1_channels.get(2 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
-					node_fpga1_channels.get(3 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.blue)
+					node_fpga1_channels.get(2 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.red)
+					node_fpga1_channels.get(3 * 2 + 1).getHybridPort(0).getConnections().get(0).setColor(ColorEnum.red)
 				}
 
+				// In case of ringO Loop over all node connections, if it goes to the next node, make it direct connection
+				if (topology_name == "ringO") {
+					for (i = 0; i < fpganodes.length - 2; i++) {
+						var node = fpganodes[i];
+						for (let j = 0; j < node.getConnections().data.length; j++) {
+							const connection = node.getConnections().data[j];
+							let sourceNode = connection.sourcePort.parent.getFPGA().getNode().getName();
+							let targetNode = connection.targetPort.parent.getFPGA().getNode().getName();
+							
+							if (sourceNode != targetNode) {
+								applyDirectRouter(connection);
+							}
+						}
+					}
+				}
 				break;
 			// Torus
 			case "torus2":
@@ -1242,7 +1270,7 @@ example.Toolbar = Class.extend({
 		let columnCounter = -1;
 		let rowCounter = 0;
 
-		let randomColors = ["3498db", "#e74c3c", "#2ecc71", "#f39c12", "#9b59b6", "#1abc9c", "#34495e", "#f1c40f", "#8e44ad", "#16a085"];
+		let randomColors = ["#f39c12", "#e74c3c", "#2ecc71", "#9b59b6", "3498db", "#34495e", "#f1c40f", "#1abc9c", "#8e44ad", "#16a085"];
 		for (let i = 0; i < nodes.length; i++) {
 			for (let j = 0; j < 2; j++) {
 				columnCounter++;
@@ -1338,7 +1366,10 @@ example.Toolbar = Class.extend({
 			let targetPortTorus = targetFPGATorus.getHybridPort(targetChannelNum);
 
 			// Now connect these 2 ports
-			let newConnection = new HoverConnection(sourcePortTorus, targetPortTorus, new draw2d.layout.connection.VertexRouter(), ColorEnum.blue);
+			
+			// Horizental = green, vertical = blue
+			let color = sourceChannelNum == 0 || sourceChannelNum == 1 ? ColorEnum.blue : ColorEnum.green; 
+			let newConnection = new HoverConnection(sourcePortTorus, targetPortTorus, new draw2d.layout.connection.VertexRouter(), color);
 
 
 			// Create vertices for the ring connections
