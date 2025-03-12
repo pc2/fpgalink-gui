@@ -6,6 +6,13 @@ const ColorEnum = Object.freeze({
     "blue": "00A8F0"
 });
 
+const ColorRGBToName = Object.freeze({
+    "243-84-106": "red",
+    "255-255-153": "yellow",
+    "185-221-105": "green",
+    "0-168-240": "blue"
+});
+
 function pad_node_name(num) {
     var s = "0" + num;
     return "n" + s.substr(s.length - 2);
