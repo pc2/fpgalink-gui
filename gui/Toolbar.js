@@ -1162,39 +1162,63 @@ example.Toolbar = Class.extend({
 						}
 					}
 
+					function colorConnection(fpga_num, channel_num, connection) {
+						if (connection.colorIsSet) return;
+
+						let color;
+						let node_num = i;
+						let torus_num = parseInt(topology_name.slice(-1));
+						let fpga_global_index = node_num * 2 + fpga_num;
+
+						// In general, Horizental = green, vertical = blue
+						if (channel_num == 2 || channel_num == 3) {
+							color = ColorEnum.green;
+						} else {
+							color = ColorEnum.blue;
+						}
+
+						// Detect ring connections, Horizental = yellow, vertical = red
+
+						if (fpga_global_index % torus_num == 0) {
+							// Then this is an fpga in the first column
+							if (channel_num == 2) {
+								color = ColorEnum.yellow;
+							}
+						}
+
+						if (fpga_global_index < torus_num) {
+							// Then this is an fpga in the first row
+							if (channel_num == 0) {
+								color = ColorEnum.red;
+							}
+						}
+						
+						connection.setColor(color);
+						connection.colorIsSet = true;
+					}
+					
 					// Channels.
 					var node_fpga0_channels = node_fpgas.get(0).getChannels();
 					var node_fpga1_channels = node_fpgas.get(1).getChannels();
 
-					// Colorize according to scheme.
-					//   See: https://wikis.uni-paderborn.de/pc2doc/FPGA_Serial_Channels#Torus_topology
-					var node_fpga0_channel_0 = node_fpga0_channels.get(0 * 2 + 1).getHybridPort(0).getConnections();
-					var node_fpga0_channel_1 = node_fpga0_channels.get(1 * 2 + 1).getHybridPort(0).getConnections();
-					var node_fpga0_channel_2 = node_fpga0_channels.get(2 * 2 + 1).getHybridPort(0).getConnections();
-					var node_fpga0_channel_3 = node_fpga0_channels.get(3 * 2 + 1).getHybridPort(0).getConnections();
+					// Get connection for each channel
+					var node_fpga0_channel_0 = node_fpga0_channels.get(1).getHybridPort(0).getConnections().data[0];
+					var node_fpga0_channel_1 = node_fpga0_channels.get(3).getHybridPort(0).getConnections().data[0];
+					var node_fpga0_channel_2 = node_fpga0_channels.get(5).getHybridPort(0).getConnections().data[0];
+					var node_fpga0_channel_3 = node_fpga0_channels.get(7).getHybridPort(0).getConnections().data[0];
+					colorConnection(0, 0, node_fpga0_channel_0);
+					colorConnection(0, 1, node_fpga0_channel_1);
+					colorConnection(0, 2, node_fpga0_channel_2);
+					colorConnection(0, 3, node_fpga0_channel_3);
 
-					var node_fpga1_channel_0 = node_fpga1_channels.get(0 * 2 + 1).getHybridPort(0).getConnections();
-					var node_fpga1_channel_1 = node_fpga1_channels.get(1 * 2 + 1).getHybridPort(0).getConnections();
-					var node_fpga1_channel_2 = node_fpga1_channels.get(2 * 2 + 1).getHybridPort(0).getConnections();
-					var node_fpga1_channel_3 = node_fpga1_channels.get(3 * 2 + 1).getHybridPort(0).getConnections();
-
-					if (node_fpga0_channel_0.getSize() > 0) {
-						node_fpga0_channel_0.get(0).setColor(ColorEnum.blue)
-					}
-					if (node_fpga1_channel_0.getSize() > 0) {
-						node_fpga1_channel_0.get(0).setColor(ColorEnum.blue)
-					}
-
-					if (node_fpga0_channel_1.getSize() > 0) {
-						node_fpga0_channel_1.get(0).setColor(ColorEnum.red)
-					}
-					if (node_fpga1_channel_1.getSize() > 0) {
-						node_fpga1_channel_1.get(0).setColor(ColorEnum.red)
-					}
-
-					if (node_fpga0_channel_2.getSize() > 0) {
-						node_fpga0_channel_2.get(0).setColor(ColorEnum.yellow)
-					}
+					var node_fpga1_channel_0 = node_fpga1_channels.get(0 * 2 + 1).getHybridPort(0).getConnections().data[0];
+					var node_fpga1_channel_1 = node_fpga1_channels.get(3).getHybridPort(0).getConnections().data[0];
+					var node_fpga1_channel_2 = node_fpga1_channels.get(5).getHybridPort(0).getConnections().data[0];
+					var node_fpga1_channel_3 = node_fpga1_channels.get(7).getHybridPort(0).getConnections().data[0];
+					colorConnection(1, 0, node_fpga1_channel_0);
+					colorConnection(1, 1, node_fpga1_channel_1);
+					colorConnection(1, 2, node_fpga1_channel_2);
+					colorConnection(1, 3, node_fpga1_channel_3);					
 				}
 
 				break;
@@ -1366,91 +1390,61 @@ example.Toolbar = Class.extend({
 			let targetPortTorus = targetFPGATorus.getHybridPort(targetChannelNum);
 
 			// Now connect these 2 ports
-			
-			// Horizental = green, vertical = blue
-			let color = sourceChannelNum == 0 || sourceChannelNum == 1 ? ColorEnum.blue : ColorEnum.green; 
+			let color = c.getColor();
+			let colorRGB = `${color.red}-${color.green}-${color.blue}`;
 			let newConnection = new HoverConnection(sourcePortTorus, targetPortTorus, new draw2d.layout.connection.VertexRouter(), color);
 
 
 			// Create vertices for the ring connections
-
-			// Detect horizental rings
-			if (sourceFPGATorusIndex % torus == 0 || targetFPGATorusIndex % torus == 0) {
-				// Then this is a node in the first column
-
-				// Figure out the ring condition
-				let ringCondition = sourceChannelNum == 2 && targetChannelNum == 3;
-				if (targetFPGATorusIndex % torus == 0) {
-					// Then its the opposite
-					ringCondition = sourceChannelNum == 3 && targetChannelNum == 2;
+			
+			// Check if the current connection is a horizontal ring
+			if (ColorRGBToName[colorRGB] == "yellow") {
+				// Get old vertices
+				let vertixStart = newConnection.start;
+				let vertixEnd = newConnection.end;
+				if (vertixStart.y > vertixEnd.y) {
+					// Then swap
+					vertixStart = newConnection.end;
+					vertixEnd = newConnection.start;
 				}
 
-				// Check if the current connection is a ring
-				if (ringCondition) {
-					// Then this is a ring connection
-					newConnection.setColor(ColorEnum.yellow);
+				// Now create the new vertices
+				let vertices = [
+					vertixStart,
+					new draw2d.geo.Point(vertixStart.x + 50, vertixStart.y),
+					new draw2d.geo.Point(vertixStart.x + 50, vertixStart.y - 70),
+					new draw2d.geo.Point(vertixEnd.x - 50, vertixStart.y - 70),
+					new draw2d.geo.Point(vertixEnd.x - 50, vertixStart.y),
+					vertixEnd
+				];
 
-					// Get old vertices
-					let vertixStart = newConnection.start;
-					let vertixEnd = newConnection.end;
-					if (vertixStart.y > vertixEnd.y) {
-						// Then swap
-						vertixStart = newConnection.end;
-						vertixEnd = newConnection.start;
-					}
-
-					// Now create the new vertices
-					let vertices = [
-						vertixStart,
-						new draw2d.geo.Point(vertixStart.x + 50, vertixStart.y),
-						new draw2d.geo.Point(vertixStart.x + 50, vertixStart.y - 70),
-						new draw2d.geo.Point(vertixEnd.x - 50, vertixStart.y - 70),
-						new draw2d.geo.Point(vertixEnd.x - 50, vertixStart.y),
-						vertixEnd
-					];
-
-					// Set vertices
-					newConnection.setVertices(vertices);
-				}
+				// Set vertices
+				newConnection.setVertices(vertices);
 			}
-			// Detect vertical rings
-			if (sourceFPGATorusIndex < torus || targetFPGATorusIndex < torus) {
-				// Then this is a node in the first row
-
-				// Figure out the ring condition
-				let ringCondition = sourceChannelNum == 0 && targetChannelNum == 1;
-				if (targetFPGATorusIndex < torus) {
-					// Then its the opposite
-					ringCondition = sourceChannelNum == 1 && targetChannelNum == 0;
+			
+			// Check if the current connection is a vertical ring
+			if (ColorRGBToName[colorRGB] == "red") {
+				// Get old vertices
+				let vertixStart = newConnection.start;
+				let vertixEnd = newConnection.end;
+				if (vertixStart.x > vertixEnd.x) {
+					// Then swap
+					vertixStart = newConnection.end;
+					vertixEnd = newConnection.start;
 				}
 
-				// Check if the current connection is a ring
-				if (ringCondition) {
-					// Then this is a ring connection
-					newConnection.setColor(ColorEnum.red);
+				// Now create the new vertices
+				let vertices = [
+					vertixStart,
+					new draw2d.geo.Point(vertixStart.x, vertixStart.y + 50),
+					new draw2d.geo.Point(vertixStart.x - 120, vertixStart.y + 50),
+					new draw2d.geo.Point(vertixStart.x - 120, vertixEnd.y - 50),
+					new draw2d.geo.Point(vertixStart.x, vertixEnd.y - 50),
+					vertixEnd
+				];
 
-					// Get old vertices
-					let vertixStart = newConnection.start;
-					let vertixEnd = newConnection.end;
-					if (vertixStart.x > vertixEnd.x) {
-						// Then swap
-						vertixStart = newConnection.end;
-						vertixEnd = newConnection.start;
-					}
-
-					// Now create the new vertices
-					let vertices = [
-						vertixStart,
-						new draw2d.geo.Point(vertixStart.x, vertixStart.y + 50),
-						new draw2d.geo.Point(vertixStart.x - 120, vertixStart.y + 50),
-						new draw2d.geo.Point(vertixStart.x - 120, vertixEnd.y - 50),
-						new draw2d.geo.Point(vertixStart.x, vertixEnd.y - 50),
-						vertixEnd
-					];
-
-					// Set vertices
-					newConnection.setVertices(vertices);
-				}
+				// Set vertices
+				newConnection.setVertices(vertices);
 			}
 
 			// Add the connection
