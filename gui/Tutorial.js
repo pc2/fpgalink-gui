@@ -117,6 +117,49 @@ const steps = {
             side: "bottom",
             align: 'center',
         }
+    },
+    "topologies": {
+        "introduction": {
+            title: "Custom Toplogies",
+            description: "Using these buttons, you can create custom topologies such as 'Ring' or 'Torus'. </br> Note that these topologies only work for intel nodes. </br> You can learn more about the structure of these topologies <a href='https://upb-pc2.atlassian.net/wiki/spaces/PC2DOK/pages/395542529/Sample+Topologies+and+Legacy+fpgalink+Interface+to+Slurm' target='_blank'>here</a>"
+        },
+        "createRing": {
+            title: "Open the Ring modal",
+            description: "Let's try first to create a ring topology by clicking on this button."
+        },
+        "ringModal": {
+            title: "Ring Modal",
+            description: "This is the ring topology modal. </br> Let's go through the inputs one by one"
+        },
+        "ringType": {
+            title: "Ring Type",
+            description: "From this select input, you can select the ring type.</br>It can be either ringO, ringZ or ringN."
+        },
+        "nodesNb": {
+            title: "Number of nodes",
+            description: "Here you should specify an integer indicating how many intel nodes should be created with the selected topology."
+        },
+        "submit": {
+            title: "Create the nodes",
+            description: "Once you have filled in all the inputs, you can click on the submit button and the selected topology will be automatically created for you."
+        },
+        "createTorus": {
+            title: "Open the Torus modal",
+            description: "Now let's try to create a torus topology by clicking on this button."
+        },
+        "torusModal": {
+            title: "Torus Modal",
+            description: "This is the torus topology modal. </br> Let's go through the inputs one by one"
+        },
+        "torusType": {
+            title: "Torus Type",
+            description: "From this select input, you can select the torus type.</br>It can be anything from torus2 to torus6."
+        },
+        "viewMode": {
+            title: "View Mode",
+            description: "This checkbox allow you to select whether you want to view the selected topology in normal view (unchecked) or in FPGA view (checked). </br> Normal view is simply the same view that you see when you create a single node. On the other side, the FPGA view splits each intel node into 2 different figures, since each intel node has 2 FPGAs.</br> Here is an example that shows the differrence:</br><div style='text-align:center'><strong style='text-align:left;display:block'>Normal View:</strong><img src='./examples/torus2/normal-view.svg' style='max-width: 65%'></br><strong style='text-align:left;display:block'>FPGA View:</strong><img src='./examples/torus2/fpga-view.svg' style='max-width: 65%'></div>",
+            align: 'bottom',
+        },
     }
 }
 
@@ -603,6 +646,139 @@ if (tutorialType == "basic") {
             }
         },
     ]
+} else if (tutorialType == "topologies") {
+    // Open the drop down for custom topologies
+    $(".menu.topologies .menu-header").click();
+    $(".menu.topologies .elements").addClass("pointer-none");
+
+    driverSteps = [
+        // {
+        //     element: '.menu.topologies .elements',
+        //     popover: {
+        //         ...activeSteps["introduction"],
+        //     }
+        // },
+        // {
+        //     element: '.menu.topologies .elements button:first-child',
+        //     popover: {
+        //         ...activeSteps["createRing"],
+        //         onNextClick: () => {
+        //             // Open the ring modal
+        //             showModal(document.getElementById("ring-topology-modal"));
+        //             $("#ring-topology-modal .main").addClass("pointer-none");
+        //             driverObj.moveNext();
+        //         },
+        //     }
+        // },
+        // {
+        //     element: '#ring-topology-modal .main',
+        //     popover: {
+        //         ...activeSteps["ringModal"],
+        //         onPrevClick: () => {
+        //             // Close the ring modal
+        //             closeModal(document.getElementById("ring-topology-modal"));
+        //             driverObj.movePrevious();
+        //         }
+        //     }
+        // },
+        // {
+        //     element: '#ring-topology-modal label[for="ringType"]',
+        //     popover: {
+        //         ...activeSteps["ringType"],
+        //     }
+        // },
+        // {
+        //     element: '#ring-topology-modal label[for="nodesNb"]',
+        //     popover: {
+        //         ...activeSteps["nodesNb"],
+        //     }
+        // },
+        // {
+        //     element: '#ring-topology-modal button[type="submit"]',
+        //     popover: {
+        //         ...activeSteps["submit"],
+        //         onNextClick: () => {
+        //             // Close the ring modal
+        //             closeModal(document.getElementById("ring-topology-modal"));
+        //             driverObj.moveNext();
+        //         }
+        //     }
+        // },
+        {
+            element: '.menu.topologies .elements button:last-child',
+            popover: {
+                ...activeSteps["createTorus"],
+                onNextClick: () => {
+                    // Open the torus modal
+                    showModal(document.getElementById("torus-topology-modal"));
+                    $("#torus-topology-modal .main").addClass("pointer-none");
+                    driverObj.moveNext();
+                },
+                onPrevClick: () => {
+                    // Open the ring modal
+                    showModal(document.getElementById("ring-topology-modal"));
+                    $("#ring-topology-modal .main").addClass("pointer-none");
+                    driverObj.movePrevious();
+                }
+            }
+        },
+        {
+            element: '#torus-topology-modal .main',
+            popover: {
+                ...activeSteps["torusModal"],
+                onPrevClick: () => {
+                    // Close the torus modal
+                    closeModal(document.getElementById("torus-topology-modal"));
+                    driverObj.movePrevious();
+                }
+            }
+        },
+        {
+            element: '#torus-topology-modal label[for="torusType"]',
+            popover: {
+                ...activeSteps["torusType"],
+            }
+        },
+        {
+            element: '#torus-topology-modal label[for="nodesNb"]',
+            popover: {
+                ...activeSteps["nodesNb"],
+                onNextClick: () => {
+                    $("body").addClass("wide-driver-popup");
+                    driverObj.moveNext();
+                }
+            }
+        },
+        {
+            element: '#torus-topology-modal label[for="viewMode"]',
+            popover: {
+                ...activeSteps["viewMode"], 
+                onNextClick: () => {
+                    $("body").removeClass("wide-driver-popup");
+                    driverObj.moveNext();
+                },
+                onPrevClick: () => {
+                    $("body").removeClass("wide-driver-popup");
+                    driverObj.movePrevious();
+                }
+            }
+        },
+        {
+            element: '#torus-topology-modal button[type="submit"]',
+            popover: {
+                ...activeSteps["submit"],
+                onNextClick: () => {
+                    // Close the torus modal
+                    closeModal(document.getElementById("torus-topology-modal"));
+                    driverObj.moveNext();
+                },
+                onPrevClick: () => {
+                    $("body").addClass("wide-driver-popup");
+                    driverObj.movePrevious();
+                }
+            }
+        },
+    ]
 }
 
 const driver = window.driver.js.driver;
@@ -624,36 +800,3 @@ const driverObj = driver({
 });
 
 driverObj.drive();
-
-
-
-
-
-
-// {
-//     element: '#xilinx-node',
-//     popover: {
-//         title: 'Different Node',
-//         description: 'You can also create a different type of nodes using the same drag & drop method. <br/> You can learn more about the hardware structure of this node <a href="https://upb-pc2.atlassian.net/wiki/spaces/PC2DOK/pages/1901733/Hardware+Overview" target="_blank">here<a/>',
-//         side: "right",
-//         align: 'center',
-//     }
-// },
-// {
-//     element: '#ethernet-switch',
-//     popover: {
-//         title: 'Ethernet Switch',
-//         description: 'You can also create an ethernet switch.',
-//         side: "right",
-//         align: 'center',
-//     }
-// },
-// {
-//     element: '#label',
-//     popover: {
-//         title: 'Labels',
-//         description: 'You can drag and drop this to add labels wherever you want.',
-//         side: "right",
-//         align: 'center',
-//     }
-// },

@@ -310,5 +310,15 @@ function createCustomTopology(ev, topo) {
     toolbar.srunApply(fpgalinkCmd, "intel");
 
     let dialog = document.getElementById(topo + "-topology-modal");
-    dialog.close();
+    closeModal(dialog);
+}
+
+function showModal(el) {
+    $(el).closest(".topology-modal").removeClass("hide");
+}
+
+function closeModal(el) {
+    console.log("hi", el);
+    
+    $(el).closest(".topology-modal").addClass("hide");
 }
