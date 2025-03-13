@@ -331,6 +331,12 @@ body.wide-driver-popup .driver-popover {
   margin-left: 10px;
 }
 
+.topology-modal .error-msg {
+  color: red;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
 .t-center {
   text-align: center;
 }

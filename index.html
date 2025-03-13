@@ -431,7 +431,7 @@
                 <div class="body">
                     <label for="torusType">
                         Select the torus type
-                        <select name="torusType">
+                        <select name="torusType" onchange="checkCorrectTorusConfig()">
                             <option value="torus2">torus2</option>
                             <option value="torus3">torus3</option>
                             <option value="torus4">torus4</option>
@@ -442,13 +442,17 @@
 
                     <label for="nodesNb">
                         Enter the number of nodes
-                        <input type="number" name="nodesNb" placeholder="Number of nodes" required>
+                        <input type="number" name="nodesNb" placeholder="Number of nodes" required onkeyup="checkCorrectTorusConfig()">
                     </label>
 
                     <label for="viewMode">
                         <input type="checkbox" name="viewMode" id="viewMode">
                         FPGA view?
                     </label>
+
+                    <div class="error-msg hide">
+                        This is an error msg.
+                    </div>
                 </div>
                 <div class="buttons">
                     <div class="button cancel">Cancel</div>
