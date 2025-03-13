@@ -270,7 +270,32 @@ function checkIfTorusView() {
     return urlParams.get('torus') || sessionStorage.hasOwnProperty("torus");
 }
 
+function checkCorrectTorusConfig() {
+    let torusType = $("#torus-topology-modal select").val();
+    let nodesNb = $("#torus-topology-modal input[name='nodesNb']").val();
+
+    let minimumNbOfNodes = 2;
+    if (torusType == "torus5" || torusType == "torus6") {
+        minimumNbOfNodes = 3;
+    }
+
+    if (nodesNb < minimumNbOfNodes) {
+        let errorMsg = `Topology ${torusType} requires at lest ${minimumNbOfNodes} nodes.`;
+        $("#torus-topology-modal .error-msg").text(errorMsg);
+        $("#torus-topology-modal .error-msg").removeClass("hide");
+        return false;
+    } else {
+        $("#torus-topology-modal .error-msg").addClass("hide");
+        return true;
+    }
+}
+
 function createCustomTopology(ev, topo) {
+    if (!checkCorrectTorusConfig()) {
+        alert("Incorrect configuration!");
+        return;
+    }
+
     // Remove old session
     sessionStorage.removeItem("torus");
 
@@ -310,5 +335,15 @@ function createCustomTopology(ev, topo) {
     toolbar.srunApply(fpgalinkCmd, "intel");
 
     let dialog = document.getElementById(topo + "-topology-modal");
-    dialog.close();
+    closeModal(dialog);
+}
+
+function showModal(el) {
+    $(el).closest(".topology-modal").removeClass("hide");
+}
+
+function closeModal(el) {
+    console.log("hi", el);
+    
+    $(el).closest(".topology-modal").addClass("hide");
 }

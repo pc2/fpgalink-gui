@@ -1,0 +1,427 @@
+<svg height="419.600004196167" version="1.1" width="506.7125015258789" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: absolute; top: -0.800003px; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(250, 250, 250);">
+<desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.1.4</desc>
+<defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<linearGradient id="1390-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="1990-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="2590-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="3190-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="4190-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="4790-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="5390-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="5990-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="6090-_00FF00-rgba_0_255_0_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#00ff00" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#00ff00" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="7490-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="8090-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="8690-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="9290-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="10290-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="10890-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="11490-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="12090-_4F6870-rgba_103_135_146_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#4f6870" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#678792" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+<linearGradient id="12190-_00FF00-rgba_0_255_0_1_" x1="0" y1="1" x2="6.123233995736766e-17" y2="0" gradientTransform="matrix(1,0,0,1,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+<stop offset="0%" stop-color="#00ff00" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+<stop offset="100%" stop-color="#00ff00" stop-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</stop>
+</linearGradient>
+</defs>
+<rect x="20" y="20" width="105.7125015258789" height="349.600004196167" rx="3" ry="3" fill="#dbddde" stroke="none" class="NodeShape" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" stroke-width="0" fill-opacity="1" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<rect x="20" y="20" width="106.7125015258789" height="23.600000381469727" rx="3" ry="3" fill="#1f96ff" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="draw2d_shape_basic_Label" stroke-opacity="1" stroke-width="1" fill-opacity="1" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="5" y="11.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#000000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="draw2d_shape_basic_Label" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,20,20)">
+<tspan dy="4.399999976158142" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Node 00</tspan>
+</text>
+<rect x="20" y="43.60000038146973" width="106.7125015258789" height="326.00000381469727" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" class="draw2d_shape_layout_FlexGridLayout" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" stroke-opacity="1" stroke-width="2" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<rect x="20" y="43.60000038146973" width="106.7125015258789" height="163.00000190734863" rx="3" ry="3" fill="#dbddde" stroke="none" class="FPGAShape" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" stroke-width="0" fill-opacity="1" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<rect x="20" y="43.60000038146973" width="106.7125015258789" height="21.600000381469727" rx="0" ry="0" fill="#f7f7f7" stroke="none" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="draw2d_shape_basic_Label" stroke-width="0" fill-opacity="1" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="4" y="10.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="draw2d_shape_basic_Label" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,20,43.6)">
+<tspan dy="4.4000000059604645" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">FPGA 0</tspan>
+</text>
+<rect x="20" y="65.20000076293945" width="106.7125015258789" height="141.4000015258789" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" class="draw2d_shape_layout_FlexGridLayout" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" stroke-opacity="1" stroke-width="2" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<rect x="0" y="0" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 0</tspan>
+</text>
+<ellipse cx="25" cy="76" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="20" y="65.20000076293945" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,20,65.2)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 0</tspan>
+</text>
+<path fill="none" stroke="#303030" d="M301,118.60000133514404L286.47604179382324,118.60000133514404L280.4054811373353,118.5884127933532L273.31370466947556,118.5072930008173L265.5411176607013,118.28711070679128L257.4281253814697,117.85833466053009L249.31513310223815,117.15143361128867L241.5425460934639,116.09687630832195L234.45076962560412,114.62513150088489L228.38020896911618,112.66666793823242L223.55780097097158,110.18671999499202L219.75660878419873,107.28958454728127L216.63622713834047,104.11432409659028L213.85625076293948,100.80000114440918L211.0762743875384,97.48567819222808L207.95589274168015,94.3104177415371L204.15470055490732,91.41328229382634L199.33229255676267,88.93333435058594L193.26173190027475,86.97487078793347L186.16995543241498,85.5031259804964L178.39736842364073,84.44856867752969L170.2843761444092,83.74166762828827L162.1713838651776,83.31289158202708L154.39879685640335,83.09270928800106L147.3070203885436,83.01158949546516L141.23645973205564,83.00000095367432L126.7125015258789,83.00000095367432" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="4" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1;">
+</path>
+<path fill="none" stroke="#f3546a" d="M301,118.60000133514404L286.47604179382324,118.60000133514404L280.4054811373353,118.5884127933532L273.31370466947556,118.5072930008173L265.5411176607013,118.28711070679128L257.4281253814697,117.85833466053009L249.31513310223815,117.15143361128867L241.5425460934639,116.09687630832195L234.45076962560412,114.62513150088489L228.38020896911618,112.66666793823242L223.55780097097158,110.18671999499202L219.75660878419873,107.28958454728127L216.63622713834047,104.11432409659028L213.85625076293948,100.80000114440918L211.0762743875384,97.48567819222808L207.95589274168015,94.3104177415371L204.15470055490732,91.41328229382634L199.33229255676267,88.93333435058594L193.26173190027475,86.97487078793347L186.16995543241498,85.5031259804964L178.39736842364073,84.44856867752969L170.2843761444092,83.74166762828827L162.1713838651776,83.31289158202708L154.39879685640335,83.09270928800106L147.3070203885436,83.01158949546516L141.23645973205564,83.00000095367432L126.7125015258789,83.00000095367432" class="draw2d_Connection" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="3" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1;">
+</path>
+<ellipse cx="126.7125015258789" cy="83.00000095367432" rx="5" ry="5" fill="url('#1390-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="126.7125015258789" y="83.00000095367432" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="0" y="33.19999980926514" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 1</tspan>
+</text>
+<ellipse cx="25" cy="103.40000057220459" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="20" y="100.80000114440918" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,20,100.8)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 1</tspan>
+</text>
+<path fill="none" stroke="#303030" d="M126.7125015258789,118.60000133514404L141.23645973205564,118.60000133514404L147.3070203885436,118.5884127933532L154.39879685640332,118.5072930008173L162.17138386517763,118.28711070679128L170.2843761444092,117.85833466053009L178.3973684236407,117.15143361128867L186.169955432415,116.09687630832195L193.26173190027475,114.62513150088489L199.33229255676267,112.66666793823242L204.15470055490732,110.18671999499202L207.95589274168012,107.28958454728127L211.07627438753843,104.11432409659028L213.85625076293948,100.80000114440918L216.63622713834044,97.48567819222808L219.75660878419876,94.3104177415371L223.55780097097158,91.41328229382634L228.38020896911618,88.93333435058594L234.45076962560415,86.97487078793347L241.54254609346387,85.5031259804964L249.31513310223818,84.44856867752969L257.4281253814697,83.74166762828827L265.5411176607013,83.31289158202708L273.31370466947556,83.09270928800106L280.4054811373353,83.01158949546516L286.47604179382324,83.00000095367432L301,83.00000095367432" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="4" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1;">
+</path>
+<path fill="none" stroke="#00a8f0" d="M126.7125015258789,118.60000133514404L141.23645973205564,118.60000133514404L147.3070203885436,118.5884127933532L154.39879685640332,118.5072930008173L162.17138386517763,118.28711070679128L170.2843761444092,117.85833466053009L178.3973684236407,117.15143361128867L186.169955432415,116.09687630832195L193.26173190027475,114.62513150088489L199.33229255676267,112.66666793823242L204.15470055490732,110.18671999499202L207.95589274168012,107.28958454728127L211.07627438753843,104.11432409659028L213.85625076293948,100.80000114440918L216.63622713834044,97.48567819222808L219.75660878419876,94.3104177415371L223.55780097097158,91.41328229382634L228.38020896911618,88.93333435058594L234.45076962560415,86.97487078793347L241.54254609346387,85.5031259804964L249.31513310223818,84.44856867752969L257.4281253814697,83.74166762828827L265.5411176607013,83.31289158202708L273.31370466947556,83.09270928800106L280.4054811373353,83.01158949546516L286.47604179382324,83.00000095367432L301,83.00000095367432" class="draw2d_Connection" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="3" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1;">
+</path>
+<ellipse cx="126.7125015258789" cy="118.60000133514404" rx="5" ry="5" fill="url('#1990-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="126.7125015258789" y="118.60000133514404" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="0" y="68.80000019073486" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 2</tspan>
+</text>
+<ellipse cx="25" cy="139.00000095367432" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="20" y="136.4000015258789" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,20,136.4)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 2</tspan>
+</text>
+<path fill="none" stroke="#303030" d="M126.7125015258789,352.80000400543213L135.04583485921222,352.80000400543213L138.5289077758789,352.73535556718707L142.59791819254556,352.28281649947166L147.05755360921222,351.05449617281556L151.7125015258789,348.6625039577484L156.3674494425456,344.71894922479987L160.82708485921225,338.8359413444996L164.8960952758789,330.6255896873772L168.37916819254556,319.7000036239624L171.1135431925456,305.86523783952L173.06666819254556,289.70312827825546L174.2385431925456,271.98945619910955L174.62916819254556,253.50000286102295L174.23854319254556,235.01054952293634L173.06666819254556,217.29687744379044L171.1135431925456,201.13476788252592L168.37916819254556,187.3000020980835L164.8960952758789,176.37441603466868L160.82708485921225,168.1640643775463L156.3674494425456,162.28105649724603L151.71250152587893,158.33750176429749L147.05755360921222,155.94550954923034L142.59791819254556,154.71718922257423L138.5289077758789,154.26465015485883L135.04583485921222,154.20000171661377L126.7125015258789,154.20000171661377" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="4" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1;">
+</path>
+<path fill="none" stroke="#ffff99" d="M126.7125015258789,352.80000400543213L135.04583485921222,352.80000400543213L138.5289077758789,352.73535556718707L142.59791819254556,352.28281649947166L147.05755360921222,351.05449617281556L151.7125015258789,348.6625039577484L156.3674494425456,344.71894922479987L160.82708485921225,338.8359413444996L164.8960952758789,330.6255896873772L168.37916819254556,319.7000036239624L171.1135431925456,305.86523783952L173.06666819254556,289.70312827825546L174.2385431925456,271.98945619910955L174.62916819254556,253.50000286102295L174.23854319254556,235.01054952293634L173.06666819254556,217.29687744379044L171.1135431925456,201.13476788252592L168.37916819254556,187.3000020980835L164.8960952758789,176.37441603466868L160.82708485921225,168.1640643775463L156.3674494425456,162.28105649724603L151.71250152587893,158.33750176429749L147.05755360921222,155.94550954923034L142.59791819254556,154.71718922257423L138.5289077758789,154.26465015485883L135.04583485921222,154.20000171661377L126.7125015258789,154.20000171661377" class="draw2d_Connection" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="3" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1;">
+</path>
+<ellipse cx="126.7125015258789" cy="154.20000171661377" rx="5" ry="5" fill="url('#2590-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="126.7125015258789" y="154.20000171661377" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="0" y="104.40000057220459" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 3</tspan>
+</text>
+<ellipse cx="25" cy="174.60000133514404" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="20" y="172.00000190734863" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,20,172)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 3</tspan>
+</text>
+<path fill="none" stroke="#303030" d="M126.7125015258789,189.8000020980835L135.04583485921222,189.8000020980835L138.5289077758789,189.84147345274687L142.59791819254556,190.13177293539047L147.05755360921222,190.91972867399454L151.7125015258789,192.4541687965393L156.3674494425456,194.983921431005L160.82708485921225,198.75781470537186L164.8960952758789,204.0246767476201L168.37916819254556,211.03333568572998L171.1135431925456,219.9082055836916L173.06666819254556,230.2760442495346L174.2385431925456,241.63919542729855L174.62916819254556,253.50000286102295L174.23854319254556,265.36081029474735L173.06666819254556,276.7239614725113L171.1135431925456,287.0918001383543L168.37916819254556,295.9666700363159L164.8960952758789,302.9753289744258L160.82708485921225,308.24219101667404L156.3674494425456,312.0160842910409L151.71250152587893,314.5458369255066L147.05755360921222,316.08027704805136L142.59791819254556,316.8682327866554L138.5289077758789,317.15853226929903L135.04583485921222,317.2000036239624L126.7125015258789,317.2000036239624" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="4" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1;">
+</path>
+<path fill="none" stroke="#b9dd69" d="M126.7125015258789,189.8000020980835L135.04583485921222,189.8000020980835L138.5289077758789,189.84147345274687L142.59791819254556,190.13177293539047L147.05755360921222,190.91972867399454L151.7125015258789,192.4541687965393L156.3674494425456,194.983921431005L160.82708485921225,198.75781470537186L164.8960952758789,204.0246767476201L168.37916819254556,211.03333568572998L171.1135431925456,219.9082055836916L173.06666819254556,230.2760442495346L174.2385431925456,241.63919542729855L174.62916819254556,253.50000286102295L174.23854319254556,265.36081029474735L173.06666819254556,276.7239614725113L171.1135431925456,287.0918001383543L168.37916819254556,295.9666700363159L164.8960952758789,302.9753289744258L160.82708485921225,308.24219101667404L156.3674494425456,312.0160842910409L151.71250152587893,314.5458369255066L147.05755360921222,316.08027704805136L142.59791819254556,316.8682327866554L138.5289077758789,317.15853226929903L135.04583485921222,317.2000036239624L126.7125015258789,317.2000036239624" class="draw2d_Connection" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="3" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1;">
+</path>
+<ellipse cx="126.7125015258789" cy="189.8000020980835" rx="5" ry="5" fill="url('#3190-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="126.7125015258789" y="189.8000020980835" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="20" y="206.60000228881836" width="106.7125015258789" height="163.00000190734863" rx="3" ry="3" fill="#dbddde" stroke="none" class="FPGAShape" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" stroke-width="0" fill-opacity="1" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<rect x="20" y="206.60000228881836" width="106.7125015258789" height="21.600000381469727" rx="0" ry="0" fill="#f7f7f7" stroke="none" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="draw2d_shape_basic_Label" stroke-width="0" fill-opacity="1" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="4" y="10.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="draw2d_shape_basic_Label" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,20,206.6)">
+<tspan dy="4.4000000059604645" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">FPGA 1</tspan>
+</text>
+<rect x="20" y="228.2000026702881" width="106.7125015258789" height="141.4000015258789" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" class="draw2d_shape_layout_FlexGridLayout" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" stroke-opacity="1" stroke-width="2" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<rect x="0" y="0" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 0</tspan>
+</text>
+<ellipse cx="25" cy="233.2000026702881" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="20" y="228.2000026702881" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,20,228.2)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 0</tspan>
+</text>
+<path fill="none" stroke="#303030" d="M301,281.6000032424927L286.47604179382324,281.6000032424927L280.4054811373353,281.58841470070183L273.31370466947556,281.50729490816593L265.5411176607013,281.2871126141399L257.4281253814697,280.8583365678787L249.31513310223815,280.1514355186373L241.5425460934639,279.0968782156706L234.45076962560412,277.6251334082335L228.38020896911618,275.66666984558105L223.55780097097158,273.18672190234065L219.75660878419873,270.2895864546299L216.63622713834047,267.1143260039389L213.85625076293948,263.8000030517578L211.0762743875384,260.4856800995767L207.95589274168015,257.3104196488857L204.15470055490732,254.41328420117497L199.33229255676267,251.93333625793457L193.26173190027475,249.9748726952821L186.16995543241498,248.50312788784504L178.39736842364073,247.44857058487833L170.2843761444092,246.7416695356369L162.1713838651776,246.3128934893757L154.39879685640335,246.0927111953497L147.3070203885436,246.0115914028138L141.23645973205564,246.00000286102295L126.7125015258789,246.00000286102295" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="4" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1;">
+</path>
+<path fill="none" stroke="#f3546a" d="M301,281.6000032424927L286.47604179382324,281.6000032424927L280.4054811373353,281.58841470070183L273.31370466947556,281.50729490816593L265.5411176607013,281.2871126141399L257.4281253814697,280.8583365678787L249.31513310223815,280.1514355186373L241.5425460934639,279.0968782156706L234.45076962560412,277.6251334082335L228.38020896911618,275.66666984558105L223.55780097097158,273.18672190234065L219.75660878419873,270.2895864546299L216.63622713834047,267.1143260039389L213.85625076293948,263.8000030517578L211.0762743875384,260.4856800995767L207.95589274168015,257.3104196488857L204.15470055490732,254.41328420117497L199.33229255676267,251.93333625793457L193.26173190027475,249.9748726952821L186.16995543241498,248.50312788784504L178.39736842364073,247.44857058487833L170.2843761444092,246.7416695356369L162.1713838651776,246.3128934893757L154.39879685640335,246.0927111953497L147.3070203885436,246.0115914028138L141.23645973205564,246.00000286102295L126.7125015258789,246.00000286102295" class="draw2d_Connection" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="3" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1;">
+</path>
+<ellipse cx="126.7125015258789" cy="246.00000286102295" rx="5" ry="5" fill="url('#4190-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="126.7125015258789" y="246.00000286102295" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="0" y="33.19999980926514" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 1</tspan>
+</text>
+<ellipse cx="25" cy="266.4000024795532" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="20" y="263.8000030517578" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,20,263.8)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 1</tspan>
+</text>
+<path fill="none" stroke="#303030" d="M126.7125015258789,281.6000032424927L141.23645973205564,281.6000032424927L147.3070203885436,281.58841470070183L154.39879685640332,281.50729490816593L162.17138386517763,281.2871126141399L170.2843761444092,280.8583365678787L178.3973684236407,280.1514355186373L186.169955432415,279.0968782156706L193.26173190027475,277.6251334082335L199.33229255676267,275.66666984558105L204.15470055490732,273.18672190234065L207.95589274168012,270.2895864546299L211.07627438753843,267.1143260039389L213.85625076293948,263.8000030517578L216.63622713834044,260.4856800995767L219.75660878419876,257.3104196488857L223.55780097097158,254.41328420117497L228.38020896911618,251.93333625793457L234.45076962560415,249.9748726952821L241.54254609346387,248.50312788784504L249.31513310223818,247.44857058487833L257.4281253814697,246.7416695356369L265.5411176607013,246.3128934893757L273.31370466947556,246.0927111953497L280.4054811373353,246.0115914028138L286.47604179382324,246.00000286102295L301,246.00000286102295" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="4" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1;">
+</path>
+<path fill="none" stroke="#00a8f0" d="M126.7125015258789,281.6000032424927L141.23645973205564,281.6000032424927L147.3070203885436,281.58841470070183L154.39879685640332,281.50729490816593L162.17138386517763,281.2871126141399L170.2843761444092,280.8583365678787L178.3973684236407,280.1514355186373L186.169955432415,279.0968782156706L193.26173190027475,277.6251334082335L199.33229255676267,275.66666984558105L204.15470055490732,273.18672190234065L207.95589274168012,270.2895864546299L211.07627438753843,267.1143260039389L213.85625076293948,263.8000030517578L216.63622713834044,260.4856800995767L219.75660878419876,257.3104196488857L223.55780097097158,254.41328420117497L228.38020896911618,251.93333625793457L234.45076962560415,249.9748726952821L241.54254609346387,248.50312788784504L249.31513310223818,247.44857058487833L257.4281253814697,246.7416695356369L265.5411176607013,246.3128934893757L273.31370466947556,246.0927111953497L280.4054811373353,246.0115914028138L286.47604179382324,246.00000286102295L301,246.00000286102295" class="draw2d_Connection" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="3" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1;">
+</path>
+<ellipse cx="126.7125015258789" cy="281.6000032424927" rx="5" ry="5" fill="url('#4790-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="126.7125015258789" y="281.6000032424927" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="0" y="68.80000019073486" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 2</tspan>
+</text>
+<ellipse cx="25" cy="302.00000286102295" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="20" y="299.40000343322754" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,20,299.4)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 2</tspan>
+</text>
+<ellipse cx="126.7125015258789" cy="317.2000036239624" rx="5" ry="5" fill="url('#5390-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="126.7125015258789" y="317.2000036239624" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="0" y="104.40000057220459" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 3</tspan>
+</text>
+<ellipse cx="25" cy="337.6000032424927" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="20" y="335.00000381469727" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,20,335)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 3</tspan>
+</text>
+<ellipse cx="126.7125015258789" cy="352.80000400543213" rx="5" ry="5" fill="url('#5990-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="126.7125015258789" y="352.80000400543213" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<ellipse cx="126.76962654113768" cy="30.48800012588501" rx="5" ry="5" fill="url('#6090-_00FF00-rgba_0_255_0_1_')" stroke="#000000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1;" opacity="1" fill-opacity="1" x="126.76962654113768" y="30.48800012588501" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="301" y="20" width="105.7125015258789" height="349.600004196167" rx="3" ry="3" fill="#dbddde" stroke="none" class="NodeShape" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1; cursor: default;" stroke-width="0" fill-opacity="1" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<rect x="301" y="20" width="106.7125015258789" height="23.600000381469727" rx="3" ry="3" fill="#1f96ff" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="draw2d_shape_basic_Label" stroke-opacity="1" stroke-width="1" fill-opacity="1" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="5" y="11.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#000000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="draw2d_shape_basic_Label" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,301,20)">
+<tspan dy="4.399999976158142" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Node 01</tspan>
+</text>
+<rect x="301" y="43.60000038146973" width="106.7125015258789" height="326.00000381469727" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" class="draw2d_shape_layout_FlexGridLayout" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" stroke-opacity="1" stroke-width="2" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<rect x="301" y="43.60000038146973" width="106.7125015258789" height="163.00000190734863" rx="3" ry="3" fill="#dbddde" stroke="none" class="FPGAShape" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" stroke-width="0" fill-opacity="1" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<rect x="301" y="43.60000038146973" width="106.7125015258789" height="21.600000381469727" rx="0" ry="0" fill="#f7f7f7" stroke="none" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="draw2d_shape_basic_Label" stroke-width="0" fill-opacity="1" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="4" y="10.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="draw2d_shape_basic_Label" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,301,43.6)">
+<tspan dy="4.4000000059604645" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">FPGA 0</tspan>
+</text>
+<rect x="301" y="65.20000076293945" width="106.7125015258789" height="141.4000015258789" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" class="draw2d_shape_layout_FlexGridLayout" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" stroke-opacity="1" stroke-width="2" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<rect x="0" y="0" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 0</tspan>
+</text>
+<ellipse cx="625" cy="76" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="301" y="65.20000076293945" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,301,65.2)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 0</tspan>
+</text>
+<ellipse cx="620" cy="83.00000095367432" rx="5" ry="5" fill="url('#7490-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="620" y="83.00000095367432" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="0" y="33.19999980926514" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 1</tspan>
+</text>
+<ellipse cx="625" cy="103.40000057220459" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="301" y="100.80000114440918" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,301,100.8)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 1</tspan>
+</text>
+<ellipse cx="620" cy="118.60000133514404" rx="5" ry="5" fill="url('#8090-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="620" y="118.60000133514404" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="0" y="68.80000019073486" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 2</tspan>
+</text>
+<ellipse cx="625" cy="139.00000095367432" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="301" y="136.4000015258789" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,301,136.4)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 2</tspan>
+</text>
+<path fill="none" stroke="#303030" d="M301,352.80000400543213L292.66666666666663,352.80000400543213L289.18359375,352.73535556718707L285.1145833333333,352.28281649947166L280.65494791666663,351.05449617281556L276.00000000000006,348.6625039577484L271.3450520833333,344.71894922479987L266.88541666666663,338.8359413444996L262.81640625,330.6255896873772L259.3333333333333,319.7000036239624L256.59895833333326,305.86523783952L254.64583333333331,289.70312827825546L253.47395833333331,271.98945619910955L253.08333333333334,253.50000286102295L253.47395833333331,235.01054952293634L254.64583333333331,217.29687744379044L256.5989583333333,201.13476788252592L259.3333333333333,187.3000020980835L262.81640624999994,176.37441603466868L266.8854166666667,168.1640643775463L271.3450520833333,162.28105649724603L276,158.33750176429749L280.6549479166667,155.94550954923034L285.1145833333333,154.71718922257423L289.18359375,154.26465015485883L292.6666666666667,154.20000171661377L301,154.20000171661377" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="4" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1; cursor: default;">
+</path>
+<path fill="none" stroke="#ffff99" d="M301,352.80000400543213L292.66666666666663,352.80000400543213L289.18359375,352.73535556718707L285.1145833333333,352.28281649947166L280.65494791666663,351.05449617281556L276.00000000000006,348.6625039577484L271.3450520833333,344.71894922479987L266.88541666666663,338.8359413444996L262.81640625,330.6255896873772L259.3333333333333,319.7000036239624L256.59895833333326,305.86523783952L254.64583333333331,289.70312827825546L253.47395833333331,271.98945619910955L253.08333333333334,253.50000286102295L253.47395833333331,235.01054952293634L254.64583333333331,217.29687744379044L256.5989583333333,201.13476788252592L259.3333333333333,187.3000020980835L262.81640624999994,176.37441603466868L266.8854166666667,168.1640643775463L271.3450520833333,162.28105649724603L276,158.33750176429749L280.6549479166667,155.94550954923034L285.1145833333333,154.71718922257423L289.18359375,154.26465015485883L292.6666666666667,154.20000171661377L301,154.20000171661377" class="draw2d_Connection" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="3" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1; cursor: default;">
+</path>
+<ellipse cx="620" cy="154.20000171661377" rx="5" ry="5" fill="url('#8690-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="620" y="154.20000171661377" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="0" y="104.40000057220459" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 3</tspan>
+</text>
+<ellipse cx="625" cy="174.60000133514404" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="301" y="172.00000190734863" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,301,172)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 3</tspan>
+</text>
+<path fill="none" stroke="#303030" d="M301,189.8000020980835L292.66666666666663,189.8000020980835L289.18359375,189.84147345274687L285.1145833333333,190.13177293539047L280.65494791666663,190.91972867399454L276.00000000000006,192.4541687965393L271.3450520833333,194.983921431005L266.88541666666663,198.75781470537186L262.81640625,204.0246767476201L259.3333333333333,211.03333568572998L256.59895833333326,219.9082055836916L254.64583333333331,230.2760442495346L253.47395833333331,241.63919542729855L253.08333333333334,253.50000286102295L253.47395833333331,265.36081029474735L254.64583333333331,276.7239614725113L256.5989583333333,287.0918001383543L259.3333333333333,295.9666700363159L262.81640624999994,302.9753289744258L266.8854166666667,308.24219101667404L271.3450520833333,312.0160842910409L276,314.5458369255066L280.6549479166667,316.08027704805136L285.1145833333333,316.8682327866554L289.18359375,317.15853226929903L292.6666666666667,317.2000036239624L301,317.2000036239624" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="4" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1; cursor: default;">
+</path>
+<path fill="none" stroke="#b9dd69" d="M301,189.8000020980835L292.66666666666663,189.8000020980835L289.18359375,189.84147345274687L285.1145833333333,190.13177293539047L280.65494791666663,190.91972867399454L276.00000000000006,192.4541687965393L271.3450520833333,194.983921431005L266.88541666666663,198.75781470537186L262.81640625,204.0246767476201L259.3333333333333,211.03333568572998L256.59895833333326,219.9082055836916L254.64583333333331,230.2760442495346L253.47395833333331,241.63919542729855L253.08333333333334,253.50000286102295L253.47395833333331,265.36081029474735L254.64583333333331,276.7239614725113L256.5989583333333,287.0918001383543L259.3333333333333,295.9666700363159L262.81640624999994,302.9753289744258L266.8854166666667,308.24219101667404L271.3450520833333,312.0160842910409L276,314.5458369255066L280.6549479166667,316.08027704805136L285.1145833333333,316.8682327866554L289.18359375,317.15853226929903L292.6666666666667,317.2000036239624L301,317.2000036239624" class="draw2d_Connection" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="1" stroke-width="3" stroke-dasharray="none" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-linejoin: round; opacity: 1; cursor: default;">
+</path>
+<ellipse cx="620" cy="189.8000020980835" rx="5" ry="5" fill="url('#9290-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="620" y="189.8000020980835" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="301" y="206.60000228881836" width="106.7125015258789" height="163.00000190734863" rx="3" ry="3" fill="#dbddde" stroke="none" class="FPGAShape" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" stroke-width="0" fill-opacity="1" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<rect x="301" y="206.60000228881836" width="106.7125015258789" height="21.600000381469727" rx="0" ry="0" fill="#f7f7f7" stroke="none" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="draw2d_shape_basic_Label" stroke-width="0" fill-opacity="1" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="4" y="10.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="draw2d_shape_basic_Label" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,301,206.6)">
+<tspan dy="4.4000000059604645" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">FPGA 1</tspan>
+</text>
+<rect x="301" y="228.2000026702881" width="106.7125015258789" height="141.4000015258789" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" class="draw2d_shape_layout_FlexGridLayout" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" stroke-opacity="1" stroke-width="2" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<rect x="0" y="0" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 0</tspan>
+</text>
+<ellipse cx="625" cy="233.2000026702881" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="301" y="228.2000026702881" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,301,228.2)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 0</tspan>
+</text>
+<ellipse cx="620" cy="246.00000286102295" rx="5" ry="5" fill="url('#10290-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="620" y="246.00000286102295" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="0" y="33.19999980926514" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 1</tspan>
+</text>
+<ellipse cx="625" cy="266.4000024795532" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="301" y="263.8000030517578" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,301,263.8)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 1</tspan>
+</text>
+<ellipse cx="620" cy="281.6000032424927" rx="5" ry="5" fill="url('#10890-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="620" y="281.6000032424927" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="0" y="68.80000019073486" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 2</tspan>
+</text>
+<ellipse cx="625" cy="302.00000286102295" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="301" y="299.40000343322754" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,301,299.4)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 2</tspan>
+</text>
+<ellipse cx="620" cy="317.2000036239624" rx="5" ry="5" fill="url('#11490-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="620" y="317.2000036239624" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<rect x="0" y="104.40000057220459" width="0" height="0" rx="0" ry="0" fill="none" stroke="#000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;" class="ChannelShape">
+</rect>
+<text x="27" y="6.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1; display: none;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 3</tspan>
+</text>
+<ellipse cx="625" cy="337.6000032424927" rx="5" ry="5" fill="none" stroke="#000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); display: none;">
+</ellipse>
+<rect x="301" y="335.00000381469727" width="106.7125015258789" height="35.60000038146973" rx="0" ry="0" fill="#000000" stroke="#1b1b1b" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;" class="ChannelShape" stroke-opacity="1" stroke-width="1" fill-opacity="0" stroke-dasharray="none" opacity="1" transform="matrix(1,0,0,1,0,0)">
+</rect>
+<text x="26" y="17.800000190734863" text-anchor="start" font-family="&quot;Arial&quot;" font-size="12px" stroke="#000000" fill="#4a4a4a" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: start; font-family: Arial; font-size: 12px; font-weight: normal; opacity: 1;" stroke-scale="true" class="ChannelShape" font-weight="normal" fill-opacity="1" stroke-opacity="0" stroke-width="0" opacity="1" transform="matrix(1,0,0,1,301,335)">
+<tspan dy="4.400000095367432" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Channel 3</tspan>
+</text>
+<ellipse cx="620" cy="352.80000400543213" rx="5" ry="5" fill="url('#12090-_4F6870-rgba_103_135_146_1_')" stroke="#1b1b1b" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1; display: none;" opacity="1" fill-opacity="1" x="620" y="352.80000400543213" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+<ellipse cx="301" cy="30.48800012588501" rx="5" ry="5" fill="url('#12190-_00FF00-rgba_0_255_0_1_')" stroke="#000000" class="draw2d_HybridPort" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: move; opacity: 1; fill-opacity: 1;" opacity="1" fill-opacity="1" x="301" y="30.48800012588501" stroke-opacity="1" stroke-width="1" stroke-dasharray="none">
+</ellipse>
+</svg>

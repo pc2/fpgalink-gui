@@ -19,7 +19,6 @@
     <link type="text/css" rel="stylesheet" href="./css/application.css" />
 
 
-
     <script src="./lib/jquery.js"></script>
     <script src="./lib/jquery-ui.js"></script>
     <script src="./lib/jquery.browser.js"></script>
@@ -197,7 +196,7 @@
 
                 let command = new draw2d.command.CommandCollection();
                 app.view.getLines().each(function (i, line) {
-                    let lineCommand = new draw2d.command.CommandAttr(line, {router: router});
+                    let lineCommand = new draw2d.command.CommandAttr(line, { router: router });
                     command.add(lineCommand);
                 });
                 app.view.getCommandStack().execute(command);
@@ -208,19 +207,30 @@
             topologyButtons.button().click($.proxy(function (ev) {
                 let btn = ev.target.parentElement;
                 let type = btn.dataset.type;
-                document.getElementById(type + "-topology-modal").showModal();
+                showModal(document.getElementById(type + "-topology-modal"));
             }, this)).button("option", "enabled", true);
 
             $(".topology-modal i").click(function (ev) {
-                $(this).closest("dialog")[0].close();
+                closeModal($(this).closest(".topology-modal")[0]);
             });
 
             $(".topology-modal .button.cancel").click(function (ev) {
-                $(this).closest("dialog")[0].close();
+                closeModal($(this).closest(".topology-modal")[0]);
             });
 
             $(".topology-modal .button.submit").click(function (ev) {
                 let dialog = $(this).closest("dialog");
+            });
+
+            // When escape button is pressed, close the model if opened
+            document.addEventListener('keydown', function (event) {
+                if (event.key === "Escape") {
+                    // check if there is an opened modal
+                    let modal = document.querySelector(".topology-modal:not(.hide)");
+                    if (modal) {
+                        closeModal(modal);
+                    }
+                }
             });
         });
 
@@ -346,6 +356,7 @@
                 <button data-type="advanced" class="tutorial-btn">Advanced Tutorial</button>
                 <button data-type="switch" class="tutorial-btn">Switch Tutorial</button>
                 <button data-type="actions" class="tutorial-btn">Actions Tutorial</button>
+                <button data-type="topologies" class="tutorial-btn">Topologies Tutorial</button>
             </div>
         </div>
         <div class="menu settings">
@@ -380,68 +391,76 @@
     </dialog>
 
     <!-- Custom Topologies Modals -->
-    <dialog id="ring-topology-modal" class="topology-modal" role="dialog" aria-labelledby="prompt-dialog-heading">
-        <div class="header">
-            <div class="title">Ring Topology Modal</div>
-            <i class="fa fa-close"></i>
+    <div id="ring-topology-modal" class="topology-modal hide">
+        <div class="main">
+            <div class="header">
+                <div class="title">Ring Topology Modal</div>
+                <i class="fa fa-close"></i>
+            </div>
+            <form onsubmit="event.preventDefault(); createCustomTopology(event, 'ring')">
+                <div class="body">
+                    <label for="ringType">
+                        Select the ring type
+                        <select name="ringType">
+                            <option value="ringO">RingO</option>
+                            <option value="ringZ">RingZ</option>
+                            <option value="ringN">RingN</option>
+                        </select>
+                    </label>
+
+                    <label for="nodesNb">
+                        Enter the number of nodes
+                        <input type="number" name="nodesNb" placeholder="Number of nodes" required>
+                    </label>
+                </div>
+                <div class="buttons">
+                    <div class="button cancel">Cancel</div>
+                    <button class="button submit" type="submit">Submit</button>
+                </div>
+            </form>
         </div>
-        <form onsubmit="event.preventDefault(); createCustomTopology(event, 'ring')">
-            <div class="body">
-                <label for="ringType">
-                    Select the ring type
-                    <select name="ringType">
-                        <option value="ringO">RingO</option>
-                        <option value="ringZ">RingZ</option>
-                        <option value="ringN">RingN</option>
-                    </select>
-                </label>
+    </div>
 
-                <label for="nodesNb">
-                    Enter the number of nodes
-                    <input type="number" name="nodesNb" placeholder="Number of nodes" required>
-                </label>
+    <div id="torus-topology-modal" class="topology-modal hide">
+        <div class="main">
+            <div class="header">
+                <div class="title">Torus Topology Modal</div>
+                <i class="fa fa-close"></i>
             </div>
-            <div class="buttons">
-                <div class="button cancel">Cancel</div>
-                <button class="button submit" type="submit">Submit</button>
-            </div>
-        </form>
-    </dialog>
+            <form onsubmit="event.preventDefault(); createCustomTopology(event, 'torus')">
+                <div class="body">
+                    <label for="torusType">
+                        Select the torus type
+                        <select name="torusType" onchange="checkCorrectTorusConfig()">
+                            <option value="torus2">torus2</option>
+                            <option value="torus3">torus3</option>
+                            <option value="torus4">torus4</option>
+                            <option value="torus5">torus5</option>
+                            <option value="torus6">torus6</option>
+                        </select>
+                    </label>
 
-    <dialog id="torus-topology-modal" class="topology-modal" role="dialog" aria-labelledby="prompt-dialog-heading">
-        <div class="header">
-            <div class="title">Torus Topology Modal</div>
-            <i class="fa fa-close"></i>
+                    <label for="nodesNb">
+                        Enter the number of nodes
+                        <input type="number" name="nodesNb" placeholder="Number of nodes" required onkeyup="checkCorrectTorusConfig()">
+                    </label>
+
+                    <label for="viewMode">
+                        <input type="checkbox" name="viewMode" id="viewMode">
+                        FPGA view?
+                    </label>
+
+                    <div class="error-msg hide">
+                        This is an error msg.
+                    </div>
+                </div>
+                <div class="buttons">
+                    <div class="button cancel">Cancel</div>
+                    <button class="button submit" type="submit">Submit</button>
+                </div>
+            </form>
         </div>
-        <form onsubmit="event.preventDefault(); createCustomTopology(event, 'torus')">
-            <div class="body">
-                <label for="torusType">
-                    Select the torus type
-                    <select name="torusType">
-                        <option value="torus2">torus2</option>
-                        <option value="torus3">torus3</option>
-                        <option value="torus4">torus4</option>
-                        <option value="torus5">torus5</option>
-                        <option value="torus6">torus6</option>
-                    </select>
-                </label>
-
-                <label for="nodesNb">
-                    Enter the number of nodes
-                    <input type="number" name="nodesNb" placeholder="Number of nodes" required>
-                </label>
-
-                <label for="viewMode">
-                    <input type="checkbox" name="viewMode" id="viewMode">
-                    FPGA view?
-                </label>
-            </div>
-            <div class="buttons">
-                <div class="button cancel">Cancel</div>
-                <button class="button submit" type="submit">Submit</button>
-            </div>
-        </form>
-    </dialog>
+    </div>
 </body>
 
 </html>
